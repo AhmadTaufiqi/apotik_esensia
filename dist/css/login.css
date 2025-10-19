@@ -1,0 +1,28 @@
+body {
+  color: rgb(37, 36, 36) !important;
+  font-family: "inter", "Overpass", sans-serif !important;
+}
+
+.password-show {
+  font-family: "feather";
+  content: "";
+  position: absolute;
+  right: 28px;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.rounded-15 {
+  border-radius: .7rem !important;
+}
+
+.rounded-2 {
+  border-radius: 1rem !important;
+}
+
+.form-icon {
+  position: absolute;
+  padding: 10px;
+  font-size: 17px;
+  color: #5e5e5e;
+}
