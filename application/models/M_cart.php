@@ -34,31 +34,45 @@ class M_cart extends CI_Model
     return $order;
   }
 
-  public function get_user_cart($product_id, $user_id)
+  public function get_user_cart($user_id)
   {
     $this->db->trans_start();
-    $order = $this->db->select('*')
-      ->from('cart c')
-      ->join('cart_products cp', 'c.id=cp.cart_id', 'left')
-      ->where(['cp.product_id' => $product_id, 'created_by' => $user_id])
+    $order = $this->db->select('cp.*, p.*')
+      ->from('cart_products cp')
+      ->join('products p', 'p.id = cp.product_id', 'left')
+      ->where(['customer_id' => $user_id])
       ->get()
       ->result_object();
-    var_dump($order);
+
     $this->db->trans_complete();
 
     return $order;
   }
 
-  public function data_cart($role, $product_id)
+  public function get_user_cart_by_prod_id($product_id, $user_id)
+  {
+    $this->db->trans_start();
+    $order = $this->db->select('*')
+      ->from('cart_products')
+      ->where(['product_id' => $product_id, 'customer_id' => $user_id])
+      ->get()
+      ->row_array();
+
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
+  public function data_cart($role, $user_id)
   {
     $data = [
       // 'id' => $this->uuid->v4(),
-      'product_id' => $product_id,
       'qty' => 1,
-      'status' => $this->input->post('status'),
-      'sku' => $this->input->post('sku'),
+      'product_id' => $this->input->post('product_id'),
       'created_at' => $this->M_app->datetime(),
       'updated_at' => $this->M_app->datetime(),
+      // 'created_by' => $user_id,
+      'customer_id' => $user_id,
     ];
 
     return $data;
@@ -77,12 +91,11 @@ class M_cart extends CI_Model
     return $prod;
   }
 
-  public function save_to_cart($role, $table, $product_id)
+  public function save_to_cart($role, $table, $user_id)
   {
-    $data = $this->data_cart($role, $product_id);
+    $data = $this->data_cart($role, $user_id);
 
     $this->db->trans_start();
-    $this->db->insert('cart_products', '');
     $this->db->insert($table, $data);
 
     $this->db->trans_complete();
@@ -95,6 +108,16 @@ class M_cart extends CI_Model
     } else {
       return false;
     }
+  }
+
+  public function add_cart_prod_qty($id)
+  {
+    $this->db->trans_start();
+    $cart_product = $this->db->get_where('cart_products', ['id' => $id])->row_array();
+    $qty = $cart_product['qty'];
+
+    $this->db->update('cart_products', ['qty' => $qty + 1], ['id' => $id]);
+    $this->db->trans_complete();
   }
 
   public function update_product($foto_default, $table, $activity)

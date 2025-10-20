@@ -23,10 +23,17 @@ class Orders extends CI_Controller
   {
     $user_id = $this->session->userdata('id_akun');
     $product_id = $this->input->post('product_id');
-    $product_oncart = $this->M_cart->get_user_cart($product_id, $user_id);
+    $cart = $this->M_cart->get_user_cart_by_prod_id()($product_id, $user_id);
     
-    var_dump($product_oncart);
-    $this->M_cart->save_to_cart('1','cart', $product_id);
+    
+    if(!$cart){
+
+      $this->M_cart->save_to_cart('1','cart_products', $product_id);
+    } else {
+      $cart_prod_id = $cart['id'];
+
+      $this->M_cart->add_cart_prod_qty($cart_prod_id);
+    }
 
     echo $this->input->post('product_id');
   }
