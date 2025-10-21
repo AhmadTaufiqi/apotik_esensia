@@ -21,12 +21,11 @@ class M_cart extends CI_Model
     $this->db->trans_start();
 
     $order = $this->db->select('*')
-      ->from('cart o')
-      ->join('cart_products op', 'o.id = op.cart_id', 'left')
-      ->join('products p', 'op.product_id = p.id', 'left');
+      ->from('cart_products cp')
+      ->join('products p', 'cp.product_id = p.id', 'left');
 
     if ($id) {
-      $this->db->where(['o.id' => $id]);
+      $this->db->where(['cp.id' => $id]);
     }
     $this->db->get()->result_object();
     $this->db->trans_complete();

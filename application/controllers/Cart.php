@@ -29,9 +29,35 @@ class Cart extends CI_Controller
 
 	public function checkout()
 	{
+		// echo json_encode($_POST);
+		$products = [];
+		$arr_product_id = $this->input->post('product_id');
+		$arr_product_cart_id = $this->input->post('product_cart_id');
+		$arr_product_qty = $this->input->post('product_qty');
+
+		foreach($arr_product_cart_id as $i => $id){
+			// if($arr_product_checked[$i] == 0){
+				// continue;
+			// }
+
+			$cart_product = $this->M_cart->get_cart_product($id);
+			$data = [
+				'product_id' => $arr_product_id[$i],
+				'product_qty' => $arr_product_qty[$i]
+			];
+			array_push($products, $data);
+			echo '<br>';
+		}
+
 		$data = [
-			'title' => 'Buat Pesanan'
+			'title' => 'Buat Pesanan',
+			'products' => $products,
+			'datatest' => $this->datatest()
 		];
 		$this->M_app->templateCart($data, 'cart/checkout');
+	}
+
+	public function datatest(){
+		return 'tes123';
 	}
 }

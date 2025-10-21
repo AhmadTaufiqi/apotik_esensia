@@ -1,3 +1,6 @@
+<?php
+echo $datatest;
+?>
 <div class="d-flex flex-column">
   <form action="" method="POST">
     <div class="content p-2">

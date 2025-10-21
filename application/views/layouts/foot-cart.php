@@ -33,7 +33,7 @@
     <script src="<?= base_url() ?>dist/js/cart.js"></script>
     <script>
       $(document).ready(function() {
-        $('.qty_input').prop('disabled', true);
+        $('.qty_input').prop('readonly', true);
 
         $('.plus-btn').click(function(e) {
           const input = $(this).prev();
