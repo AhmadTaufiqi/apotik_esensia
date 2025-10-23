@@ -24,7 +24,32 @@ class Profile extends CI_Controller
 
 	public function edit()
 	{
-		$data = [];
+		$user_id = $this->session->userdata('id_akun');
+		$address = $this->db->get_where('address', ['user_id' => $user_id])->row_array();
+		if (empty($address)) {
+			$address = [
+				'kota' => '',
+				'kecamatan' => '',
+				'kelurahan' => '',
+				'kode_pos' => '',
+				'long' => '',
+				'lat' => '',
+				'catatan' => '',
+			];
+		}
+
+		// var_dump($address->kota);
+		// exit;
+
+		$data = [
+			'title' => 'Edit Profile',
+			'user_id' => $user_id,
+			'address' => $address,
+			'name' => $this->session->userdata('nama_akun'),
+			'foto_akun' => $this->session->userdata('foto_akun'),
+			'hp_akun' => $this->session->userdata('hp_akun'),
+		];
+
 		$this->M_app->templateCart($data, 'profile/edit');
 	}
 }

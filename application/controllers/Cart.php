@@ -16,8 +16,8 @@ class Cart extends CI_Controller
 
 	public function index()
 	{
-    // $user_id = $this->session->userdata('id_akun');
-    $user_id = 1;
+		// $user_id = $this->session->userdata('id_akun');
+		$user_id = 1;
 		$cart = $this->M_cart->get_user_cart($user_id);
 
 		$data = [
@@ -35,29 +35,45 @@ class Cart extends CI_Controller
 		$arr_product_cart_id = $this->input->post('product_cart_id');
 		$arr_product_qty = $this->input->post('product_qty');
 
-		foreach($arr_product_cart_id as $i => $id){
+		foreach ($arr_product_cart_id as $i => $id) {
 			// if($arr_product_checked[$i] == 0){
-				// continue;
+			// continue;
 			// }
 
 			$cart_product = $this->M_cart->get_cart_product($id);
-			$data = [
-				'product_id' => $arr_product_id[$i],
-				'product_qty' => $arr_product_qty[$i]
+			$dataset = [
+				'product_qty' => $arr_product_qty[$i],
+				'prod_dataset' => $this->getDataProduct($arr_product_id[$i]),
 			];
-			array_push($products, $data);
-			echo '<br>';
+
+			array_push($products, $dataset);
 		}
 
 		$data = [
 			'title' => 'Buat Pesanan',
-			'products' => $products,
-			'datatest' => $this->datatest()
+			'cart_products' => $products,
 		];
 		$this->M_app->templateCart($data, 'cart/checkout');
 	}
 
-	public function datatest(){
-		return 'tes123';
+	public function getDataProduct($product_id)
+	{
+		$product = $this->db->get_where('products', ['id' => $product_id])->row_array();
+
+		return $product;
+	}
+
+	public function updateProdQty()
+	{
+		$qty = $this->input->post('qty');
+		$cart_id = $this->input->post('cart_id');
+
+		$update = $this->M_cart->update_cart_qty($cart_id, $qty);
+
+		if ($update) {
+			echo 'success';
+		} else {
+			echo 'failed';
+		}
 	}
 }

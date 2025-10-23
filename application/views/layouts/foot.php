@@ -95,7 +95,6 @@
           // window.location = "auth/logout";
         }
 
-        console.log(this);
         var product_id = $(this).data('product-id');
         console.log(product_id);
 

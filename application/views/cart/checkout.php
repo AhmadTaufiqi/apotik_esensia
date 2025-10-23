@@ -1,6 +1,3 @@
-<?php
-echo $datatest;
-?>
 <div class="d-flex flex-column">
   <form action="" method="POST">
     <div class="content p-2">
@@ -22,43 +19,33 @@ echo $datatest;
         </div>
       </div>
 
-      <div class="card card-product-cart mb-2 flex-row">
-        <div class="p-2">
-          <div class="product-images">
-            <img src="<?= base_url() ?>dist/img/products/sgm-expl.png" alt="" class="h-100">
+      <?php foreach ($cart_products as $cp) : ?>
+        <?php
+        $prod_dataset = $cp['prod_dataset'];
+        $quantity = $cp['product_qty'];
+        $discount = $prod_dataset['discount'];
+        $price = $discount ? $prod_dataset['price'] - ($prod_dataset['price'] * ($discount / 100)) : $prod_dataset['price'];
+        $price = $price * $quantity;
+        ?>
+        <div class="card card-product-cart mb-2 flex-row">
+          <div class="p-2">
+            <div class="product-images">
+              <img src="<?= base_url() ?>dist/img/uploads/products/<?= $prod_dataset['image'] ?>" alt="" class="h-100">
+            </div>
           </div>
-        </div>
 
-        <div class="form-group d-flex flex-column p-2 text-end justify-content-between">
-          <div class="d-flex align-items-center">
-            <h5 class="form-label product-name fw-bold mb-0 me-2">Nama Obat obat</h5>
-            <span>x 2</span>
-          </div>
-          <div>
-            <h5 class="color-esensia mb-0">Rp. 90000</h5>
-            <small class="discount">Rp. 100000</small>
-          </div>
-        </div>
-      </div>
-      
-      <div class="card card-product-cart mb-2 flex-row">
-        <div class="p-2">
-          <div class="product-images">
-            <img src="<?= base_url() ?>dist/img/products/sgm-expl.png" alt="" class="h-100">
+          <div class="form-group d-flex flex-column p-2 justify-content-between">
+            <div class="d-flex">
+              <h6 class="col form-label product-name mb-0 me-2"><?= $prod_dataset['name'] ?></h6>
+              <span>x <?= $quantity ?></span>
+            </div>
+            <div class="text-end">
+              <h5 class="color-esensia mb-0">Rp. <?= number_format($price, 0, '', '.'); ?></h5>
+              <small class="discount"><?= $prod_dataset['discount'] ? "Rp. " . number_format($prod_dataset['price'] * $quantity, 0, '', '.') : '' ?></small>
+            </div>
           </div>
         </div>
-
-        <div class="form-group d-flex flex-column p-2 text-end justify-content-between">
-          <div class="d-flex align-items-center">
-            <h5 class="form-label product-name fw-bold mb-0 me-2">Nama Obat obat</h5>
-            <span>x 2</span>
-          </div>
-          <div>
-            <h5 class="color-esensia mb-0">Rp. 90000</h5>
-            <small class="discount">Rp. 100000</small>
-          </div>
-        </div>
-      </div>
+      <?php endforeach; ?>
     </div>
 
     <div class="col card p-3 m-2">

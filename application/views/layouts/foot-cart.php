@@ -37,17 +37,35 @@
 
         $('.plus-btn').click(function(e) {
           const input = $(this).prev();
+          const cart_id = input.data('cart-id');
           input.val(parseInt(input.val()) + 1);
+          updateQty(input.val(), cart_id);
         });
         $('.minus-btn').click(function(e) {
           const input = $(this).next();
+          const cart_id = input.data('cart-id');
           input.val(parseInt(input.val()) - 1);
+
           if (input.val() == 0) {
             input.val(1);
           }
-
+          updateQty(input.val(), cart_id);
         });
       });
+
+      function updateQty(qty, cart_id) {
+
+        $.post({
+          url: 'updateProdQty',
+          data: {
+            cart_id,
+            qty
+          },
+          success: function(result) {
+            console.log(result)
+          }
+        })
+      }
     </script>
     </body>
 

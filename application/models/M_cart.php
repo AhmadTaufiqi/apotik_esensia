@@ -36,7 +36,7 @@ class M_cart extends CI_Model
   public function get_user_cart($user_id)
   {
     $this->db->trans_start();
-    $order = $this->db->select('cp.*, p.*')
+    $order = $this->db->select('cp.id cart_id, cp.*, p.*')
       ->from('cart_products cp')
       ->join('products p', 'p.id = cp.product_id', 'left')
       ->where(['customer_id' => $user_id])
@@ -117,6 +117,19 @@ class M_cart extends CI_Model
 
     $this->db->update('cart_products', ['qty' => $qty + 1], ['id' => $id]);
     $this->db->trans_complete();
+  }
+
+  public function update_cart_qty($cart_id, $qty)
+  {
+    $this->db->trans_start();
+    $this->db->update('cart_products', ['qty' => $qty], ['id' => $cart_id]);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function update_product($foto_default, $table, $activity)
