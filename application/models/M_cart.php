@@ -22,12 +22,10 @@ class M_cart extends CI_Model
 
     $order = $this->db->select('*')
       ->from('cart_products cp')
-      ->join('products p', 'cp.product_id = p.id', 'left');
+      ->join('products p', 'cp.product_id = p.id', 'left')
+      ->where(['cp.id' => $id])
+      ->get()->row_array();
 
-    if ($id) {
-      $this->db->where(['cp.id' => $id]);
-    }
-    $this->db->get()->result_object();
     $this->db->trans_complete();
 
     return $order;
@@ -46,6 +44,12 @@ class M_cart extends CI_Model
     $this->db->trans_complete();
 
     return $order;
+  }
+
+  public function get_total_user_cart($user_id)
+  {
+    $my_cart = $this->get_user_cart($user_id);
+    return count($my_cart);
   }
 
   public function get_user_cart_by_prod_id($product_id, $user_id)

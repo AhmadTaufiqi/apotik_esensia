@@ -109,6 +109,19 @@
         })
 
       })
+
+      //toggle see password 
+      $('.password-show').on('click', function() {
+        if ($(this).attr('data-show') == 1) {
+          $(this).attr('data-show', '0')
+          $(this).siblings('input:first').attr("type", 'password')
+          $(this).children('i').attr('class', 'fe fe-eye-off')
+        } else {
+          $(this).attr('data-show', '1')
+          $(this).siblings('input:first').attr("type", 'text')
+          $(this).children('i').attr('class', 'fe fe-eye')
+        }
+      })
     </script>
     </body>
 

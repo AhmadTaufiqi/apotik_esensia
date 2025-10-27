@@ -9,9 +9,18 @@ class Cart extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_app');
 		$this->load->model('M_cart');
-		// if (empty($this->session->userdata('id_akun'))) {
-		// 	redirect(base_url('login'));
-		// }
+
+		$is_nologin = false;
+
+		if (empty($this->session->userdata('id_akun'))) {
+			$is_nologin = true;
+		} elseif ($this->session->userdata('role') != 2) {
+			$is_nologin = true;
+		}
+
+		if ($is_nologin) {
+			redirect(base_url('auth'));
+		}
 	}
 
 	public function index()
@@ -34,16 +43,26 @@ class Cart extends CI_Controller
 		$arr_product_id = $this->input->post('product_id');
 		$arr_product_cart_id = $this->input->post('product_cart_id');
 		$arr_product_qty = $this->input->post('product_qty');
+		$arr_product_cb = $this->input->post('product_cb');
+
+		if (!$arr_product_cb) {
+			$arr_product_cb = [];
+		}
 
 		foreach ($arr_product_cart_id as $i => $id) {
-			// if($arr_product_checked[$i] == 0){
-			// continue;
-			// }
+
+			if (!key_exists($i, $arr_product_cb)) {
+				continue;
+			} elseif ($arr_product_cb[$i] == 0) {
+				continue;
+			}
 
 			$cart_product = $this->M_cart->get_cart_product($id);
 			$dataset = [
 				'product_qty' => $arr_product_qty[$i],
 				'prod_dataset' => $this->getDataProduct($arr_product_id[$i]),
+				'total_price' => ($cart_product['price'] - ($cart_product['price'] * ($cart_product['discount'] / 100))) * $cart_product['qty'],
+				'raw_total_price' => $cart_product['price'] * $cart_product['qty']
 			];
 
 			array_push($products, $dataset);
@@ -52,6 +71,7 @@ class Cart extends CI_Controller
 		$data = [
 			'title' => 'Buat Pesanan',
 			'cart_products' => $products,
+			// 'total_price_cart' => penghitungan setelah di diskon,
 		];
 		$this->M_app->templateCart($data, 'cart/checkout');
 	}

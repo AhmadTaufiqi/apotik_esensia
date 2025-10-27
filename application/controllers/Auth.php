@@ -11,11 +11,15 @@ class Auth extends CI_Controller
 
 	public function index()
 	{
+		$data = [
+			'title' => 'Masuk Dengan Akun Anda'
+		];
+
 		if ($this->session->userdata('id_akun')) {
-			// redirect(base_url('admin/product'));
+			redirect(base_url('home'));
 		}
 		if (!$this->input->post('email')) {
-			$this->load->view('auth/login');
+			$this->M_app->login_template($data, 'auth/login');
 		} else {
 			$this->_login();
 		}
@@ -27,7 +31,7 @@ class Auth extends CI_Controller
 		// $password = md5($this->input->post('password'));
 		$password = $this->input->post('password');
 
-		$user = $this->db->get_where('users', ['email' => $email, 'deleted_at' => NULL])->row_array();
+		$user = $this->db->get_where('users', ['email' => $email, 'role' => 2, 'deleted_at' => NULL])->row_array();
 
 		//if usser ada
 		if ($user) {
@@ -36,7 +40,7 @@ class Auth extends CI_Controller
 				if ($password == $user['password']) {
 					$user_foto = 'default.png';
 					if (strlen($user['foto']) > 0 && file_exists(FCPATH . 'dist/img/uploads/users/' . $user['foto'])) {
-							$user_foto = $user['foto'];
+						$user_foto = $user['foto'];
 					}
 					$data = [
 						'id_akun' => $user['id'],
@@ -52,7 +56,7 @@ class Auth extends CI_Controller
 						redirect(base_url('komplain'));
 					} else {
 						// redirect(base_url('admin/dashboard'));
-						redirect(base_url('admin/product'));
+						redirect(base_url('home'));
 					}
 				} else {
 					var_dump("password salah");

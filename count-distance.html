@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="dist/leafletjs/leaflet.css" />
+
 </head>
 
 <body>
+    <div id="map" style="height: 400px;"></div>
     <form action="">
         <input type="text" name="loc_start" id="loc_start" value="-6.9970452136082075, 110.47314124171348">
         <input type="text" name="loc_end" id="loc_end">
@@ -17,39 +20,25 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
+
+
+<script src="dist/leafletjs/leaflet.js"></script>
+
 <script>
-    document.getElementById('hitung').addEventListener('click', function (e) {
-        // e.preventDefault();
+    // $(document).ready(function () {
 
+    var map = L.map('map', {
+        center: [-7.048313751822978, 110.4182835266355],
+        zoom: 13
+    });
 
-        const xhr = new XMLHttpRequest();
-        var asal = document.getElementById('loc_start').value;
-        var tujuan = document.getElementById('loc_end').value;
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.google.com/maps">OpenStreetMap</a>'
+    }).addTo(map);
 
-        $.ajax({
-            'url': 'https://script.google.com/macros/s/AKfycbxnoQk8-pXSbwKyO-npAG_Ox41azuvfyPVtPLRiYkRRqKGkhGZrzsKF2f3pdsYOV53Efw/exec?action=count-distance',
-            data: {
-                'origin': asal,
-                'objective': tujuan,
-            },
-            success: function (data) {
-                console.log(data);
-            }
-        })
-
-
-        // xhr.open('GET', 'https://script.google.com/macros/s/AKfycbxnoQk8-pXSbwKyO-npAG_Ox41azuvfyPVtPLRiYkRRqKGkhGZrzsKF2f3pdsYOV53Efw/exec?action=count-distance&asal=' + asal + '&objective=' + tujuan);
-        // xhr.onload = function () {
-        //     console.log(this.status);
-
-        //     if (this.status === 200) {
-        //         const response = JSON.parse(this.response);
-        //         console.log(response);
-        //         alert(response);
-        //     }
-        // }
-        // xhr.send();
-    })
+    // var map = L.map('map').setView([-7.047215713154886, 110.42083644226034], 13);
+    // })
 </script>
 
 </html>

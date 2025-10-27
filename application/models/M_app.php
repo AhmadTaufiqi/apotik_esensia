@@ -28,6 +28,12 @@ class M_app extends CI_Model
         $this->load->view('layouts/foot');
     }
 
+    public function login_template($data, $content){
+        $this->load->view('layouts/head', $data);
+        $this->load->view($content);
+        $this->load->view('layouts/foot');
+    }
+
     public function templateCart($data, $content)
     {
         $this->load->view('layouts/head', $data);
@@ -73,7 +79,7 @@ class M_app extends CI_Model
 
     public function uploadFile($dir, $types, $name, $default)
     {
-        $config['upload_path']   = './src/uploads/' . $dir;
+        $config['upload_path']   = './dist/img/uploads/' . $dir;
         $config['allowed_types'] = $types;
         $config['encrypt_name'] = true;
 
@@ -91,7 +97,7 @@ class M_app extends CI_Model
             return $file;
         } else {
             if ($file != $default) {
-                unlink('./src/uploads/'.$dir.'/'.$file); }
+                unlink('./dist/img/uploads/'.$dir.'/'.$file); }
             return $this->uploadFile($dir, $types, $name, $default);
         }
     }

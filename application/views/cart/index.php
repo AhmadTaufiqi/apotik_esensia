@@ -21,7 +21,7 @@
           <div class="col p-2 px-1 d-flex flex-column justify-content-between">
             <div class="form-group d-flex py-1">
               <div>
-                <input type="checkbox" name="cb_cart_product" value="1" class="form-check-input form-check-lg mt-0 me-1">
+                <input type="checkbox" name="product_cb[<?= $idx ?>]" value="1" class="form-check-input form-check-lg mt-0 me-1">
               </div>
               <label class="form-label mb-0 product-name"><?= $cart->name ?></label>
             </div>

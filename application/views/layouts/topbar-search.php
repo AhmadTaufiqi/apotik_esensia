@@ -14,8 +14,8 @@
         
         <?php 
           $oncart_orders = 0;
-          if (!empty($this->session->userdata('onchart_orders'))){
-            $oncart_orders = $this->session->userdata('onchart_orders');
+          if (!empty($total_my_cart)){
+            $oncart_orders = $total_my_cart;
           }
         ?>
 

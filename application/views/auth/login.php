@@ -1,63 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+  <body>
+    <div class="mobile-container">
+      <div class="carousel">
+        <div class="navbar px-2 bg-dark">
+          <a class="card align-items-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+            <img class="rounded-circle" width="80%" src="<?= base_url() ?>dist/img/logo.png" alt="">
+          </a>
+          <div class="col pe-2">
+            <h6 class="color-esensia text-center mb-0 fw-bold"><?= $title ?></h6>
+          </div>
+          <a href="#" class="btn bg-white rounded-circle px-1" style="height: 40px; width:40px;">
+            <i class="fas fa-info fa-xl color-esensia"></i>
+          </a>
+        </div>
+      </div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <div class="d-flex flex-column">
+        <form method="POST" action="">
 
-  <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-  <link rel="stylesheet" href="<?= base_url() ?>dist/fontawesome/css/fontawesome.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>dist/fontawesome/css/brands.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>dist/fontawesome/css/solid.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>dist/fontawesome/css/regular.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>dist/css/feather.css" />
+          <div class="content p-2 d-flex align-items-center">
+            <div class="col-9 text-center mx-auto mb-5">
+              <button class="rounded-15 btn btn-success px-3 mb-3">
+                <img width="22" style="padding: 2px;" class="rounded-circle bg-white me-1" src="<?= base_url() ?>dist/img/google-logo.png" alt="">
+                Daftar Dengan Google
+              </button>
+              <div class="form-group mb-3">
+                <div class="d-flex align-items-center">
+                  <input type="text" id="inputEmail" name="email" class="form-control form-control-lg rounded-15" placeholder="Masukkan Email Anda" required="" autofocus="" style="padding-left:35px; font-size: 14px;">
+                  <i class="form-icon fe fe-user"></i>
+                </div>
+                <?= $this->session->flashdata('msg') ?>
+              </div>
+              <div class="form-group mb-4">
+                <div class="d-flex align-items-center position-relative">
+                  <input type="password" name="password" class="form-control form-control-lg rounded-15" placeholder="Password" required="" style="padding-left:35px; font-size: 14px;">
+                  <i class="form-icon fe fe-key"></i>
+                  <a role="button" class="password-show" data-show="0" style="color:#858585;right:5px;">
+                    <i class="fe fe-eye-off" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <?= $this->session->flashdata('msg_pass') ?>
+              </div>
+              <button class="btn btn-success rounded-15 py-2 px-3 mb-3">Masuk</button>
+              <div>
+                <span>Belum punya akun?</span>
+                <a href="auth/register" class="fw-bold text-success">Daftar Disini</a>
+              </div>
+            </div>
+          </div>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-  <link rel="stylesheet" href="<?= base_url() ?>dist/css/app-light.css">
-  <link rel="stylesheet" href="<?= base_url() ?>dist/css/simplebar.css">
-  <link rel="stylesheet" href="<?= base_url() ?>dist/css/style.css">
-  <link rel="stylesheet" href="<?= base_url() ?>dist/cropperjs/dist/cropper.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700" rel="stylesheet" />
-
-  <title>Document</title>
-  <link href="<?= base_url() ?>dist/img/logo.png" rel="icon">
-</head>
-
-<body class="vertical light">
-  <div class="warapper">
-  </div>
-
-
-  </main>
-  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script src="<?= base_url() ?>dist/js/jquery.stickOnScroll.js"></script>
-  <script src="<?= base_url() ?>dist/js/apps.js"></script>
-  <script src="<?= base_url() ?>dist/js/app.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      $('.qty_input').prop('disabled', true);
-
-      $('.plus-btn').click(function(e) {
-        const input = $(this).prev();
-        input.val(parseInt(input.val()) + 1);
-      });
-      $('.minus-btn').click(function(e) {
-        const input = $(this).next();
-        input.val(parseInt(input.val()) - 1);
-        if (input.val() == 0) {
-          input.val(1);
-        }
-
-      });
-    });
-  </script>
-</body>
-
-</html>
+        </form>
+      </div>

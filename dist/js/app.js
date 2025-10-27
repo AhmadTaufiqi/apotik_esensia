@@ -18,6 +18,7 @@ var cropper = new Cropper(img_cropper,{
 
 imgDiv.addEventListener('mouseenter', function () {
     uploadBtn.style.display = "block";
+    console.log()
 });
 
 //if we hover out from img div

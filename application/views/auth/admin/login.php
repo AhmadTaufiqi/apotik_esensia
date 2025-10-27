@@ -45,7 +45,7 @@
               <div class="form-group">
                 <label for="inputEmail">Email</label>
                 <div class="d-flex align-items-center">
-                  <input type="text" id="inputEmail" name="email" class="form-control form-control-lg rounded-15" placeholder="Masukkan Username Anda" required="" autofocus="" style="padding-left:35px; font-size: 14px;">
+                  <input type="text" id="inputEmail" name="email" class="form-control form-control-lg rounded-15" placeholder="Masukkan Email Anda" required="" autofocus="" style="padding-left:35px; font-size: 14px;">
                   <i class="form-icon fe fe-user"></i>
                 </div>
                 <?= $this->session->flashdata('msg') ?>

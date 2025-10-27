@@ -27,7 +27,7 @@ class Auth extends CI_Controller
 		// $password = md5($this->input->post('password'));
 		$password = $this->input->post('password');
 
-		$user = $this->db->get_where('users', ['email' => $email, 'deleted_at' => NULL])->row_array();
+		$user = $this->db->get_where('users', ['email' => $email, 'role' => 1, 'deleted_at' => NULL])->row_array();
 
 		//if usser ada
 		if ($user) {
@@ -61,12 +61,12 @@ class Auth extends CI_Controller
 					// redirect(base_url('admin/auth'));
 				}
 			} else {
-				// $this->session->set_flashdata('msg_login', '<div class="alert alert-warning">User tidak memiliki akses panel admin</div>');
-				// redirect(base_url('admin/auth'));
+				$this->session->set_flashdata('msg_login', '<div class="alert alert-warning">User tidak memiliki akses panel admin</div>');
+				redirect(base_url('admin/auth'));
 			}
 		} else {
-			// $this->session->set_flashdata('msg', '<small class="text-danger pl-2">username tidak terdaftar</small>');
-			// redirect(base_url('admin/auth'));
+			$this->session->set_flashdata('msg', '<small class="text-danger pl-2">username tidak terdaftar</small>');
+			redirect(base_url('admin/auth'));
 		}
 	}
 

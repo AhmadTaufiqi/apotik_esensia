@@ -8,27 +8,6 @@
     <div class="content p-2">
 
       <div class="card card-product-cart mb-2 p-2">
-        <div class="d-flex">
-          <div class="avatar d-flex align-items-center px-2 p-4">
-            <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
-              <img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto_akun != '' ? $foto_akun : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
-              <input type="file" id="file" name="file" max="2000" accept=".jpg,.jpeg,.png">
-              <label for="file" id="uploadBtn" style="height:40px">Pilih Foto</label>
-            </div>
-            <input type="hidden" id="foto_base64" name="foto_base64" max="2000">
-          </div>
-          <div class="col py-4">
-            <div class="mb-2">
-              <span class="fw-bold"><?= $email ?></span>
-            </div>
-            <div class="form-group mb-2">
-              <input type="text" class="form-control form-control-sm" name="name" value="<?= $name ?? $name ?>">
-            </div>
-            <div class="form-group mb-2">
-              <input type="text" class="form-control form-control-sm" name="telp" value="<?= $hp_akun ?? $hp_akun ?>">
-            </div>
-          </div>
-        </div>
         <div class="p-2">
           <h5></h5>
           <div class="form-group mb-2">
@@ -76,7 +55,7 @@
 </div>
 
 <script>
-  $(document).ready(function() {
+  document.addEventListener("DOMContentLoaded", function() {
     var map = L.map('map', {
       center: [-7.048313751822978, 110.4182835266355],
       zoom: 15
@@ -86,5 +65,5 @@
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-  })
+  });
 </script>

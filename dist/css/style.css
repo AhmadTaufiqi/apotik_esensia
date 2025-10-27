@@ -71,6 +71,10 @@ a:hover {
   color: #047635;
 }
 
+.add-shadow{
+  box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.09);
+}
+
 .navbar-top-fix {
   position: absolute;
   width: 100%;
@@ -311,7 +315,7 @@ div:has(> button.btn-add-to-cart) {
 }
 
 .content {
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px);
 }
 
 .discount {

@@ -13,19 +13,25 @@
               Jl. Ngesrep Barat Dalam III, Srondol Kulon, Kec. Banyumanik, Kota Semarang, Jawa Tengah 50263
             </span>
           </div>
-          <a href="" class="col-1 text-end align-self-center">
+          <a href="<?= base_url() ?>profile/edit_address" class="col-1 text-end align-self-center">
             <i class="fas fa-angle-right fa-xl text-muted"></i>
           </a>
         </div>
       </div>
 
-      <?php foreach ($cart_products as $cp) : ?>
+      <?php
+      $total_price = 0;
+      $raw_total_price = 0;
+      foreach ($cart_products as $cp) : ?>
         <?php
         $prod_dataset = $cp['prod_dataset'];
         $quantity = $cp['product_qty'];
         $discount = $prod_dataset['discount'];
-        $price = $discount ? $prod_dataset['price'] - ($prod_dataset['price'] * ($discount / 100)) : $prod_dataset['price'];
-        $price = $price * $quantity;
+        $price = $cp['total_price'];
+        $raw_price = $cp['raw_total_price'];
+
+        $total_price = $total_price + $price;
+        $raw_total_price = $raw_total_price + $raw_price;
         ?>
         <div class="card card-product-cart mb-2 flex-row">
           <div class="p-2">
@@ -41,7 +47,7 @@
             </div>
             <div class="text-end">
               <h5 class="color-esensia mb-0">Rp. <?= number_format($price, 0, '', '.'); ?></h5>
-              <small class="discount"><?= $prod_dataset['discount'] ? "Rp. " . number_format($prod_dataset['price'] * $quantity, 0, '', '.') : '' ?></small>
+              <small class="discount"><?= $prod_dataset['discount'] ? "Rp. " . number_format($raw_price, 0, '', '.') : '' ?></small>
             </div>
           </div>
         </div>
@@ -59,11 +65,7 @@
     </div>
 
     <div class="container-button mt-auto">
-      <div>
-        <input type="checkbox" name="cb_cart_product" value="1" class="form-check-input form-check-lg mt-0 me-1">
-        <small class="text-muted">Semua</small>
-      </div>
-      <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. 90000</h5>
+      <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
       <button class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1">Buat Pesanan</button>
     </div>
   </form>

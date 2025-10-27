@@ -10,11 +10,11 @@
         </div>
         <!-- </div> -->
         <div class="col p-2 py-3">
-          <h3 class="mb-1">Taufiqi</h3>
-          <h6 href="" class="esensia-link">Edit</h6>
+          <h4 class="mb-1"><?= $name ?></h4>
+          <a href="<?= base_url()?>profile/edit" class="esensia-link h6">Edit</a>
         </div>
         <div class="me-3 align-content-center">
-          <a class="btn btn-logout">
+          <a href="<?= base_url()?>auth/logout" class="btn btn-logout">
             <i class="fas fa-power-off fa-2x"></i>
             <span>Logout</span>
           </a>

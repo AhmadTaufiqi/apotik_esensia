@@ -8,9 +8,18 @@ class Products extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('M_app');
-		// if (empty($this->session->userdata('id_akun'))) {
-		// 	redirect(base_url('login'));
-		// }
+
+		$is_nologin = false;
+
+		if (empty($this->session->userdata('id_akun'))) {
+			$is_nologin = true;
+		} elseif ($this->session->userdata('role') != 2) {
+			$is_nologin = true;
+		}
+
+		if ($is_nologin) {
+			redirect(base_url('auth'));
+		}
 	}
 
 	public function index()
