@@ -20,14 +20,14 @@ $(document).ready(function() {
   })
 })
 
-function addtoCart($id){
-  $.ajax({
-    url: "/cart/add",
-    data: {
-      id
-    },
-    success: function( result ) {
-      $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
-    }
-  });
-}
+// function addtoCart($id){
+//   $.ajax({
+//     url: "/cart/add",
+//     data: {
+//       id
+//     },
+//     success: function( result ) {
+//       $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
+//     }
+//   });
+// }

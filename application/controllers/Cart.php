@@ -36,6 +36,25 @@ class Cart extends CI_Controller
 		$this->M_app->templateCart($data, 'cart/index');
 	}
 
+	public function addToCart()
+	{
+		$user_id = $this->session->userdata('id_akun');
+		$product_id = $this->input->post('product_id');
+		$cart = $this->M_cart->get_user_cart_by_prod_id()($product_id, $user_id);
+
+
+		if (!$cart) {
+
+			$this->M_cart->save_to_cart('1', 'cart_products', $product_id);
+		} else {
+			$cart_prod_id = $cart['id'];
+
+			$this->M_cart->add_cart_prod_qty($cart_prod_id);
+		}
+
+		echo $this->input->post('product_id');
+	}
+
 	public function checkout()
 	{
 		// echo json_encode($_POST);
@@ -60,6 +79,7 @@ class Cart extends CI_Controller
 			$cart_product = $this->M_cart->get_cart_product($id);
 			$dataset = [
 				'product_qty' => $arr_product_qty[$i],
+				'product_cart_id' => $arr_product_cart_id[$i],
 				'prod_dataset' => $this->getDataProduct($arr_product_id[$i]),
 				'total_price' => ($cart_product['price'] - ($cart_product['price'] * ($cart_product['discount'] / 100))) * $cart_product['qty'],
 				'raw_total_price' => $cart_product['price'] * $cart_product['qty']

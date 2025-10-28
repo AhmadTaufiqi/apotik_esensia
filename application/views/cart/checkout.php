@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <form action="" method="POST">
+  <form action="<?= base_url()?>orders/createOrder" method="POST">
     <div class="content p-2">
       <div class="card mb-2 flex-row py-2 px-3">
         <div class="d-flex">
@@ -22,7 +22,7 @@
       <?php
       $total_price = 0;
       $raw_total_price = 0;
-      foreach ($cart_products as $cp) : ?>
+      foreach ($cart_products as $i => $cp) : ?>
         <?php
         $prod_dataset = $cp['prod_dataset'];
         $quantity = $cp['product_qty'];
@@ -51,6 +51,9 @@
             </div>
           </div>
         </div>
+        <input type="text" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
+        <input type="text" name="product_id[<?= $i ?>]" value="<?= $prod_dataset['id'] ?>">
+        <input type="text" name="product_qty[<?= $i ?>]" value="<?= $quantity ?>">
       <?php endforeach; ?>
     </div>
 
@@ -64,9 +67,11 @@
       </a>
     </div>
 
+    <input type="text" name="total_cost_price" value="<?= $total_price ?>">
+    <input type="text" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
-      <button class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1">Buat Pesanan</button>
+      <button class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
     </div>
   </form>
 </div>

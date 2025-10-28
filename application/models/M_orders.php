@@ -55,7 +55,7 @@ class M_orders extends CI_Model
     $this->db->trans_start();
     $order = $this->db->select('*')
       ->from('orders o')
-      ->where(['o.product_id' => $product_id, ])
+      ->where(['o.product_id' => $product_id,])
       ->get()
       ->result_object();
     $this->db->trans_complete();
@@ -63,16 +63,19 @@ class M_orders extends CI_Model
     return $order;
   }
 
-  public function data_order($role)
+  public function data_order()
   {
     $data = [
       // 'id' => $this->uuid->v4(),
-      'product_id' => $this->input->post('product_id'),
+      // 'product_id' => $this->input->post('product_id'),
       'qty' => $this->input->post('qty'),
       'status' => $this->input->post('status'),
-      'sku' => $this->input->post('sku'),
+      // 'sku' => $this->input->post('sku'),
+      'customer_id' => $this->session->userdata('id_akun'),
       'created_at' => $this->M_app->datetime(),
       'updated_at' => $this->M_app->datetime(),
+      'cost_price' => $this->input->post('total_cost_price'),
+      'raw_cost_price' => $this->input->post('total_raw_cost_price'),
     ];
 
     return $data;
@@ -91,13 +94,17 @@ class M_orders extends CI_Model
     return $prod;
   }
 
-  public function save_order($role, $table, $activity)
+  public function save_order($table, $activity)
   {
-    $data = $this->data_order($role);
+    $data = $this->data_order();
 
     $this->db->trans_start();
     // $this->db->insert('product', $user);
     $this->db->insert($table, $data);
+
+    $order_id = $this->db->insert_id();
+
+    $this->add_order_product($order_id);
 
     $this->db->trans_complete();
 
@@ -109,6 +116,26 @@ class M_orders extends CI_Model
     } else {
       return false;
     }
+  }
+
+  public function add_order_product($order_id)
+  {
+    $this->db->trans_start();
+    $products = $this->input->post('product_id');
+    $qty = $this->input->post('product_qty');
+
+    foreach($products as $i => $id){
+      $data = [
+        'order_id' => $order_id,
+        'product_id' => $id,
+        'qty' => $qty[$i],
+        'created_at' => $this->M_app->datetime(),
+        'updated_at' => $this->M_app->datetime(),
+      ];
+      $this->db->insert('order_products', $data);
+      $this->db->trans_complete();
+    }
+    
   }
 
   public function update_product($foto_default, $table, $activity)

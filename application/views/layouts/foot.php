@@ -99,7 +99,7 @@
         console.log(product_id);
 
         $.post({
-          url: 'orders/addToCart',
+          url: 'cart/addToCart',
           data: {
             'product_id': product_id
           },

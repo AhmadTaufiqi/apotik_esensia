@@ -8,7 +8,7 @@ class Orders extends CI_Controller
   {
     parent::__construct();
     $this->load->model('M_app');
-    $this->load->model('M_cart');
+    $this->load->model('M_orders');
 
     $is_nologin = false;
 
@@ -28,23 +28,20 @@ class Orders extends CI_Controller
     $this->load->view('order/index');
   }
 
-  public function addToCart()
-  {
-    $user_id = $this->session->userdata('id_akun');
-    $product_id = $this->input->post('product_id');
-    $cart = $this->M_cart->get_user_cart_by_prod_id()($product_id, $user_id);
+  public function createOrder(){
+    $post = $this->input->post();
+    var_dump($post);
+    echo json_encode($post['cart_product_id']);
+    $save = $this->M_orders->save_order('orders', 'create order form cart');
 
-
-    if (!$cart) {
-
-      $this->M_cart->save_to_cart('1', 'cart_products', $product_id);
+    if($save){
+      $this->session->set_flashdata('msg', '<small class="text-success ps-2">succes save order</small>');
+      
     } else {
-      $cart_prod_id = $cart['id'];
-
-      $this->M_cart->add_cart_prod_qty($cart_prod_id);
+      $this->session->set_flashdata('msg', '<small class="text-danger ps-2">failed save order</small>');
     }
 
-    echo $this->input->post('product_id');
+    redirect('orders/index');
   }
 
   public function payment()
