@@ -31,13 +31,13 @@ class M_cart extends CI_Model
     return $order;
   }
 
-  public function get_user_cart($user_id)
+  public function get_user_cart($user_id, $status)
   {
     $this->db->trans_start();
     $order = $this->db->select('cp.id cart_id, cp.*, p.*')
       ->from('cart_products cp')
       ->join('products p', 'p.id = cp.product_id', 'left')
-      ->where(['customer_id' => $user_id])
+      ->where(['customer_id' => $user_id, 'status' => $status])
       ->get()
       ->result_object();
 
@@ -48,7 +48,7 @@ class M_cart extends CI_Model
 
   public function get_total_user_cart($user_id)
   {
-    $my_cart = $this->get_user_cart($user_id);
+    $my_cart = $this->get_user_cart($user_id, 1);
     return count($my_cart);
   }
 
@@ -171,6 +171,18 @@ class M_cart extends CI_Model
     } else {
       return false;
     }
+  }
+
+  public function deactivate($arr_id){
+    $this->db->trans_start();
+
+    $data = [
+      'status' => 0,
+      'updated_at' => $this->M_app->datetime()
+    ];
+
+    $this->db->where_in(['id' => $arr_id])->update('cart_products', $data);
+    $this->db->trans_complete();
   }
 
   public function hapus($id, $table, $activity)

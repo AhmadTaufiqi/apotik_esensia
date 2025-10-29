@@ -9,6 +9,7 @@ class Orders extends CI_Controller
     parent::__construct();
     $this->load->model('M_app');
     $this->load->model('M_orders');
+    $this->load->model('M_cart');
 
     $is_nologin = false;
 
@@ -29,12 +30,12 @@ class Orders extends CI_Controller
   }
 
   public function createOrder(){
-    $post = $this->input->post();
-    var_dump($post);
-    echo json_encode($post['cart_product_id']);
+    $cart_product_id = $this->input->post('cart_product_id');
+
     $save = $this->M_orders->save_order('orders', 'create order form cart');
 
     if($save){
+      $this->M_cart->deactivate($cart_product_id);
       $this->session->set_flashdata('msg', '<small class="text-success ps-2">succes save order</small>');
       
     } else {

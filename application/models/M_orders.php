@@ -68,7 +68,7 @@ class M_orders extends CI_Model
     $data = [
       // 'id' => $this->uuid->v4(),
       // 'product_id' => $this->input->post('product_id'),
-      'qty' => $this->input->post('qty'),
+      // 'qty' => $this->input->post('qty'),
       'status' => $this->input->post('status'),
       // 'sku' => $this->input->post('sku'),
       'customer_id' => $this->session->userdata('id_akun'),
@@ -85,7 +85,7 @@ class M_orders extends CI_Model
   {
     $prod = [
       'product_id' => $this->input->post('product_id'),
-      'qty' => $this->input->post('qty'),
+      // 'qty' => $this->input->post('qty'),
       'status' => $this->input->post('status'),
       'sku' => $this->input->post('sku'),
       'updated_at' => $this->M_app->datetime(),
