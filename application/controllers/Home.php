@@ -9,6 +9,7 @@ class Home extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_app');
 		$this->load->model('M_cart');
+		$this->load->model('M_product');
 		$is_nologin = false;
 
 		if (empty($this->session->userdata('id_akun'))) {
@@ -29,10 +30,12 @@ class Home extends CI_Controller
 			->from('product_category')
 			->get()
 			->result_object();
+		$products = $this->M_product->get_all_products(false, false, 1);
 
 		$data = [
 			'categories' => $categories,
-			'total_my_cart' => $this->M_cart->get_total_user_cart($user_id)
+			'total_my_cart' => $this->M_cart->get_total_user_cart($user_id),
+			'products' => $products
 		];
 		$this->M_app->template($data, 'home');
 		// $this->load->view('home');

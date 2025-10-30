@@ -52,12 +52,16 @@ class M_cart extends CI_Model
     return count($my_cart);
   }
 
-  public function get_user_cart_by_prod_id($product_id, $user_id)
+  public function get_user_cart_by_prod_id($product_id, $user_id, $is_active)
   {
     $this->db->trans_start();
     $order = $this->db->select('*')
       ->from('cart_products')
-      ->where(['product_id' => $product_id, 'customer_id' => $user_id])
+      ->where([
+        'product_id' => $product_id,
+        'customer_id' => $user_id,
+        'status' => $is_active,
+        ])
       ->get()
       ->row_array();
 
@@ -74,7 +78,7 @@ class M_cart extends CI_Model
       'product_id' => $this->input->post('product_id'),
       'created_at' => $this->M_app->datetime(),
       'updated_at' => $this->M_app->datetime(),
-      // 'created_by' => $user_id,
+      // 'status' => 1, default = 1 on database
       'customer_id' => $user_id,
     ];
 

@@ -41,12 +41,11 @@ class Cart extends CI_Controller
 		// belum btul karena ditambah status
 		$user_id = $this->session->userdata('id_akun');
 		$product_id = $this->input->post('product_id');
-		$cart = $this->M_cart->get_user_cart_by_prod_id()($product_id, $user_id);
+		$cart = $this->M_cart->get_user_cart_by_prod_id($product_id, $user_id, 1);
 
 
 		if (!$cart) {
-
-			$this->M_cart->save_to_cart('1', 'cart_products', $product_id);
+			$this->M_cart->save_to_cart('1', 'cart_products', $user_id);
 		} else {
 			$cart_prod_id = $cart['id'];
 

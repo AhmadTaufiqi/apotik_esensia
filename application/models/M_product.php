@@ -16,6 +16,25 @@ class M_product extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
+  // integer $id product id
+  // integer $category 
+  // bool $is_discount
+  public function get_all_products($id, $category, $is_discount){
+    $where = '';
+    if($id){
+      $where .= " AND id = $id";
+    }
+    if($category){
+      $where .= " AND category = $category";
+    }
+    if($is_discount){
+      $where .= " AND discount > 0";
+    }
+
+    $query = 'SELECT * FROM products WHERE 1=1' . $where;
+    return $this->db->query($query)->result_object();
+  }
+
   public function data_prod($role)
   {
     $data = [

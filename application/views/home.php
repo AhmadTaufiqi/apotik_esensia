@@ -93,7 +93,26 @@
         </div>
         <div class="slide-products">
           <div class="product-items">
-            <div class="col-5 p-0">
+            <?php foreach ($products as $pd) : ?>
+              <div class="col-5 p-0">
+                <div class="card card-product">
+                  <div>
+                    <div class="product-image">
+                      <button class="btn-add-to-cart" data-product-id="<?= $pd->id ?>"><i class="fas fa-plus"></i></button>
+                      <img src="<?= base_url() ?>dist/img/uploads/products/<?= $pd->image ?>" alt="" class="w-100">
+                    </div>
+                    <p class="product-name"><?= $pd->name ?></p>
+                  </div>
+                  <!-- kalau ada promo maka class .price-promo muncul -->
+                  <div class="px-2 pb-2">
+                    <?php $price = $pd->price ?>
+                    <small class="price-promo">Rp. <?= number_format($price, 0, '', '.') ?></small>
+                    <p class="price">Rp.<?= number_format($price - ($price * $pd->discount / 100), 0, '', '.') ?></p>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+            <!-- <div class="col-5 p-0">
               <div class="card card-product">
                 <div>
                   <div class="product-image">
@@ -102,65 +121,13 @@
                   </div>
                   <p class="product-name">Nama Obat obat obat obat</p>
                 </div>
-                <!-- kalau ada promo maka class .price-promo muncul -->
                 <div class="px-2 pb-2">
                   <?php $price = 9000 ?>
                   <small class="price-promo">Rp. <?= number_format($price, 0, '', '.') ?></small>
                   <p class="price">Rp.<?= number_format($price - ($price * 20 / 100), 0, '', '.') ?></p>
                 </div>
               </div>
-            </div>
-            <div class="col-5 p-0">
-              <div class="card card-product">
-                <div>
-                  <div class="product-image">
-                    <button class="btn-add-to-cart" data-product-id="2"><i class="fas fa-plus"></i></button>
-                    <img src="<?= base_url() ?>dist/img/products/sgm-expl.png" alt="" class="w-100">
-                  </div>
-                  <p class="product-name">Nama Obat obat obat obat</p>
-                </div>
-                <!-- kalau ada promo maka class .price-promo muncul -->
-                <div class="px-2 pb-2">
-                  <?php $price = 9000 ?>
-                  <small class="price-promo">Rp. <?= number_format($price, 0, '', '.') ?></small>
-                  <p class="price">Rp.<?= number_format($price - ($price * 20 / 100), 0, '', '.') ?></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-5 p-0">
-              <div class="card card-product">
-                <div>
-                  <div class="product-image">
-                    <button class="btn-add-to-cart" data-product-id="3"><i class="fas fa-plus"></i></button>
-                    <img src="<?= base_url() ?>dist/img/products/sgm-expl.png" alt="" class="w-100">
-                  </div>
-                  <p class="product-name">Nama Obat obat obat obat</p>
-                </div>
-                <!-- kalau ada promo maka class .price-promo muncul -->
-                <div class="px-2 pb-2">
-                  <?php $price = 9000 ?>
-                  <small class="price-promo">Rp. <?= number_format($price, 0, '', '.') ?></small>
-                  <p class="price">Rp.<?= number_format($price - ($price * 20 / 100), 0, '', '.') ?></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-5 p-0">
-              <div class="card card-product">
-                <div>
-                  <div class="product-image">
-                    <button class="btn-add-to-cart" data-product-id="4"><i class="fas fa-plus"></i></button>
-                    <img src="<?= base_url() ?>dist/img/products/sgm-expl.png" alt="" class="w-100">
-                  </div>
-                  <p class="product-name">Nama Obat obat obat obat</p>
-                </div>
-                <!-- kalau ada promo maka class .price-promo muncul -->
-                <div class="px-2 pb-2">
-                  <?php $price = 9000 ?>
-                  <small class="price-promo">Rp. <?= number_format($price, 0, '', '.') ?></small>
-                  <p class="price">Rp.<?= number_format($price - ($price * 20 / 100), 0, '', '.') ?></p>
-                </div>
-              </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- <div class="d-flex">
