@@ -49,7 +49,13 @@ class M_cart extends CI_Model
   public function get_total_user_cart($user_id)
   {
     $my_cart = $this->get_user_cart($user_id, 1);
-    return count($my_cart);
+
+    $sum = 0;
+    foreach ($my_cart as $c) {
+      $sum = $sum + $c->qty;
+    }
+
+    return $sum;
   }
 
   public function get_user_cart_by_prod_id($product_id, $user_id, $is_active)
@@ -61,7 +67,7 @@ class M_cart extends CI_Model
         'product_id' => $product_id,
         'customer_id' => $user_id,
         'status' => $is_active,
-        ])
+      ])
       ->get()
       ->row_array();
 
@@ -177,7 +183,22 @@ class M_cart extends CI_Model
     }
   }
 
-  public function deactivate($arr_id){
+  public function delete_cart_product($id)
+  {
+    $this->db->trans_start();
+    $this->db->delete('cart_products', ['id' => $id]);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status()) {
+      // $this->M_app->log_activity($activity);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function deactivate($arr_id)
+  {
     $this->db->trans_start();
 
     $data = [
@@ -187,6 +208,12 @@ class M_cart extends CI_Model
 
     $this->db->where_in(['id' => $arr_id])->update('cart_products', $data);
     $this->db->trans_complete();
+    if ($this->db->trans_status()) {
+      // $this->M_app->log_activity($activity);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function hapus($id, $table, $activity)

@@ -89,27 +89,6 @@
     <script>
       const is_login = <?= $customer_is_login ?>;
 
-      $('.btn-add-to-cart').on('click', function() {
-
-        if (!is_login) {
-          // window.location = "auth/logout";
-        }
-
-        var product_id = $(this).data('product-id');
-        console.log(product_id);
-
-        $.post({
-          url: 'cart/addToCart',
-          data: {
-            'product_id': product_id
-          },
-          success: function(result) {
-            console.log(result)
-          }
-        })
-
-      })
-
       //toggle see password 
       $('.password-show').on('click', function() {
         if ($(this).attr('data-show') == 1) {

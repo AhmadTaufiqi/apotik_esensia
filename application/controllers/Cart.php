@@ -52,7 +52,13 @@ class Cart extends CI_Controller
 			$this->M_cart->add_cart_prod_qty($cart_prod_id);
 		}
 
-		echo $this->input->post('product_id');
+		$data = [
+			'success' => true,
+			'message' => '',
+			'product_id' => $product_id
+		];
+
+		echo json_encode($data);
 	}
 
 	public function checkout()
@@ -91,9 +97,20 @@ class Cart extends CI_Controller
 		$data = [
 			'title' => 'Buat Pesanan',
 			'cart_products' => $products,
-			// 'total_price_cart' => penghitungan setelah di diskon,
 		];
+
 		$this->M_app->templateCart($data, 'cart/checkout');
+	}
+
+	public function deleteProductCart()
+	{
+		$cart_id = $this->input->post('cart_product_id');
+
+		$delete = $this->M_cart->delete_cart_product($cart_id);
+
+		if ($delete) {
+		}
+		var_dump($cart_id);
 	}
 
 	public function getDataProduct($product_id)

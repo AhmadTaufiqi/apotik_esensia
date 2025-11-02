@@ -47,6 +47,31 @@
       </div>
     </div>
     <!-- end modal resizer image -->
+
+
+    <!-- modal confirm delete -->
+    <div id="modal_confirm_delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:360px">
+        <div class="modal-content rounded-2">
+          <form action="<?= base_url()?>cart/deleteProductCart" method="POST">
+            <div class="modal-header bg-danger p-2" style="border-radius: 1rem 1rem 0 0;">
+              <h5 class="text-white mb-0">Hapus Produk</h5>
+            </div>
+            <div class="modal-body">
+              <h6>Hapus Produk Dari Keranjang?</h6>
+              <input type="text" name="cart_product_id" id="confirm_cart_product_id">
+
+            </div>
+            <div class="modal-footer text-end p-2">
+              <button class=" btn btn-secondary rounded-2" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-primary rounded-2">Hapus</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- end of modal confirm delete -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -59,8 +84,6 @@
     <script src="<?= base_url() ?>dist/js/cart.js"></script>
     <script src="<?= base_url() ?>dist/js/app.js"></script>
     <script>
-      
-      
       $(document).ready(function() {
 
         $('.qty_input').prop('readonly', true);
@@ -92,7 +115,7 @@
             qty
           },
           success: function(result) {
-            console.log(result)
+            // console.log(result)
           }
         })
       }
