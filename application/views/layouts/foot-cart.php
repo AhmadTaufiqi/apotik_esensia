@@ -79,7 +79,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
-    <script src="<?= base_url() ?>dist/leafletjs/leaflet.js"></script>
+    <!-- <script src="<?= base_url() ?>dist/leafletjs/leaflet.js"></script> -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
     <script src="<?= base_url() ?>dist/cropperjs/dist/cropper.js"></script>
     <script src="<?= base_url() ?>dist/js/cart.js"></script>
     <script src="<?= base_url() ?>dist/js/app.js"></script>

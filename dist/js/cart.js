@@ -49,6 +49,8 @@ $(document).ready(function() {
     } else {
       $('#form_cart_products .cb_product_cart').prop('checked', false);
     }
+
+    setFinalPrices();
   })
 
   $('.card-product-cart').on('click', function(e){
@@ -64,9 +66,20 @@ $(document).ready(function() {
       setFinalPrices();
   })
 
-  $('.cb_product_cart').on('change', function(e){
-    var checkbox = $(this)
-    var parent = checkbox.parents('.card-product-cart');
+  $('.cb_product_cart').on('click', function(e){
+    console.log($(this))
+    var check = true;
+    $('.cb_product_cart').each(function(e){
+      var is_checked = $(this).is(':checked')
+
+      if(!is_checked){
+        check = false;
+        return;
+      }
+    })
+    console.log('check all= '+ check);
+    console.log(check);
+    $('#select_all_product_cart').prop('checked', check);
 
     setFinalPrices();
   })

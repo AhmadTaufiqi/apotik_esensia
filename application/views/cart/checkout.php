@@ -51,9 +51,9 @@
             </div>
           </div>
         </div>
-        <input type="text" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
-        <input type="text" name="product_id[<?= $i ?>]" value="<?= $prod_dataset['id'] ?>">
-        <input type="text" name="product_qty[<?= $i ?>]" value="<?= $quantity ?>">
+        <input type="hidden" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
+        <input type="hidden" name="product_id[<?= $i ?>]" value="<?= $prod_dataset['id'] ?>">
+        <input type="hidden" name="product_qty[<?= $i ?>]" value="<?= $quantity ?>">
       <?php endforeach; ?>
     </div>
 
@@ -67,8 +67,8 @@
       </a>
     </div>
 
-    <input type="text" name="total_cost_price" value="<?= $total_price ?>">
-    <input type="text" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
+    <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
+    <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
       <button class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>

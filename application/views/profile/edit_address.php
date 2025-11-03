@@ -61,9 +61,24 @@
       zoom: 15
     });
 
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+    var routingcontrol = L.Routing.control().addTo(map);
+
+    map.on('click', function(e) {
+      var lat = e.latlng.lat;
+      var lng = e.latlng.lng;
+
+      console.log(lat)
+
+      routingcontrol.setWaypoints([
+        L.latLng(-6.997068603811686, 110.47304414464678),
+        L.latLng(lat, lng)
+      ])
+    });
+
   });
 </script>
