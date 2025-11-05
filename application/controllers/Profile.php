@@ -8,6 +8,7 @@ class Profile extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('M_app');
+		$this->load->model('M_Orders');
 
 		$is_nologin = false;
 
@@ -24,9 +25,30 @@ class Profile extends CI_Controller
 
 	public function index()
 	{
+		$user_id = $this->session->userdata('id_akun');
+		$address = $this->db->get_where('address', ['user_id' => $user_id])->row_array();
+		$orders = $this->M_Orders->get_order($user_id);
+
+		$arr_orders = [];
+		foreach ($orders as $o) {
+			$orders_products = $this->M_Orders->get_order_product_by_orderid($o['id']);
+			$arr = [
+				'order' => $o,
+				'order_products' => $orders_products
+			];
+
+			array_push($arr_orders, $arr);
+		}
+
 		$data = [
 			'title' => 'Profile Saya',
-			'name' => $this->session->userdata('nama_akun')
+			'user_id' => $user_id,
+			'address' => $address,
+			'orders' => $arr_orders,
+			'email' => $this->session->userdata('user_akun'),
+			'name' => $this->session->userdata('nama_akun'),
+			'foto_akun' => $this->session->userdata('foto_akun'),
+			'hp_akun' => $this->session->userdata('hp_akun'),
 		];
 		$this->M_app->templateCart($data, 'profile/index');
 		// $this->load->view('cart/index');
@@ -42,6 +64,7 @@ class Profile extends CI_Controller
 				'kecamatan' => '',
 				'kelurahan' => '',
 				'kode_pos' => '',
+				'jalan' => '',
 				'long' => '',
 				'lat' => '',
 				'catatan' => '',

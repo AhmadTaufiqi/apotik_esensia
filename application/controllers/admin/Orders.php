@@ -15,7 +15,8 @@ class Orders extends CI_Controller
 
   public function index()
   {
-    $orders = $this->M_orders->get_order();
+		$user_id = $this->session->userdata('id_akun');
+    $orders = $this->M_orders->get_order($user_id);
 
     $data = [
       'data' => $orders

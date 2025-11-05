@@ -12,15 +12,17 @@ class Home extends CI_Controller
 		$this->load->model('M_product');
 		$is_nologin = false;
 
-		if (empty($this->session->userdata('id_akun'))) {
-			$is_nologin = true;
-		} elseif ($this->session->userdata('role') != 2) {
-			$is_nologin = true;
-		}
+		// if (empty($this->session->userdata('id_akun'))) {
+		// 	$is_nologin = true;
+		// } elseif ($this->session->userdata('role') != 2) {
+		// 	$is_nologin = true;
+		// }
 
-		if ($is_nologin) {
-			redirect(base_url('auth'));
-		}
+		// if ($is_nologin) {
+		// 	redirect(base_url('auth'));
+		// }
+
+		// Allowed load home withoud login because need to show products for buyers
 	}
 
 	public function index()

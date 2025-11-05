@@ -64,6 +64,23 @@
 
           <div id="map" style="height: 150px;">
           </div>
+          <div class="card mb-2 flex-row py-2 px-3 mt-1">
+            <!-- <div class="d-flex"> -->
+            <div class="col d-flex flex-column">
+              <div class="d-flex align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetLocation" aria-controls="offcanvasBottom">
+                <i class="fas fa-location-dot color-esensia"></i>
+                <h6 class="mb-0 ms-1" id="address_name"><?= $name ?></h6>
+                <span class="ms-2 small" id="address_phone_number"><?= $hp_akun ?></span>
+              </div>
+              <span>
+                <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
+              </span>
+            </div>
+            <a href="<?= base_url() ?>profile/edit_address" class="col-1 text-end align-self-center">
+              <i class="fas fa-angle-right fa-xl text-muted"></i>
+            </a>
+            <!-- </div> -->
+          </div>
         </div>
         <div class="col text-end">
           <button class="btn rounded-4 btn-sm bg-esensia text-light ms-1">Simpan</button>
@@ -75,16 +92,64 @@
 
 </div>
 
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasSetLocation" aria-labelledby="offcanvasBottomLabel" style="height: 53vh;">
+  <div class="offcanvas-header pb-0 py-2">
+    <div>
+      <h5 class="offcanvas-title mb-0" id="offcanvasBottomLabel">Tentukan Titik Lokasi</h5>
+      <small>Geser untuk mengubah titik lokasi</small>
+    </div>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body small">
+    <div id="map2" style="height: 350px;">
+    </div>
+    <input type="text" name="long" id="long_maps_point">
+    <input type="text" name="lat" id="lat_maps_point">
+  </div>
+  <div class="modal-footer text-end py-2">
+    <button class="btn btn-sm btn-success">Simpan</button>
+  </div>
+</div>
+
 <script>
-  $(document).ready(function() {
-    var map = L.map('map', {
-      center: [-7.048313751822978, 110.4182835266355],
-      zoom: 15
-    });
+  document.addEventListener("DOMContentLoaded", function() {
+
+    // var map = L.map('map', {
+    //   center: [-7.048313751822978, 110.4182835266355],
+    //   zoom: 15
+    // });
+    var map = L.map('map').setView([-7.045362120452517, 110.42101321590506], 13);
+
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
+    L.marker([-7.045362120452517, 110.42101321590506], {
+      title: 'customer',
+      // icon: 'dist/img/logo.png',
+    }).addTo(map)
+
+
+    var map = L.map('map2').setView([-7.045362120452517, 110.42101321590506], 14);
+
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var marker = L.marker([-7.045362120452517, 110.42101321590506], {
+      title: 'customer',
+      draggable: true,
+      // icon: 'dist/img/logo.png',
+    }).addTo(map)
+
+    marker.on('dragend', function(event) {
+      var newPosition = event.target.getLatLng();
+      $('#long_maps_point').val(newPosition.lng);
+      $('#lat_maps_point').val(newPosition.lat);
+  });
   })
 </script>

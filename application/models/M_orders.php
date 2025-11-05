@@ -16,35 +16,59 @@ class M_orders extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
-  public function get_order_product($id)
+  public function get_order_product($user_id)
   {
     $this->db->trans_start();
 
     $order = $this->db->select('*')
       ->from('orders o')
       ->join('order_products op', 'o.id = op.order_id', 'left')
-      ->join('products p', 'op.product_id = p.id', 'left');
-
-    if ($id) {
-      $this->db->where(['o.id' => $id]);
-    }
-    $this->db->get()->result_object();
+      ->join('products p', 'op.product_id = p.id', 'left')
+      ->where(['o.customer_id' => $user_id])
+      ->order_by('o.id', 'DESC')
+      ->get()->result_object();
     $this->db->trans_complete();
 
     return $order;
   }
 
-  public function get_order($id = null)
+  public function get_order_by_userid($user_id)
+  {
+    $this->db->trans_start();
+
+    $order = $this->db->select('*')
+      ->from('orders o')
+      ->join('order_products op', 'o.id = op.order_id', 'left')
+      ->join('products p', 'op.product_id = p.id', 'left')
+      ->where(['o.customer_id' => $user_id])
+      ->get()->result_object();
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
+  public function get_order_product_by_orderid($order_id)
+  {
+    $this->db->trans_start();
+
+    $order = $this->db->select('*')
+      ->from('order_products op')
+      ->join('products p', 'op.product_id = p.id', 'left')
+      ->where(['op.order_id' => $order_id])
+      ->get()->result_array();
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
+  public function get_order($user_id = null)
   {
     $this->db->trans_start();
     $order = $this->db->select('*')
       ->from('orders o')
-
-      // if ($id) {
-      //   $this->db->where(['o.id' => $id]);
-      // }
+      ->where('o.customer_id', $user_id)
       ->get()
-      ->result_object();
+      ->result_array();
     $this->db->trans_complete();
 
     return $order;
