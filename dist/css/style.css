@@ -71,7 +71,7 @@ a:hover {
   color: #047635;
 }
 
-.add-shadow{
+.add-shadow {
   box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.09);
 }
 
@@ -349,7 +349,7 @@ div:has(> button.btn-add-to-cart) {
   color: #f3c305;
 }
 
-.order-status-packing {
+.order-status-processing {
   color: #2a8bda;
 }
 
@@ -448,10 +448,11 @@ div:has(> button.btn-add-to-cart) {
   position: fixed;
   bottom: 20px;
 
-  a {
-    color: #2bd156;
-    text-decoration: none;
-  }
+}
+
+a {
+  color: #0f6827 !important;
+  text-decoration: none;
 }
 
 #cart {
