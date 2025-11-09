@@ -29,15 +29,20 @@ class Orders extends CI_Controller
     $this->load->view('order/index');
   }
 
-  public function createOrder(){
+  public function detail($id)
+  {
+    var_dump($id);
+  }
+
+  public function createOrder()
+  {
     $cart_product_id = $this->input->post('cart_product_id');
 
     $save = $this->M_orders->save_order('orders', 'create order form cart');
 
-    if($save){
+    if ($save) {
       $this->M_cart->deactivate($cart_product_id);
       $this->session->set_flashdata('msg', '<small class="text-success ps-2">succes save order</small>');
-      
     } else {
       $this->session->set_flashdata('msg', '<small class="text-danger ps-2">failed save order</small>');
     }

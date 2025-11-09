@@ -59,15 +59,15 @@
             <label class="form-label" for="">Catatan</label>
             <textarea class="form-control form-control-sm" name="address[catatan]"><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
           </div>
-          <input type="text" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
-          <input type="text" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
+          <input type="hidden" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
+          <input type="hidden" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
 
           <div id="map" style="height: 150px;">
           </div>
-          <div class="card mb-2 flex-row py-2 px-3 mt-1">
+          <div class="card mb-2 flex-row py-2 px-3 mt-1" style="user-select: none;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetLocation" aria-controls="offcanvasBottom">
             <!-- <div class="d-flex"> -->
             <div class="col d-flex flex-column">
-              <div class="d-flex align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetLocation" aria-controls="offcanvasBottom">
+              <div class="d-flex align-items-center">
                 <i class="fas fa-location-dot color-esensia"></i>
                 <h6 class="mb-0 ms-1" id="address_name"><?= $name ?></h6>
                 <span class="ms-2 small" id="address_phone_number"><?= $hp_akun ?></span>
@@ -76,9 +76,9 @@
                 <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
               </span>
             </div>
-            <a href="<?= base_url() ?>profile/edit_address" class="col-1 text-end align-self-center">
-              <i class="fas fa-angle-right fa-xl text-muted"></i>
-            </a>
+            <div class="text-end align-self-center">
+              <i class="fas fa-pencil fa-lg text-muted"></i>
+            </div>
             <!-- </div> -->
           </div>
         </div>
@@ -92,7 +92,7 @@
 
 </div>
 
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasSetLocation" aria-labelledby="offcanvasBottomLabel" style="height: 53vh;">
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasSetLocation" aria-labelledby="offcanvasBottomLabel" style="height: 58vh;">
   <div class="offcanvas-header pb-0 py-2">
     <div>
       <h5 class="offcanvas-title mb-0" id="offcanvasBottomLabel">Tentukan Titik Lokasi</h5>
@@ -101,24 +101,29 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body small">
-    <div id="map2" style="height: 350px;">
+    <div id="map2" style="height: 300px;" class="mb-2">
     </div>
-    <input type="text" name="long" id="long_maps_point">
-    <input type="text" name="lat" id="lat_maps_point">
+    <input type="hidden" name="long" id="long_maps_point">
+    <input type="hidden" name="lat" id="lat_maps_point">
+    <input type="hidden" name="ongkir" id="ongkir_count">
+    <button class="btn btn-sm btn-primary" id="find_current_location">Cari Lokasi Saya</button>
+    <span>distance: <span id="distance"></span></span>
   </div>
   <div class="modal-footer text-end py-2">
-    <button class="btn btn-sm btn-success">Simpan</button>
+    <button class="btn btn-sm btn-success" id="save_location_modal">Simpan</button>
   </div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
-    // var map = L.map('map', {
-    //   center: [-7.048313751822978, 110.4182835266355],
-    //   zoom: 15
-    // });
-    var map = L.map('map').setView([-7.045362120452517, 110.42101321590506], 13);
+    var my_home_loc = [-7.045362120452517, 110.42101321590506];
+    var loc_esensia = ['-6.996813464846989', '110.47300506227707'];
+    var loc_esensia = {
+      lat: -6.996813464846989,
+      lng: 110.47300506227707
+    };
+    var map = L.map('map').setView(my_home_loc, 13);
 
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -126,30 +131,102 @@
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    L.marker([-7.045362120452517, 110.42101321590506], {
+    var map1_marker = L.marker(my_home_loc, {
       title: 'customer',
-      // icon: 'dist/img/logo.png',
-    }).addTo(map)
+    }).addTo(map);
 
 
-    var map = L.map('map2').setView([-7.045362120452517, 110.42101321590506], 14);
-
+    var map2 = L.map('map2').setView(my_home_loc, 14);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    }).addTo(map2);
 
-    var marker = L.marker([-7.045362120452517, 110.42101321590506], {
-      title: 'customer',
-      draggable: true,
-      // icon: 'dist/img/logo.png',
-    }).addTo(map)
+    // var marker = L.marker(loc_esensia, {
+    //   title: 'customer',
+    //   draggable: true,
+    // }).addTo(map2)
 
-    marker.on('dragend', function(event) {
-      var newPosition = event.target.getLatLng();
-      $('#long_maps_point').val(newPosition.lng);
-      $('#lat_maps_point').val(newPosition.lat);
-  });
+    $('.leaflet-control-container .leaflet-top.leaflet-right').hide()
+    $('.leaflet-control-container .leaflet-bottom.leaflet-right').hide()
+
+    var routingcontrol = L.Routing.control({
+      createMarker: function(i, wp) {
+        var draggable = true;
+
+        if (wp.latLng.lat === loc_esensia.lat && wp.latLng.lng === loc_esensia.lng) {
+          draggable = false;
+        }
+
+        var options = {
+            draggable
+          },
+          marker = L.marker(wp.latLng, options);
+
+        return marker;
+      },
+      addWaypoints: false,
+      waypoints: [
+        L.latLng(loc_esensia),
+        L.latLng(my_home_loc)
+      ],
+      // draggableWaypoints:false
+      // routeWhileDragging: true
+    }).addTo(map2);
+
+    routingcontrol.on('routesfound', function(e) {
+      var destination = e.waypoints[e.waypoints.length - 1].latLng;
+      // var distance = e.routes.summary.totalDistance / 1000 + ' km';
+      var distance = e.routes[0].summary.totalDistance / 1000 + ' km';
+
+      $('#long_maps_point').val(destination.lng);
+      $('#lat_maps_point').val(destination.lat);
+      $('#distance').html(distance);
+    })
+
+    $('#find_current_location').on('click', function() {
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(findCurrentLocation, error);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    })
+
+    $('#save_location_modal').on('click', function() {
+      var lng = $('#long_maps_point').val();
+      var lat = $('#lat_maps_point').val();
+
+      $('#address_long').val(lng);
+      $('#address_lat').val(lat);
+
+      map1_marker.setLatLng({
+        lng,
+        lat
+      });
+
+      $('#offcanvasSetLocation').offcanvas('hide');
+    })
+
+    function findCurrentLocation(position) {
+      var coords = position.coords
+
+      routingcontrol.setWaypoints([
+        loc_esensia,
+        {
+          lng: coords.longitude,
+          lat: coords.latitude
+        }
+      ]);
+
+      // x.innerHTML = "Latitude: " + position.coords.latitude +
+      //   "<br>Longitude: " + position.coords.longitude;
+    }
+
+    function error(error) {
+      // alert("Sorry, no position available.");
+      alert(error.message);
+    }
   })
 </script>

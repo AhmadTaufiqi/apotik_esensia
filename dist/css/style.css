@@ -46,9 +46,9 @@ main {
   display: none;
 }
 
-a {
+a.btn {
   text-decoration: none;
-  color: #222222;
+  color: #2f2f2f;
   transition: 1s;
 }
 
@@ -342,19 +342,19 @@ div:has(> button.btn-add-to-cart) {
 }
 
 .order-status-unpaid {
-  color: #b9455c;
+  color: #e22f2f;
 }
 
 .order-status-sending {
-  color: #f3c305;
+  color: #ffcc00;
 }
 
 .order-status-processing {
-  color: #2a8bda;
+  color: #0d90fb;
 }
 
-.order-status-arrived {
-  color: #15b192;
+.order-status-shipped {
+  color: #07ebbd;
 }
 
 .form-group .form-label.required::after,
@@ -451,7 +451,7 @@ div:has(> button.btn-add-to-cart) {
 }
 
 a {
-  color: #0f6827 !important;
+  color: #0f6827;
   text-decoration: none;
 }
 

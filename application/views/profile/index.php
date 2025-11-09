@@ -25,21 +25,37 @@
       ?>
       <?php foreach ($orders as $o) : ?>
         <?php
+        $total_price_order = 0;
         $order = $o['order'];
         $order_products = $o['order_products'];
+        if ($order['status'] == 'unpaid') {
+          $icon = 'fas fa-money-bill';
+          $status = 'Belum Dibayar';
+        } elseif ($order['status'] == 'processing') {
+          $icon = 'fas fa-box';
+          $status = 'Dikemas';
+        } elseif ($order['status'] == 'sending') {
+          $icon = 'fas fa-motorcycle';
+          $status = 'Dikirim';
+        } elseif ($order['status'] == 'shipped') {
+          $icon = 'fas fa-box-open';
+          $status = 'Pesanan Tiba';
+        }
         ?>
         <div class="card card-product-cart mb-2 flex-col p-2">
           <div class="d-flex mb-3">
             <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
             <div class="ms-auto order-status-<?= $order['status'] ?>">
-              <i class="fas fa-motorcycle"></i>
-              <span><?= $order['status'] ?></span>
+              <i class="<?= $icon ?>"></i>
+              <span><?= $status ?></span>
             </div>
           </div>
 
           <!-- loop products -->
           <?php foreach ($order_products as $idx => $op) : ?>
             <?php
+            $total_price_product = ($op['price'] - ($op['price'] * $op['discount'] / 100)) * $op['qty'];
+            $total_price_order = $total_price_order + $total_price_product;
             if ($idx == 1) {
               echo '<div class="collapse" id="collapse_prod_' . $order['id'] . '">';
             }
@@ -63,16 +79,24 @@
                   </div>
                   <span>x <?= $op['qty'] ?></span>
                 </div>
-                <h5 class="color-esensia mb-0">Rp. <?= number_format($op['price'] - ($op['price'] * $op['discount'] / 100), 0, '', '.')?></h5>
+                <h6 class="color-esensia mb-0">Rp. <?= number_format($total_price_product, 0, '', '.') ?></h6>
               </div>
             </div>
             <?php
             if ($idx + 1 == count($order_products)) {
               echo '</div>';
-              echo '<a class="text-center toggle-expand mt-2" data-bs-toggle="collapse" href="#collapse_prod_' . $order['id'] . '" role="button" aria-expanded="false" aria-controls="collapse_prod_' . $order['id'] . '">Lihat Semua</a>';
+              echo '<a class="text-center toggle-expand mt-2" data-bs-toggle="collapse" href="#collapse_prod_' . $order['id'] . '" role="button" aria-expanded="false" aria-controls="collapse_prod_' . $order['id'] . '"><span style="border-bottom:1px solid #80808040;">Lihat Semua</span></a>';
             }
             ?>
           <?php endforeach; ?>
+          <div class="d-flex mt-2 align-items-center">
+            <div class="col text-end me-2">
+              <h5 class="color-esensia mb-0">Rp. <?= number_format($total_price_order, 0, '', '.') ?></h5>
+            </div>
+            <div class="text-end">
+              <a href="<?= base_url() ?>orders/detail/<?= $order['id'] ?>" class="btn btn-sm btn-secondary text-light"><i class="fas fa-eye me-1"></i>detail</a>
+            </div>
+          </div>
         </div>
       <?php endforeach; ?>
     </div>
@@ -90,7 +114,7 @@
       var expanded = $(this).attr('aria-expanded');
 
       if (expanded == 'true') {
-        $(this).html('tutup');
+        $(this).html('<span style="border-bottom:1px solid #80808040;">tutup</span>');
       } else {
         $(this).html(old_text);
       }

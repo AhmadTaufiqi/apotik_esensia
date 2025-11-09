@@ -53,7 +53,7 @@
     <div id="modal_confirm_delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:360px">
         <div class="modal-content rounded-2">
-          <form action="<?= base_url()?>cart/deleteProductCart" method="POST">
+          <form action="<?= base_url() ?>cart/deleteProductCart" method="POST">
             <div class="modal-header bg-danger p-2" style="border-radius: 1rem 1rem 0 0;">
               <h5 class="text-white mb-0">Hapus Produk</h5>
             </div>
@@ -80,7 +80,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
     <script src="<?= base_url() ?>dist/leafletjs/leaflet.js"></script>
-    <script src="<?= base_url() ?>dist/leafletjs/leaflet-routing-machine.js"></script>
+    <script src="<?= base_url()?>dist/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
     <script src="<?= base_url() ?>dist/cropperjs/dist/cropper.js"></script>
     <script src="<?= base_url() ?>dist/js/cart.js"></script>
