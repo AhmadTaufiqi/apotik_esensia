@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `kode_pos` varchar(200) NOT NULL DEFAULT '',
   `long` varchar(200) NOT NULL DEFAULT '',
   `lat` varchar(200) NOT NULL DEFAULT '',
+  `jalan` varchar(200) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `address_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `cart_products` (
   `customer_id` int(11) DEFAULT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Data exporting was unselected.
 
@@ -73,13 +74,15 @@ CREATE TABLE IF NOT EXISTS `log_activity` (
 -- Dumping structure for table esensia_apotek.orders
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` enum('onchart','unpaid','processing','shipped','completed') DEFAULT NULL,
+  `status` enum('onchart','unpaid','processing','sending','shipped','completed') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `cost_price` int(11) DEFAULT NULL,
   `raw_cost_price` int(11) DEFAULT NULL,
+  `ongkir` int(11) DEFAULT NULL,
+  `jarak` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `order_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `qty` int(11) DEFAULT NULL,
+  `qty` int(11) NOT NULL DEFAULT 1,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -111,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `category` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
