@@ -11,9 +11,6 @@ class Auth extends CI_Controller
 
 	public function index()
 	{
-		if ($this->session->userdata('id_akun')) {
-			redirect(base_url('admin/product'));
-		}
 		if (!$this->input->post('email')) {
 			$this->load->view('auth/admin/login');
 		} else {
@@ -36,7 +33,7 @@ class Auth extends CI_Controller
 				if ($password == $user['password']) {
 					$user_foto = 'default.png';
 					if (strlen($user['foto']) > 0 && file_exists(FCPATH . 'dist/img/uploads/users/' . $user['foto'])) {
-							$user_foto = $user['foto'];
+						$user_foto = $user['foto'];
 					}
 					$data = [
 						'id_akun' => $user['id'],

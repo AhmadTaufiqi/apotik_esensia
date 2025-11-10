@@ -8,14 +8,23 @@ class Orders extends CI_Controller
     parent::__construct();
     $this->load->model('M_app');
     $this->load->model('M_orders');
+
+    $is_nologin = false;
+
     if (empty($this->session->userdata('id_akun'))) {
+      $is_nologin = true;
+    } elseif ($this->session->userdata('role') != 1) {
+      $is_nologin = true;
+    }
+
+    if ($is_nologin) {
       redirect(base_url('admin/auth'));
     }
   }
 
   public function index()
   {
-		$user_id = $this->session->userdata('id_akun');
+    $user_id = $this->session->userdata('id_akun');
     $orders = $this->M_orders->get_order($user_id);
 
     $data = [

@@ -1,25 +1,36 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Profile extends CI_Controller {
+class Profile extends CI_Controller
+{
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('M_app');
+
+		$is_nologin = false;
+
 		if (empty($this->session->userdata('id_akun'))) {
+			$is_nologin = true;
+		} elseif ($this->session->userdata('role') != 1) {
+			$is_nologin = true;
+		}
+
+		if ($is_nologin) {
 			redirect(base_url('admin/auth'));
 		}
 	}
 
-	public function index() {
+	public function index()
+	{
 		$user_id = $this->session->userdata('id_akun');
 		$user = $this->db
-      ->select('*')
-      ->from('users')
-      ->where(['id' => $user_id])
-      ->get()
-      ->row_array();
+			->select('*')
+			->from('users')
+			->where(['id' => $user_id])
+			->get()
+			->row_array();
 
 		$data = [
 			'title' => 'Profile',
@@ -31,12 +42,13 @@ class Profile extends CI_Controller {
 		];
 
 		$this->M_app->admin_template($data, 'profile/admin_profile');
-  }
+	}
 
-	public function save() {
+	public function save()
+	{
 		$id = $this->session->userdata('id_akun');
 		$foto = $this->input->post('foto');
-		$activity = 'users ['.$id.']';
+		$activity = 'users [' . $id . ']';
 
 		$data = [
 			'name' => $this->input->post('name'),
@@ -69,9 +81,10 @@ class Profile extends CI_Controller {
 		redirect(base_url('admin/profile'));
 	}
 
-	public function save_pass() {
+	public function save_pass()
+	{
 		$id = $this->session->userdata('id_akun');
-		$activity = 'users ['.$id.']';
+		$activity = 'users [' . $id . ']';
 
 		$q = $this->M_app->select_where('users.password', 'users', ['id' => $id])->row_array();
 		$dataPass = $q['password'];
@@ -84,22 +97,22 @@ class Profile extends CI_Controller {
 			$update = $this->M_app->update('users', ['id' => $id], $data, $activity);
 			if ($update) {
 				$msg = [
-				'status' => 200,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];;
+					'status' => 200,
+					'msg_akun' => $this->session->userdata('id_akun'),
+				];;
 			} else {
 				$msg = [
-				'status' => 400,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];;
+					'status' => 400,
+					'msg_akun' => $this->session->userdata('id_akun'),
+				];;
 			}
 		} else {
 			$msg = [
 				'status' => 400,
 				'msg_akun' => $this->session->userdata('id_akun'),
 			];;
-		}		
-		
+		}
+
 		$this->session->set_userdata($msg);
 
 		redirect(base_url('profile'));

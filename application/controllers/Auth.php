@@ -15,9 +15,17 @@ class Auth extends CI_Controller
 			'title' => 'Masuk Dengan Akun Anda'
 		];
 
-		if ($this->session->userdata('id_akun')) {
+		$is_nologin = false;
+		if (empty($this->session->userdata('id_akun'))) {
+			$is_nologin = true;
+		} elseif ($this->session->userdata('role') != 2) {
+			$is_nologin = true;
+		}
+
+		if (!$is_nologin) {
 			redirect(base_url('home'));
 		}
+
 		if (!$this->input->post('email')) {
 			$this->M_app->login_template($data, 'auth/login');
 		} else {
@@ -33,8 +41,11 @@ class Auth extends CI_Controller
 
 		$user = $this->db->get_where('users', ['email' => $email, 'role' => 2, 'deleted_at' => NULL])->row_array();
 
+// 		var_dump($user);
+// exit;
 		//if usser ada
 		if ($user) {
+			
 			if ($user['role'] == 1 || $user['role'] == 2 || $user['role'] == 6 || $user['role'] == 8) {
 				//cek password
 				if ($password == $user['password']) {
@@ -60,16 +71,16 @@ class Auth extends CI_Controller
 					}
 				} else {
 					var_dump("password salah");
-					// $this->session->set_flashdata('msg_pass', '<small class="text-danger pl-2">password salah</small>');
-					// redirect(base_url('admin/auth'));
+					$this->session->set_flashdata('msg_pass', '<small class="text-danger pl-2">password salah</small>');
+					redirect(base_url('auth'));
 				}
 			} else {
-				// $this->session->set_flashdata('msg_login', '<div class="alert alert-warning">User tidak memiliki akses panel admin</div>');
-				// redirect(base_url('admin/auth'));
+				$this->session->set_flashdata('msg_login', '<div class="alert alert-warning">User tidak memiliki akses panel admin</div>');
+				redirect(base_url('auth'));
 			}
 		} else {
-			// $this->session->set_flashdata('msg', '<small class="text-danger pl-2">username tidak terdaftar</small>');
-			// redirect(base_url('admin/auth'));
+			$this->session->set_flashdata('msg', '<small class="text-danger pl-2">username tidak terdaftar</small>');
+			redirect(base_url('auth'));
 		}
 	}
 

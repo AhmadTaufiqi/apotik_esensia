@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Orders extends CI_Controller
+class Invoice extends CI_Controller
 {
 
   public function __construct()
@@ -9,7 +9,7 @@ class Orders extends CI_Controller
     parent::__construct();
     $this->load->model('M_app');
     $this->load->model('M_orders');
-    $this->load->model('M_cart');
+    $this->load->model('M_invoice');
 
     $is_nologin = false;
 
@@ -24,22 +24,26 @@ class Orders extends CI_Controller
     }
   }
 
-  public function index()
+  public function index($order_id)
   {
-    $this->load->view('order/index');
+    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+    $data = [
+      'title' => 'Bayar Pesanan'
+    ];
+    $this->M_app->templateCart($data, 'order/detail');
   }
 
   public function detail($id)
   {
     $order = $this->M_orders->get_order_by_id($id);
     $order_products = $this->M_orders->get_order_product_by_orderid($id);
-    
+
     $data = [
       'title' => 'Detail Order',
       'order' => $order,
       'order_products' => $order_products,
     ];
-		$this->M_app->templateCart($data, 'order/detail');
+    $this->M_app->templateCart($data, 'order/detail');
   }
 
   public function createOrder()

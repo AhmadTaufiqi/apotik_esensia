@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_orders extends CI_Model
+// table: invoice. related to order
+class M_invoice extends CI_Model
 {
   public function __construct()
   {
@@ -16,45 +17,13 @@ class M_orders extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
-  public function get_order_product($user_id)
+  public function get_invoice_by_orderid($order_id)
   {
     $this->db->trans_start();
 
     $order = $this->db->select('*')
-      ->from('orders o')
-      ->join('order_products op', 'o.id = op.order_id', 'left')
-      ->join('products p', 'op.product_id = p.id', 'left')
-      ->where(['o.customer_id' => $user_id])
-      ->order_by('o.id', 'DESC')
-      ->get()->result_object();
-    $this->db->trans_complete();
-
-    return $order;
-  }
-
-  public function get_order_by_userid($user_id)
-  {
-    $this->db->trans_start();
-
-    $order = $this->db->select('*')
-      ->from('orders o')
-      ->join('order_products op', 'o.id = op.order_id', 'left')
-      ->join('products p', 'op.product_id = p.id', 'left')
-      ->where(['o.customer_id' => $user_id])
-      ->get()->result_object();
-    $this->db->trans_complete();
-
-    return $order;
-  }
-
-  public function get_order_product_by_orderid($order_id)
-  {
-    $this->db->trans_start();
-
-    $order = $this->db->select('*')
-      ->from('order_products op')
-      ->join('products p', 'op.product_id = p.id', 'left')
-      ->where(['op.order_id' => $order_id])
+      ->from('invoice')
+      ->where(['order_id' => $order_id])
       ->get()->result_array();
     $this->db->trans_complete();
 
@@ -74,45 +43,18 @@ class M_orders extends CI_Model
     return $order;
   }
 
-  public function get_order_by_id($order_id = null)
-  {
-    $this->db->trans_start();
-    $order = $this->db->select('*')
-      ->from('orders o')
-      ->where('o.id', $order_id)
-      ->get()
-      ->row_array();
-    $this->db->trans_complete();
-
-    return $order;
-  }
-
-  public function get_order_onchart($product_id, $user_id)
-  {
-    $this->db->trans_start();
-    $order = $this->db->select('*')
-      ->from('orders o')
-      ->where(['o.product_id' => $product_id,])
-      ->get()
-      ->result_object();
-    $this->db->trans_complete();
-
-    return $order;
-  }
-
-  public function data_order()
+  public function data_invoice($data)
   {
     $data = [
-      // 'id' => $this->uuid->v4(),
-      // 'product_id' => $this->input->post('product_id'),
-      // 'qty' => $this->input->post('qty'),
-      'status' => $this->input->post('status'),
-      // 'sku' => $this->input->post('sku'),
-      'customer_id' => $this->session->userdata('id_akun'),
+      'order_id' => $data['order_id'],
+      'order_price' => $data['order_price'],
       'created_at' => $this->M_app->datetime(),
-      'updated_at' => $this->M_app->datetime(),
-      'cost_price' => $this->input->post('total_cost_price'),
-      'raw_cost_price' => $this->input->post('total_raw_cost_price'),
+      'expiry_date' => $this->M_app->datetime()+'1day',
+      'payment_id' => $data['payment_id'],
+      'payment_method' => $data['payment_method'],
+      'other' => $data['other'],
+      'is_paid' => $data['is_paid'],
+      
     ];
 
     return $data;
@@ -131,17 +73,15 @@ class M_orders extends CI_Model
     return $prod;
   }
 
-  public function save_order($table, $activity)
+  public function save_invoice($table, $input, $activity)
   {
-    $data = $this->data_order();
+    $data = $this->data_invoice($input);
 
     $this->db->trans_start();
     // $this->db->insert('product', $user);
     $this->db->insert($table, $data);
 
     $order_id = $this->db->insert_id();
-
-    $this->add_order_product($order_id);
 
     $this->db->trans_complete();
 
@@ -153,26 +93,6 @@ class M_orders extends CI_Model
     } else {
       return false;
     }
-  }
-
-  public function add_order_product($order_id)
-  {
-    $this->db->trans_start();
-    $products = $this->input->post('product_id');
-    $qty = $this->input->post('product_qty');
-
-    foreach($products as $i => $id){
-      $data = [
-        'order_id' => $order_id,
-        'product_id' => $id,
-        'qty' => $qty[$i],
-        'created_at' => $this->M_app->datetime(),
-        'updated_at' => $this->M_app->datetime(),
-      ];
-      $this->db->insert('order_products', $data);
-      $this->db->trans_complete();
-    }
-    
   }
 
   public function update_product($foto_default, $table, $activity)

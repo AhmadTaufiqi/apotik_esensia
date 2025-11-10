@@ -194,7 +194,7 @@
       }
     })
 
-    $('#save_location_modal').on('click', function() {
+    $('#save_location_modal').on('click', function() { 
       var lng = $('#long_maps_point').val();
       var lat = $('#lat_maps_point').val();
 

@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <form action="<?= base_url()?>orders/createOrder" method="POST">
+  <form action="<?= base_url() ?>orders/createOrder" method="POST">
     <div class="content p-2">
       <div class="card mb-2 flex-row py-2 px-3">
         <div class="d-flex">
@@ -76,12 +76,143 @@
   </form>
 </div>
 
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-  <div class="offcanvas-header">
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 60vh;">
+  <div class="offcanvas-header py-2">
     <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body small">
-    ...
+
+    <!-- Transfer Bank -->
+    <div class="mb-4">
+      <div class="category-title">
+        <i class="bi bi-bank category-icon"></i> Transfer Bank
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="payment-option" data-value="Bank BCA">
+            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/6/68/Logo_BCA.svg/512px-Logo_BCA.svg.png" alt="BCA" />
+            <span>Bank BCA</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="Bank BRI">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bank_BRI_logo.svg/512px-Bank_BRI_logo.svg.png" alt="BRI" />
+            <span>Bank BRI</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="Bank Mandiri">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Logo_Bank_Mandiri.svg/512px-Logo_Bank_Mandiri.svg.png" alt="Mandiri" />
+            <span>Bank Mandiri</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="Bank BNI">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_BNI.svg/512px-Logo_BNI.svg.png" alt="BNI" />
+            <span>Bank BNI</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="CIMB Niaga">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/CIMB_Niaga_logo.svg/512px-CIMB_Niaga_logo.svg.png" alt="CIMB Niaga" />
+            <span>CIMB Niaga</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Virtual Account -->
+    <div class="mb-4">
+      <div class="category-title">
+        <i class="bi bi-credit-card category-icon"></i> Virtual Account
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="payment-option" data-value="BCA Virtual Account">
+            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/6/68/Logo_BCA.svg/512px-Logo_BCA.svg.png" alt="BCA VA" />
+            <span>BCA VA</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="BRI Virtual Account">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bank_BRI_logo.svg/512px-Bank_BRI_logo.svg.png" alt="BRI VA" />
+            <span>BRI VA</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="Mandiri Virtual Account">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Logo_Bank_Mandiri.svg/512px-Logo_Bank_Mandiri.svg.png" alt="Mandiri VA" />
+            <span>Mandiri VA</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="BNI Virtual Account">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_BNI.svg/512px-Logo_BNI.svg.png" alt="BNI VA" />
+            <span>BNI VA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E-Wallet -->
+    <div class="mb-4">
+      <div class="category-title">
+        <i class="bi bi-wallet2 category-icon"></i> E-Wallet
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="payment-option" data-value="GoPay">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/GoPay_logo.svg/512px-GoPay_logo.svg.png" alt="GoPay" />
+            <span>GoPay</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="payment-option" data-value="ShopeePay">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/ShopeePay_logo.svg/512px-ShopeePay_logo.svg.png" alt="ShopeePay" />
+            <span>ShopeePay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QRIS -->
+    <div class="mb-4">
+      <div class="category-title">
+        <i class="bi bi-qr-code category-icon"></i> QRIS
+      </div>
+      <div class="row g-2">
+        <div class="col-12">
+          <div class="payment-option" data-value="QRIS (All Payment QR)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Logo_QRIS.svg/512px-Logo_QRIS.svg.png" alt="QRIS" />
+            <span>QRIS (All Payment QR)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer justify-content-center">
+    <div id="selectedMethod" class="text-center text-muted">
+      Belum ada metode yang dipilih
+    </div>
+    <input type="text" id="payment_method" name="payment_method">
+    <div class="ms-auto">
+      <button class="btn btn-sm btn-success" id="save_payment_method">Simpan</button>
+    </div>
   </div>
 </div>
+
+<script>
+  const options = document.querySelectorAll(".payment-option");
+  const selectedText = document.getElementById("selectedMethod");
+
+  options.forEach((option) => {
+    option.addEventListener("click", () => {
+      options.forEach((opt) => opt.classList.remove("active"));
+      option.classList.add("active");
+      selectedText.innerHTML = `<strong>Metode dipilih:</strong> ${option.dataset.value}`;
+      $('#payment_method').val(option.dataset.value);
+    });
+  });
+</script>
