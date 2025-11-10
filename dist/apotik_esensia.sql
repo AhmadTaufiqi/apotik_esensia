@@ -61,6 +61,22 @@ CREATE TABLE IF NOT EXISTS `cart_products` (
 
 -- Data exporting was unselected.
 
+-- Dumping structure for table esensia_apotek.invoice
+CREATE TABLE IF NOT EXISTS `invoice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `order_price` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  `expiry_date` datetime NOT NULL,
+  `payment_id` int(11) NOT NULL DEFAULT 0,
+  `payment_method` varchar(100) NOT NULL DEFAULT '0',
+  `other` varchar(200) NOT NULL DEFAULT '0',
+  `is_paid` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Data exporting was unselected.
+
 -- Dumping structure for table esensia_apotek.log_activity
 CREATE TABLE IF NOT EXISTS `log_activity` (
   `id` varchar(50) NOT NULL,
