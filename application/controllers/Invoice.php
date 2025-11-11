@@ -27,10 +27,12 @@ class Invoice extends CI_Controller
   public function index($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+
     $data = [
-      'title' => 'Bayar Pesanan'
+      'title' => 'Bayar Pesanan',
+      'invoice' => $invoice
     ];
-    $this->M_app->templateCart($data, 'order/detail');
+    $this->M_app->templateCart($data, 'invoice/index');
   }
 
   public function detail($id)

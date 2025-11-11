@@ -1,76 +1,73 @@
 <div class="d-flex flex-column">
-  <form method="POST" action="<?= base_url() ?>cart/checkout">
+  <div class="content p-2">
+    <?php
+    $total_price_order = 0;
+    if ($order['status'] == 'unpaid') {
+      $icon = 'fas fa-money-bill';
+      $status = 'Belum Dibayar';
+    } elseif ($order['status'] == 'processing') {
+      $icon = 'fas fa-box';
+      $status = 'Dikemas';
+    } elseif ($order['status'] == 'sending') {
+      $icon = 'fas fa-motorcycle';
+      $status = 'Dikirim';
+    } elseif ($order['status'] == 'shipped') {
+      $icon = 'fas fa-box-open';
+      $status = 'Pesanan Tiba';
+    }
+    ?>
+    <div class="card card-product-cart mb-2 flex-col p-3">
+      <div class="d-flex mb-3">
+        <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
+        <div class="d-flex align-items-center ms-auto order-status-<?= $order['status'] ?>">
+          <i class="<?= $icon ?> fa-lg me-1"></i>
+          <small><?= $status ?></small>
+        </div>
+      </div>
 
-    <div class="content p-2">
-      <?php
-      $total_price_order = 0;
-      if ($order['status'] == 'unpaid') {
-        $icon = 'fas fa-money-bill';
-        $status = 'Belum Dibayar';
-      } elseif ($order['status'] == 'processing') {
-        $icon = 'fas fa-box';
-        $status = 'Dikemas';
-      } elseif ($order['status'] == 'sending') {
-        $icon = 'fas fa-motorcycle';
-        $status = 'Dikirim';
-      } elseif ($order['status'] == 'shipped') {
-        $icon = 'fas fa-box-open';
-        $status = 'Pesanan Tiba';
-      }
-      ?>
-      <div class="card card-product-cart mb-2 flex-col p-3">
-        <div class="d-flex mb-3">
-          <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
-          <div class="d-flex align-items-center ms-auto order-status-<?= $order['status'] ?>">
-            <i class="<?= $icon ?> fa-lg me-1"></i>
-            <small><?= $status ?></small>
+      <!-- loop products -->
+      <?php foreach ($order_products as $idx => $op) : ?>
+        <?php
+        $total_price_product = ($op['price'] - ($op['price'] * $op['discount'] / 100)) * $op['qty'];
+        $total_price_order = $total_price_order + $total_price_product;
+
+        if ($idx + 1 <= count($order_products) && $idx >= 1) {
+          echo '<hr>';
+        }
+
+        ?>
+        <div class="d-flex">
+          <div>
+            <div class="product-images">
+              <img src="<?= base_url() ?>dist/img/uploads/products/<?= $op['image'] ?>" alt="" class="h-100">
+            </div>
+          </div>
+
+          <div class="ms-auto form-group d-flex flex-column text-end justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="col">
+                <h6 class="form-label product-name fw-bold mb-0 mx-1"><?= $op['name'] ?></h6>
+              </div>
+              <span>x <?= $op['qty'] ?></span>
+            </div>
+            <h6 class="color-esensia mb-0">Rp. <?= number_format($total_price_product, 0, '', '.') ?></h6>
           </div>
         </div>
-
-        <!-- loop products -->
-        <?php foreach ($order_products as $idx => $op) : ?>
-          <?php
-          $total_price_product = ($op['price'] - ($op['price'] * $op['discount'] / 100)) * $op['qty'];
-          $total_price_order = $total_price_order + $total_price_product;
-
-          if ($idx + 1 <= count($order_products) && $idx >= 1) {
-            echo '<hr>';
-          }
-
-          ?>
-          <div class="d-flex">
-            <div>
-              <div class="product-images">
-                <img src="<?= base_url() ?>dist/img/uploads/products/<?= $op['image'] ?>" alt="" class="h-100">
-              </div>
-            </div>
-
-            <div class="ms-auto form-group d-flex flex-column text-end justify-content-between">
-              <div class="d-flex align-items-center">
-                <div class="col">
-                  <h6 class="form-label product-name fw-bold mb-0 mx-1"><?= $op['name'] ?></h6>
-                </div>
-                <span>x <?= $op['qty'] ?></span>
-              </div>
-              <h6 class="color-esensia mb-0">Rp. <?= number_format($total_price_product, 0, '', '.') ?></h6>
-            </div>
-          </div>
-        <?php endforeach; ?>
-        <div class="d-flex mt-3 align-items-center">
-          <?php if ($order['status'] == 'unpaid') : ?>
-            <button class="btn btn-sm btn-danger">Bayar Sekarang</button>
-          <?php endif; ?>
-          <div class="text-end ms-auto d-flex align-items-center">
-            <span class="me-1">Total:</span>
-            <h5 class="color-esensia mb-0">Rp. <?= number_format($total_price_order, 0, '', '.') ?></h5>
-          </div>
-          <div class="text-end">
-            <!-- <a href="<?= base_url() ?>orders/detail/<?= $order['id'] ?>" class="btn btn-sm btn-secondary text-light"><i class="fas fa-eye me-1"></i>detail</a> -->
-          </div>
+      <?php endforeach; ?>
+      <div class="d-flex mt-3 align-items-center">
+        <?php if ($order['status'] == 'unpaid') : ?>
+          <a href="<?= base_url('invoice/index/') . $order['id']?>" class="btn btn-sm btn-danger text-light">Bayar Sekarang</a>
+        <?php endif; ?>
+        <div class="text-end ms-auto d-flex align-items-center">
+          <span class="me-1">Total:</span>
+          <h5 class="color-esensia mb-0">Rp. <?= number_format($total_price_order, 0, '', '.') ?></h5>
+        </div>
+        <div class="text-end">
+          <!-- <a href="<?= base_url() ?>orders/detail/<?= $order['id'] ?>" class="btn btn-sm btn-secondary text-light"><i class="fas fa-eye me-1"></i>detail</a> -->
         </div>
       </div>
     </div>
-  </form>
+  </div>
 
 </div>
 
