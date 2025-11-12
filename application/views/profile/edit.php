@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <form method="POST" action="<?= base_url() ?>profile/save" enctype="multipart/form-data">
+  <form method="POST" id="form_address" action="<?= base_url() ?>profile/save" enctype="multipart/form-data">
 
     <?php if (key_exists('id', $address)) : ?>
       <input type="hidden" name="address[id]" value="<?= $address['id'] ?>">
@@ -59,8 +59,8 @@
             <label class="form-label" for="">Catatan</label>
             <textarea class="form-control form-control-sm" name="address[catatan]"><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
           </div>
-          <input type="hidden" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
-          <input type="hidden" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
+          <input type="text" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
+          <input type="text" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
 
           <div id="map" style="height: 150px;">
           </div>
@@ -103,8 +103,9 @@
   <div class="offcanvas-body small">
     <div id="map2" style="height: 300px;" class="mb-2">
     </div>
-    <input type="hidden" name="long" id="long_maps_point">
-    <input type="hidden" name="lat" id="lat_maps_point">
+    <input type="hidden" name="long" id="long_maps_point" value="<?= $address['long'] ?>">
+    <input type="hidden" name="lat" id="lat_maps_point" value="<?= $address['lat'] ?>">
+    <input type="text" name="addresses" id="addresses_temp">
     <input type="hidden" name="ongkir" id="ongkir_count">
     <button class="btn btn-sm btn-primary" id="find_current_location">Cari Lokasi Saya</button>
     <span>distance: <span id="distance"></span></span>
@@ -115,10 +116,24 @@
 </div>
 
 <script>
+  const http = new XMLHttpRequest();
+
   document.addEventListener("DOMContentLoaded", function() {
 
-    var my_home_loc = [-7.045362120452517, 110.42101321590506];
-    var loc_esensia = ['-6.996813464846989', '110.47300506227707'];
+    function initMap() {
+      const geocoder = new google.maps.Geocoder();
+      console.log(geocoder);
+    }
+
+    input_long = $('#address_long').val();
+    input_lat = $('#address_lat').val();
+    // console.log(input_long.val().length);
+    var my_home_loc = [input_lat, input_long];
+
+    if (input_long.length == 0 || input_lat.length == 0) {
+      my_home_loc = [-6.997386756897924, 110.47300043164309];
+    }
+
     var loc_esensia = {
       lat: -6.996813464846989,
       lng: 110.47300506227707
@@ -135,18 +150,12 @@
       title: 'customer',
     }).addTo(map);
 
-
     var map2 = L.map('map2').setView(my_home_loc, 14);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map2);
-
-    // var marker = L.marker(loc_esensia, {
-    //   title: 'customer',
-    //   draggable: true,
-    // }).addTo(map2)
 
     $('.leaflet-control-container .leaflet-top.leaflet-right').hide()
     $('.leaflet-control-container .leaflet-bottom.leaflet-right').hide()
@@ -177,8 +186,12 @@
 
     routingcontrol.on('routesfound', function(e) {
       var destination = e.waypoints[e.waypoints.length - 1].latLng;
-      // var distance = e.routes.summary.totalDistance / 1000 + ' km';
       var distance = e.routes[0].summary.totalDistance / 1000 + ' km';
+
+      // const bcdAPI = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${destination.lat}&longitude=${destination.lng}`;
+      const bcdAPI = `https://geocode.maps.co/reverse?lat=${destination.lat}&lon=${destination.lng}&api_key=6914a50a41402699635321jrhda0799`;
+      var api = getAPI(bcdAPI);
+      console.log(api);
 
       $('#long_maps_point').val(destination.lng);
       $('#lat_maps_point').val(destination.lat);
@@ -194,12 +207,32 @@
       }
     })
 
-    $('#save_location_modal').on('click', function() { 
+    $('#save_location_modal').on('click', function() {
       var lng = $('#long_maps_point').val();
       var lat = $('#lat_maps_point').val();
+      var addresses = JSON.parse($('#addresses_temp').val()).address;
+      console.log(addresses);
 
       $('#address_long').val(lng);
       $('#address_lat').val(lat);
+
+      var input_kecamatan = $('#form_address input[name="address[kecamatan]"]')
+      var input_kelurahan = $('#form_address input[name="address[kelurahan]"]')
+      var input_kodepos = $('#form_address input[name="address[kode_pos]"]')
+console.log(addresses | index('city_district'));
+
+      if (addresses | index('city_district') && (input_kecamatan.val().toLowerCase() != addresses.city_district.toLowerCase())) {
+        // alert('Kecamatan tidak sesuai');
+        input_kecamatan.val(addresses.city_district);
+      }
+      if (input_kelurahan.val().toLowerCase() != addresses.village.toLowerCase()) {
+        // alert('Kecamatan tidak sesuai');
+        input_kelurahan.val(addresses.village);
+      }
+      if (input_kodepos.val().toLowerCase() != addresses.postcode.toLowerCase()) {
+        // alert('Kecamatan tidak sesuai');
+        input_kodepos.val(addresses.postcode);
+      }
 
       map1_marker.setLatLng({
         lng,
@@ -228,5 +261,21 @@
       // alert("Sorry, no position available.");
       alert(error.message);
     }
+
   })
+
+  function getAPI(url) {
+    http.open('GET', url);
+    http.send()
+    var address = http.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var addr = JSON.parse(this.responseText).address
+        if (!addr) {
+          alert('Alamat tidak ditemukan!');
+        }
+
+        var input_addresses = $('#addresses_temp').val(this.responseText);
+      }
+    }
+  }
 </script>
