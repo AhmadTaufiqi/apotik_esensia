@@ -24,7 +24,7 @@ class M_invoice extends CI_Model
     $order = $this->db->select('*')
       ->from('invoice')
       ->where(['order_id' => $order_id])
-      ->get()->result_array();
+      ->get()->row_array();
     $this->db->trans_complete();
 
     return $order;
@@ -80,8 +80,6 @@ class M_invoice extends CI_Model
     $this->db->trans_start();
     // $this->db->insert('product', $user);
     $this->db->insert($table, $data);
-
-    $order_id = $this->db->insert_id();
 
     $this->db->trans_complete();
 

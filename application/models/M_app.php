@@ -67,9 +67,12 @@ class M_app extends CI_Model
 
     public function updateBase64($dir,$file, $types, $name, $default){
         $image = $this->input->post($name);
+
         if($image != ''){
-            if ($file != $default) {
-                unlink('./dist/img/uploads/'.$dir.'/'.$file); 
+            // Only remove the old file when it's not the default and the file exists
+            $oldPath = './dist/img/uploads/'.$dir.'/'.$file;
+            if (!empty($file) && $file !== $default && file_exists($oldPath) && is_file($oldPath)) {
+                @unlink($oldPath);
             }
             return $this->uploadBase64($dir, $types, $name, $default);
         }else{

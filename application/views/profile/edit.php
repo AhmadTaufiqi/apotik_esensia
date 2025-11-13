@@ -12,7 +12,7 @@
           <div class="avatar d-flex align-items-center px-2 p-4">
             <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
               <img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto_akun != '' ? $foto_akun : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
-              <input type="file" id="file" name="file" max="2000" accept=".jpg,.jpeg,.png">
+              <input type="file" id="file" name="foto" max="2000" accept=".jpg,.jpeg,.png">
               <label for="file" id="uploadBtn" style="height:40px">Pilih Foto</label>
             </div>
             <input type="hidden" id="foto_base64" name="foto_base64" max="2000">
@@ -22,10 +22,10 @@
               <span class="fw-bold"><?= $email ?></span>
             </div>
             <div class="form-group mb-2">
-              <input type="text" class="form-control form-control-sm" name="name" value="<?= $name ?? $name ?>">
+              <input type="text" class="form-control form-control-sm" name="name" value="<?= $name ?? $name ?>" required>
             </div>
             <div class="form-group mb-2">
-              <input type="text" class="form-control form-control-sm" name="telp" value="<?= $hp_akun ?? $hp_akun ?>">
+              <input type="tel" pattern="^(\\+62|62|0)8[1-9][0-9]{6,10}$" title="Nomor telepon Indonesia, contoh: 08123456789 atau +628123456789" maxlength="15" class="form-control form-control-sm" name="telp" value="<?= $hp_akun ?? $hp_akun ?>" required>
             </div>
           </div>
         </div>
@@ -41,26 +41,30 @@
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="">Kota</label>
-            <input type="text" class="form-control form-control-sm" name="address[kota]" value="<?= $address['kota'] ?? $address['kota'] ?>">
+            <input type="text" class="form-control form-control-sm" name="address[kota]" value="Semarang" readonly>
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="">Kecamatan</label>
-            <input type="text" class="form-control form-control-sm" name="address[kecamatan]" value="<?= $address['kecamatan'] ?? $address['kecamatan'] ?>">
+            <input type="text" class="form-control form-control-sm" name="address[kecamatan]" value="<?= $address['kecamatan'] ?? $address['kecamatan'] ?>" required>
+            <small class="text-danger warning ms-1" hidden>Kecamatan tidak ditemukan</small>
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="">Kelurahan</label>
-            <input type="text" class="form-control form-control-sm" name="address[kelurahan]" value="<?= $address['kelurahan'] ?? $address['kelurahan'] ?>">
+            <input type="text" class="form-control form-control-sm" name="address[kelurahan]" value="<?= $address['kelurahan'] ?? $address['kelurahan'] ?>" required>
+            <small class="text-danger warning ms-1" hidden>Kelurahan tidak ditemukan</small>
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="">Kode Pos</label>
-            <input type="text" class="form-control form-control-sm" name="address[kode_pos]" value="<?= $address['kode_pos'] ?? $address['kode_pos'] ?>">
+            <input type="text" class="form-control form-control-sm" name="address[kode_pos]" value="<?= $address['kode_pos'] ?? $address['kode_pos'] ?>" required>
+            <small class="text-danger warning ms-1" hidden>Kode pos tidak ditemukan</small>
           </div>
           <div class="form-group mb-2">
             <label class="form-label" for="">Catatan</label>
-            <textarea class="form-control form-control-sm" name="address[catatan]"><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
+            <textarea class="form-control form-control-sm" name="address[catatan]" placeholder="tuliskan nama jalan, nomor rumah, atau patokan" required><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
           </div>
-          <input type="text" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
-          <input type="text" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
+          <input type="hidden" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
+          <input type="hidden" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
+          <input type="hidden" id="address_jarak" name="address[jarak]" value="<?= $address['jarak'] ?? $address['jarak'] ?>">
 
           <div id="map" style="height: 150px;">
           </div>
@@ -101,12 +105,12 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body small">
-    <div id="map2" style="height: 300px;" class="mb-2">
+    <div id="map2" style="height: 89%;" class="mb-2">
     </div>
     <input type="hidden" name="long" id="long_maps_point" value="<?= $address['long'] ?>">
     <input type="hidden" name="lat" id="lat_maps_point" value="<?= $address['lat'] ?>">
-    <input type="text" name="addresses" id="addresses_temp">
-    <input type="hidden" name="ongkir" id="ongkir_count">
+    <input type="hidden" name="addresses" id="addresses_temp">
+    <input type="hidden" name="ongkir" id="distance_temp">
     <button class="btn btn-sm btn-primary" id="find_current_location">Cari Lokasi Saya</button>
     <span>distance: <span id="distance"></span></span>
   </div>
@@ -120,14 +124,9 @@
 
   document.addEventListener("DOMContentLoaded", function() {
 
-    function initMap() {
-      const geocoder = new google.maps.Geocoder();
-      console.log(geocoder);
-    }
-
     input_long = $('#address_long').val();
     input_lat = $('#address_lat').val();
-    // console.log(input_long.val().length);
+
     var my_home_loc = [input_lat, input_long];
 
     if (input_long.length == 0 || input_lat.length == 0) {
@@ -138,8 +137,8 @@
       lat: -6.996813464846989,
       lng: 110.47300506227707
     };
-    var map = L.map('map').setView(my_home_loc, 13);
 
+    var map = L.map('map').setView(my_home_loc, 13);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -186,16 +185,17 @@
 
     routingcontrol.on('routesfound', function(e) {
       var destination = e.waypoints[e.waypoints.length - 1].latLng;
-      var distance = e.routes[0].summary.totalDistance / 1000 + ' km';
+      var raw_distance = e.routes[0].summary.totalDistance / 1000;
+      var distance = raw_distance + ' km';
 
       // const bcdAPI = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${destination.lat}&longitude=${destination.lng}`;
       const bcdAPI = `https://geocode.maps.co/reverse?lat=${destination.lat}&lon=${destination.lng}&api_key=6914a50a41402699635321jrhda0799`;
       var api = getAPI(bcdAPI);
-      console.log(api);
 
       $('#long_maps_point').val(destination.lng);
       $('#lat_maps_point').val(destination.lat);
       $('#distance').html(distance);
+      $('#distance_temp').val(raw_distance);
     })
 
     $('#find_current_location').on('click', function() {
@@ -210,28 +210,35 @@
     $('#save_location_modal').on('click', function() {
       var lng = $('#long_maps_point').val();
       var lat = $('#lat_maps_point').val();
+      var distance = $('#distance_temp').val();
       var addresses = JSON.parse($('#addresses_temp').val()).address;
-      console.log(addresses);
 
       $('#address_long').val(lng);
       $('#address_lat').val(lat);
+      $('#address_jarak').val(distance);
 
       var input_kecamatan = $('#form_address input[name="address[kecamatan]"]')
       var input_kelurahan = $('#form_address input[name="address[kelurahan]"]')
       var input_kodepos = $('#form_address input[name="address[kode_pos]"]')
-console.log(addresses | index('city_district'));
 
-      if (addresses | index('city_district') && (input_kecamatan.val().toLowerCase() != addresses.city_district.toLowerCase())) {
-        // alert('Kecamatan tidak sesuai');
+      if (addresses.hasOwnProperty('city_district')) {
         input_kecamatan.val(addresses.city_district);
+      } else {
+        input_kecamatan.val('');
+        input_kecamatan.siblings('.warning').attr('hidden', false);
       }
-      if (input_kelurahan.val().toLowerCase() != addresses.village.toLowerCase()) {
-        // alert('Kecamatan tidak sesuai');
+
+      if (addresses.hasOwnProperty('village')) {
         input_kelurahan.val(addresses.village);
+      } else {
+        input_kelurahan.val('');
+        input_kelurahan.siblings('.warning').attr('hidden', false);
       }
-      if (input_kodepos.val().toLowerCase() != addresses.postcode.toLowerCase()) {
-        // alert('Kecamatan tidak sesuai');
+
+      if (addresses.hasOwnProperty('postcode')) {
         input_kodepos.val(addresses.postcode);
+      } else {
+        input_kodepos.siblings('.warning').attr('hidden', false);
       }
 
       map1_marker.setLatLng({
@@ -240,6 +247,11 @@ console.log(addresses | index('city_district'));
       });
 
       $('#offcanvasSetLocation').offcanvas('hide');
+    })
+
+    // hide warning on input change or keyup
+    $('#form_address input').on('change keyup', function() {
+      $(this).siblings('.warning').attr('hidden', true);
     })
 
     function findCurrentLocation(position) {
@@ -252,6 +264,18 @@ console.log(addresses | index('city_district'));
           lat: coords.latitude
         }
       ]);
+
+      // Move the small map view and the modal map to the user's current position
+      try {
+        var userLatLng = [coords.latitude, coords.longitude];
+
+        // also move the larger modal map
+        if (typeof map2 !== 'undefined' && map2) {
+          map2.setView(userLatLng, 14);
+        }
+      } catch (err) {
+        console.warn('Could not move map view to current location', err);
+      }
 
       // x.innerHTML = "Latitude: " + position.coords.latitude +
       //   "<br>Longitude: " + position.coords.longitude;

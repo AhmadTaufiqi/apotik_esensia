@@ -19,7 +19,8 @@
   <div class="card p-3 text-center mb-2">
     <div class="fw-bold text-success mb-1">Menunggu Pembayaran</div>
     <div class="text-muted mb-1">Bayar sebelum</div>
-    <div class="fw-semibold text-danger">12 November 2025 • 23:59 WIB</div>
+    <!-- Due datetime is stored in data-due as ISO 8601 with timezone. Update this value server-side if needed. -->
+    <div id="due_countdown" class="fw-semibold text-danger" data-due="2025-11-13T23:59:00+07:00">12 November 2025 • 23:59 WIB</div>
   </div>
 
   <!-- Metode Pembayaran -->
@@ -103,4 +104,52 @@
     navigator.clipboard.writeText(va);
     alert("Nomor VA disalin: " + va);
   }
+</script>
+
+<script>
+  // Countdown timer for payment due
+  (function () {
+    const el = document.getElementById('due_countdown');
+    if (!el) return;
+
+    // Read due time from data-due attribute (ISO 8601). Fallback to innerText parse.
+    const dueAttr = el.getAttribute('data-due');
+    let dueDate = null;
+    if (dueAttr) {
+      dueDate = new Date(dueAttr);
+    } else {
+      // try parsing displayed text (best-effort)
+      dueDate = new Date(el.innerText);
+    }
+
+    if (!dueDate || isNaN(dueDate.getTime())) {
+      el.textContent = 'Tanggal jatuh tempo tidak valid';
+      return;
+    }
+
+    function formatRemaining(ms) {
+      if (ms <= 0) return 'Waktu Habis';
+      const totalSeconds = Math.floor(ms / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      const pad = (n) => String(n).padStart(2, '0');
+      return (days > 0 ? days + ' hari ' : '') + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+    }
+
+    function update() {
+      const now = new Date();
+      const diff = dueDate.getTime() - now.getTime();
+      if (diff <= 0) {
+        el.textContent = 'Waktu Habis';
+        clearInterval(timer);
+        return;
+      }
+      el.textContent = 'Sisa waktu: ' + formatRemaining(diff) + ' (berakhir: ' + dueDate.toLocaleString() + ')';
+    }
+
+    update();
+    const timer = setInterval(update, 1000);
+  })();
 </script>

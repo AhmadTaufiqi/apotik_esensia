@@ -28,10 +28,26 @@ class Invoice extends CI_Controller
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
 
+    $arr_invoice = [];
+    if($invoice){
+      $input = [
+        'order_id' => $order_id,
+        'order_price' => $invoice['order_price'] + $invoice['ongkir'],
+        'payment_id' => $invoice['payment_id'],
+        'payment_method' => $this->input;,
+        'other' => '',
+        'is_paid' => $invoice['is_paid'],
+      ];
+
+      $this->m_invoice->save_invoice('invoices', $input);
+      $arr_invoice = [];
+    }
     $data = [
       'title' => 'Bayar Pesanan',
       'invoice' => $invoice
     ];
+    var_dump($invoice);
+    exit;
     $this->M_app->templateCart($data, 'invoice/index');
   }
 

@@ -15,6 +15,36 @@ class M_user extends CI_Model
         return sprintf("%04s", $tmp);
     }
 
+    public function get_user_by_id($id) {
+        $this->db->trans_start();
+        $user = $this->db->select('*')
+            ->from('users')
+            ->where(['id' => $id])
+            ->get()->row_array();
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status()) {
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_user_address_by_id($id) {
+        $this->db->trans_start();
+        $address = $this->db->select('*')      
+            ->from('address')
+            ->where(['user_id' => $id])
+            ->get()->row_array();
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status()) {
+            return $address;
+        } else {
+            return false;
+        }
+    }
+
     public function save_user($role)
     {
         $data = [

@@ -118,18 +118,26 @@ class Profile extends CI_Controller
 	public function save()
 	{
 		$input_address = $this->input->post('address');
+		$foto = $this->input->post('foto');
 
 		$data = [
 			'name' => $this->input->post('name'),
 			'telp' => $this->input->post('telp'),
-			'foto' => $this->M_app->uploadBase64('users', 'jpg|jpeg|png', 'foto_base64', 'default.png'),
 		];
+
+		$update_foto = $this->M_app->updateBase64('users', $foto, 'jpg|jpeg|png', 'foto_base64', 'default.png');
+
+		// jika ada update foto
+		if ($update_foto) {
+			$data['foto'] = $update_foto;
+
+			$this->session->set_userdata('foto_akun', $update_foto);
+		}
 
 		//update session userdata
 		$this->session->set_userdata([
 			'nama_akun' => $data['name'],
-			'hp_akun' => $data['telp'],
-			'foto_akun' => $data['foto']
+			'hp_akun' => $data['telp']
 		]);
 
 		$this->db->update('users', $data, ['id' => $input_address['user_id']]);
@@ -146,6 +154,7 @@ class Profile extends CI_Controller
 			'catatan' => $input_address['catatan'],
 			'long' => $input_address['long'],
 			'lat' => $input_address['lat'],
+			'jarak' => $input_address['jarak'],
 		];
 
 		if ($address) {
