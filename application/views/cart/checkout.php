@@ -69,9 +69,10 @@
 
     <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
     <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
+    <input type="text" name="payment_method" id="payment_method">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
-      <button class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
+      <button id="btn_create_order" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
     </div>
   </form>
 </div>
@@ -196,7 +197,7 @@
     <div id="selectedMethod" class="text-center text-muted">
       Belum ada metode yang dipilih
     </div>
-    <input type="text" id="payment_method" name="payment_method">
+    <input type="text" id="temp_payment_method" name="payment_method">
     <div class="ms-auto">
       <button class="btn btn-sm btn-success" id="save_payment_method">Simpan</button>
     </div>
@@ -204,6 +205,7 @@
 </div>
 
 <script>
+  const isCartEmpty = '<?= empty($cart_products) ?>';
   const options = document.querySelectorAll(".payment-option");
   const selectedText = document.getElementById("selectedMethod");
 
@@ -212,7 +214,33 @@
       options.forEach((opt) => opt.classList.remove("active"));
       option.classList.add("active");
       selectedText.innerHTML = `<strong>Metode dipilih:</strong> ${option.dataset.value}`;
-      $('#payment_method').val(option.dataset.value);
+      $('#temp_payment_method').val(option.dataset.value);
     });
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+
+    $('#save_payment_method').on('click', function(e) {
+      console.log('clicked');
+      e.preventDefault();
+      const selectedMethod = $('#temp_payment_method').val();
+      $('#payment_method').val(selectedMethod);
+      $('#metode-pembayaran').text(selectedMethod);
+      $('#offcanvasBottom').offcanvas('hide');
+
+      activatesaveButton();
+    });
+
+    function activatesaveButton() {
+      console.log(isCartEmpty);
+      const payment_method = $('#payment_method').val();
+
+      if (payment_method == '') {
+        $('#btn_create_order').prop('disabled', true);
+      } else {
+        $('#btn_create_order').prop('disabled', false);
+      }
+    }
+    activatesaveButton();
   });
 </script>

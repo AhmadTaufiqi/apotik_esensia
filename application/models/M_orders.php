@@ -106,7 +106,7 @@ class M_orders extends CI_Model
       // 'id' => $this->uuid->v4(),
       // 'product_id' => $this->input->post('product_id'),
       // 'qty' => $this->input->post('qty'),
-      'status' => $this->input->post('status'),
+      'status' => 'unpaid', // default status 'unpaid'
       // 'sku' => $this->input->post('sku'),
       'customer_id' => $this->session->userdata('id_akun'),
       'created_at' => $this->M_app->datetime(),
@@ -145,14 +145,20 @@ class M_orders extends CI_Model
 
     $this->db->trans_complete();
 
+    $arr_result = [
+      'order_id' => $order_id,
+    ];
+    
     if ($this->db->trans_status()) {
 
       //belum dibuat tabel nya
       // $this->M_app->log_activity(' menambahkan data baru ' . $activity . ' [' . $prod['id'] . ']');
-      return true;
+      $arr_result['status'] = true;
     } else {
-      return false;
+      $arr_result['status'] = false;
     }
+
+    return $arr_result;
   }
 
   public function add_order_product($order_id)

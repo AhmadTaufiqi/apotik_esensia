@@ -20,18 +20,36 @@
     <div class="fw-bold text-success mb-1">Menunggu Pembayaran</div>
     <div class="text-muted mb-1">Bayar sebelum</div>
     <!-- Due datetime is stored in data-due as ISO 8601 with timezone. Update this value server-side if needed. -->
-    <div id="due_countdown" class="fw-semibold text-danger" data-due="2025-11-13T23:59:00+07:00">12 November 2025 • 23:59 WIB</div>
+    <div id="due_countdown" class="fw-semibold text-danger" data-due="<?= date('Y-m-d H:i', strtotime($invoice['expiry_date'])) ?>"><?= date('d-m-y', strtotime($invoice['expiry_date'])) ?></div>
   </div>
+  <?php var_dump(date('Y-m-d H:i', strtotime($invoice['expiry_date']))) ?>
+  <?php
+  $payment_image = 'default.png';
+  $payment_method = strtolower($invoice['payment_method']);
 
+  if (strpos($payment_method, 'bri') !== false) {
+    $payment_image = 'bri.png';
+  } elseif (strpos($payment_method, 'bca') !== false) {
+    $payment_image = 'bca.png';
+  } elseif (strpos($payment_method, 'bni') !== false) {
+    $payment_image = 'bni.png';
+  } elseif (strpos($payment_method, 'mandiri') !== false) {
+    $payment_image = 'mandiri.png';
+  } elseif (strpos($payment_method, 'ovo') !== false) {
+    $payment_image = 'ovo.png';
+  } elseif (strpos($payment_method, 'gopay') !== false) {
+    $payment_image = 'gopay.png';
+  }
+  ?>
   <!-- Metode Pembayaran -->
   <div class="card p-3 mb-2">
     <div class="fw-bold mb-2">Metode Pembayaran</div>
     <div class="d-flex align-items-center mb-2">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/BCA_logo.svg" width="45" class="me-2" alt="BCA">
+      <img src="<?= base_url('dist/img/payment_methods/') . $payment_image ?>" width="45" class="me-2 rounded-1" alt="<?= $invoice['payment_method'] ?>">
       <div>
-        <div class="fw-semibold">Bank BCA - Virtual Account</div>
+        <div class="fw-semibold"><?= $invoice['payment_method'] ?></div>
         <div class="d-flex align-items-center mt-1">
-          <span class="va-number me-2" style="font-weight: 500;">123456789012345</span>
+          <span class="va-number me-2" style="font-weight: 500;"><?= $invoice['payment_id'] ?></span>
           <button class="btn btn-sm btn-success py-0" onclick="copyVA()">Salin</button>
         </div>
       </div>
@@ -41,7 +59,7 @@
   <!-- Total Pembayaran -->
   <div class="card p-3 text-center mb-2">
     <div class="text-muted mb-1">Total Pembayaran</div>
-    <div class="h4 fw-bold color-esensia mb-0">Rp 1.250.000</div>
+    <div class="h4 fw-bold color-esensia mb-0"><?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></div>
   </div>
 
   <!-- Petunjuk Pembayaran -->
@@ -108,7 +126,7 @@
 
 <script>
   // Countdown timer for payment due
-  (function () {
+  (function() {
     const el = document.getElementById('due_countdown');
     if (!el) return;
 
@@ -126,6 +144,7 @@
       el.textContent = 'Tanggal jatuh tempo tidak valid';
       return;
     }
+    console.log(dueDate)
 
     function formatRemaining(ms) {
       if (ms <= 0) return 'Waktu Habis';

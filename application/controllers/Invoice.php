@@ -27,27 +27,23 @@ class Invoice extends CI_Controller
   public function index($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+// var_dump($invoice);exit;
+    // if($invoice){
+    //   $input = [
+    //     'order_id' => $order_id,
+    //     'order_price' => $invoice['order_price'] + $invoice['ongkir'],
+    //     'payment_id' => $invoice['payment_id'],
+    //     'payment_method' => $this->input->post('payment_methods'),
+    //     'other' => '',
+    //     'is_paid' => $invoice['is_paid'],
+    //   ];
 
-    $arr_invoice = [];
-    if($invoice){
-      $input = [
-        'order_id' => $order_id,
-        'order_price' => $invoice['order_price'] + $invoice['ongkir'],
-        'payment_id' => $invoice['payment_id'],
-        'payment_method' => $this->input;,
-        'other' => '',
-        'is_paid' => $invoice['is_paid'],
-      ];
-
-      $this->m_invoice->save_invoice('invoices', $input);
-      $arr_invoice = [];
-    }
+    // }
     $data = [
       'title' => 'Bayar Pesanan',
       'invoice' => $invoice
     ];
-    var_dump($invoice);
-    exit;
+
     $this->M_app->templateCart($data, 'invoice/index');
   }
 
@@ -62,22 +58,6 @@ class Invoice extends CI_Controller
       'order_products' => $order_products,
     ];
     $this->M_app->templateCart($data, 'order/detail');
-  }
-
-  public function createOrder()
-  {
-    $cart_product_id = $this->input->post('cart_product_id');
-
-    $save = $this->M_orders->save_order('orders', 'create order form cart');
-
-    if ($save) {
-      $this->M_cart->deactivate($cart_product_id);
-      $this->session->set_flashdata('msg', '<small class="text-success ps-2">succes save order</small>');
-    } else {
-      $this->session->set_flashdata('msg', '<small class="text-danger ps-2">failed save order</small>');
-    }
-
-    redirect('orders/index');
   }
 
   public function payment()

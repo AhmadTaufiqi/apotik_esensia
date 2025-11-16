@@ -56,6 +56,8 @@
             <?php
             $total_price_product = ($op['price'] - ($op['price'] * $op['discount'] / 100)) * $op['qty'];
             $total_price_order = $total_price_order + $total_price_product;
+
+            // set container collapse if more than 2 products
             if ($idx == 1) {
               echo '<div class="collapse" id="collapse_prod_' . $order['id'] . '">';
             }
@@ -83,7 +85,9 @@
               </div>
             </div>
             <?php
-            if ($idx + 1 == count($order_products)) {
+
+            // set button if only more than 2 products
+            if ($idx + 1 == count($order_products) && count($order_products) >= 2) {
               echo '</div>';
               echo '<a class="text-center toggle-expand mt-2" data-bs-toggle="collapse" href="#collapse_prod_' . $order['id'] . '" role="button" aria-expanded="false" aria-controls="collapse_prod_' . $order['id'] . '"><span style="border-bottom:1px solid #80808040;">Lihat Semua</span></a>';
             }

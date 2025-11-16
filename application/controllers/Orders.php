@@ -53,26 +53,27 @@ class Orders extends CI_Controller
     $cart_product_id = $this->input->post('cart_product_id');
 
     $save = $this->M_orders->save_order('orders', 'create order form cart');
+    $order_id = $this->db->insert_id();
 
     $input_invoice = [
-      'order_id' => $save,
-      'order_price' => $cost_price + $ongkir,
-      'payment_id' => null,
-      'payment_method' => null,
+      'order_id' => $save['order_id'],
+      'order_price' => ceil($cost_price + $ongkir),
+      'payment_id' => 0,
+      'payment_method' => $this->input->post('payment_method'),
       'other' => null,
       'is_paid' => 0,
     ];
 
-    $save_invoice = $this->M_invoice->save_invoice('invoices', $input_invoice);
+    $save_invoice = $this->M_invoice->save_invoice('invoices', $input_invoice, 'create invoice from order');
 
-    if ($save) {
+    if ($save['status'] && $save_invoice) {
       $this->M_cart->deactivate($cart_product_id);
       $this->session->set_flashdata('msg', '<small class="text-success ps-2">succes save order</small>');
     } else {
       $this->session->set_flashdata('msg', '<small class="text-danger ps-2">failed save order</small>');
     }
 
-    redirect('orders/index');
+    redirect('invoice/index/' . $save['order_id']);
   }
 
   public function payment()

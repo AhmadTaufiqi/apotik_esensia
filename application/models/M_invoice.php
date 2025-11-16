@@ -22,7 +22,7 @@ class M_invoice extends CI_Model
     $this->db->trans_start();
 
     $order = $this->db->select('*')
-      ->from('invoice')
+      ->from('invoices')
       ->where(['order_id' => $order_id])
       ->get()->row_array();
     $this->db->trans_complete();
@@ -49,7 +49,7 @@ class M_invoice extends CI_Model
       'order_id' => $data['order_id'],
       'order_price' => $data['order_price'],
       'created_at' => $this->M_app->datetime(),
-      'expiry_date' => $this->M_app->datetime()+'1day',
+      'expiry_date' => date('Y-m-d H:i:s', strtotime('+1 day')),
       'payment_id' => $data['payment_id'],
       'payment_method' => $data['payment_method'],
       'other' => $data['other'],
