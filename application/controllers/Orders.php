@@ -47,7 +47,7 @@ class Orders extends CI_Controller
   public function createOrder()
   {
     $address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
-    $cost_price = $this->input->post('cost_price');
+    $cost_price = $this->input->post('total_cost_price');
     $ongkir = $address['jarak'] * 2000; // 2k per km
 
     $cart_product_id = $this->input->post('cart_product_id');
@@ -57,7 +57,7 @@ class Orders extends CI_Controller
 
     $input_invoice = [
       'order_id' => $save['order_id'],
-      'order_price' => ceil($cost_price + $ongkir),
+      'order_price' => round($cost_price + $ongkir),
       'payment_id' => 0,
       'payment_method' => $this->input->post('payment_method'),
       'other' => null,

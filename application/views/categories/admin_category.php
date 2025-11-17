@@ -1,11 +1,12 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex mb-3">
-    <h1 class="mb-0">Categories</h1>
-    <a href="<?= base_url()?>admin/product/create" class="btn btn-primary ms-auto" style="align-content:center;">
+    <h2 class="mb-0">Kategori Produk</h2>
+    <a href="<?= base_url()?>admin/categories/create" class="btn btn-primary ms-auto text-light" style="align-content:center;">
       <i class="fas fa-plus me-1"></i>
-      Create Category
+      Tambah Kategori
     </a>
   </div>
+  <?= $this->session->flashdata('message') ?>
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">

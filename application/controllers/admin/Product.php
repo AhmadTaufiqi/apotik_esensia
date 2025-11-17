@@ -69,6 +69,7 @@ class Product extends CI_Controller
 			'image' => $product->image,
 			'name' => $product->name,
 			'price' => $product->price,
+			'stock' => $product->stock,
 			'discount' => $product->discount,
 			'description' => $product->description,
 			'category' => $product->category,
@@ -81,17 +82,17 @@ class Product extends CI_Controller
 		$product = $this->M_product->save_product(1, 'products', 'insert');
 
 		if ($product) {
-			$data = [
-				'status' => 200,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-success" role="alert">
+  Berhasil menyimpan data produk
+</div>';
 		} else {
-			$data = [
-				'status' => 400,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-danger" role="alert">
+  Gagal menyimpan data produk
+</div>';
 		}
-		$this->session->set_userdata($data);
+		var_dump($alert);
+		exit;
+		$this->session->set_flashdata('message', $alert);
 
 		redirect('admin/product/create');
 	}
@@ -102,17 +103,16 @@ class Product extends CI_Controller
 		$product = $this->M_product->update_product('foto_default', 'products', 'update');
 
 		if ($product) {
-			$data = [
-				'status' => 200,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-success" role="alert">
+	Berhasil mengubah data produk
+</div>';
 		} else {
-			$data = [
-				'status' => 400,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-danger" role="alert">
+	Gagal mengubah data produk
+</div>';
 		}
-		$this->session->set_userdata($data);
+
+		$this->session->set_flashdata('message', $alert);
 
 		redirect('admin/product/edit/' . $id);
 	}

@@ -21,7 +21,8 @@ class M_category extends CI_Model
     $data = [
       // 'id' => $this->uuid->v4(),
       'category' => ucwords($this->input->post('name')),
-      'image' => $this->M_app->uploadFile('categories', 'jpg|jpeg|png', 'file', 'default_image.png'),
+			'icon' => $this->M_app->uploadBase64('categories', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
+
       'created_at' => $this->M_app->datetime(),
       // 'updated_at' => $this->M_app->datetime(),
     ];
@@ -34,7 +35,7 @@ class M_category extends CI_Model
     $prod = [
       'icon' => $this->M_app->updateBase64('categories', $foto, 'jpg|jpeg|png', 'base64_input', $foto_default),
       'category' => $this->input->post('name'),
-      'created_at' => $this->M_app->datetime(),
+      'updated_at' => $this->M_app->datetime(),
     ];
 
     return $prod;
@@ -47,7 +48,7 @@ class M_category extends CI_Model
     $this->db->trans_start();
     // $this->db->insert('product', $user);
     $this->db->insert($table, $data);
-    
+
     $this->db->trans_complete();
 
     if ($this->db->trans_status()) {
@@ -66,7 +67,7 @@ class M_category extends CI_Model
 
     $foto = $this->input->post('foto_category');
 
-    $data = $this->update_cat($foto ,$foto_default);
+    $data = $this->update_cat($foto, $foto_default);
 
     $this->db->trans_start();
     $this->db->where(['id' => $id]);
@@ -77,7 +78,6 @@ class M_category extends CI_Model
     if ($this->db->trans_status()) {
       // $this->M_app->log_activity(' mengubah data ' . $activity . ' [' . $id . ']');
       return true;
-
     } else {
 
       return false;
@@ -117,5 +117,4 @@ class M_category extends CI_Model
       return false;
     }
   }
-
 }

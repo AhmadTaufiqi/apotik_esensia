@@ -67,8 +67,8 @@
       </a>
     </div>
 
-    <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
-    <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
+    <input type="text" name="total_cost_price" value="<?= $total_price ?>">
+    <input type="text" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
     <input type="text" name="payment_method" id="payment_method">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>

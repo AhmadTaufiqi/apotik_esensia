@@ -20,9 +20,9 @@
     <div class="fw-bold text-success mb-1">Menunggu Pembayaran</div>
     <div class="text-muted mb-1">Bayar sebelum</div>
     <!-- Due datetime is stored in data-due as ISO 8601 with timezone. Update this value server-side if needed. -->
-    <div id="due_countdown" class="fw-semibold text-danger" data-due="<?= date('Y-m-d H:i', strtotime($invoice['expiry_date'])) ?>"><?= date('d-m-y', strtotime($invoice['expiry_date'])) ?></div>
+    <div id="due_countdown" class="fw-bold text-danger" data-due="<?= date('Y-m-d H:i', strtotime($invoice['expiry_date'])) ?>"><?= date('d-m-y', strtotime($invoice['expiry_date'])) ?></div>
   </div>
-  <?php var_dump(date('Y-m-d H:i', strtotime($invoice['expiry_date']))) ?>
+
   <?php
   $payment_image = 'default.png';
   $payment_method = strtolower($invoice['payment_method']);

@@ -60,6 +60,7 @@ class M_product extends CI_Model
       'name' => ucwords($this->input->post('name')),
       'sku' => $this->input->post('sku'),
       'price' => $this->input->post('price'),
+      'stock' => $this->input->post('stock'),
       'is_discount' => $this->input->post('is_discount'),
       'discount' => $this->input->post('discount'),
       'image' => $this->M_app->updateBase64('products', $foto, 'jpg|jpeg|png', 'base64_input', $foto_default),

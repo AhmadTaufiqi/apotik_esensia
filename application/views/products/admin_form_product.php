@@ -1,17 +1,17 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <form action="<?= base_url('admin/' . $submit_url) ?>" method="POST" enctype="multipart/form-data">
 
-    <?php $this->session;?>
-    <div class="card col-9 px-0">
+    
+    <div class="card col-12 col-lg-9 px-0">
       <div class="card-body">
         <h3 class="mb-3">Create Product</h3>
-
+        <?= $this->session->flashdata('message') ?>
         <?php
         $foto_product = $image ?? '';
-        if ($foto_product != '') { 
+        if ($foto_product != '') {
         ?>
-        <input type="hidden" name="foto_product" value="<?= $image ?>">
-        <?php } 
+          <input type="hidden" name="foto_product" value="<?= $image ?>">
+        <?php }
         ?>
 
         <input type="hidden" name="id" value="<?= $id ?? '' ?>">
@@ -42,11 +42,15 @@
               <input type="number" name="price" class="form-control" value="<?= $price ?? '' ?>">
             </div>
             <div class="form-group">
+              <label class="form-label required">Stok</label>
+              <input type="number" name="stock" class="form-control" value="<?= $stock ?? '' ?>">
+            </div>
+            <div class="form-group">
               <label class="form-label">Category</label>
               <select name="category" id="" class="form-control">
                 <option value=""></option>
                 <?php foreach ($categories as $cat) : ?>
-                  <option value="<?= $cat->id ?>"><?= $cat->category ?></option>
+                  <option value="<?= $cat->id ?>" <?= (isset($category) && $category == $cat->id) ? 'selected' : '' ?>><?= $cat->category ?></option>
                 <?php endforeach; ?>
               </select>
             </div>

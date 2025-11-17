@@ -1,11 +1,18 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <form action="<?= base_url('admin/' . $submit_url) ?>" method="POST" enctype="multipart/form-data">
-    <div class="card col-9 px-0">
+    <div class="card col-12 col-lg-9 px-0">
       <div class="card-body">
+        <?= $this->session->flashdata('message') ?>
         <h3 class="mb-3">Create Category</h3>
-
         <?php
         $foto_category = $icon ?? '';
+
+        if (!empty($foto_category) && file_exists(FCPATH . 'dist/img/uploads/categories/' . $foto_category)) {
+          $foto_category = $icon;
+        } else {
+          $foto_category = 'default_image.png';
+        }
+
         if ($foto_category != '') {
         ?>
           <input type="hidden" name="foto_category" value="<?= $icon ?>">
@@ -16,7 +23,7 @@
 
         <div>
           <div class="uploadcms mb-3 upload-container" style="min-height: 290px;width:95%;">
-            <img class="rounded-15" src="<?= base_url('dist/img/uploads/categories/' . ($foto_category == '' ? 'default_image.png' : $foto_category)) ?>" alt="" id="photo_product" style="position:absolute;width:200px;height:175px;">
+            <img class="rounded-15" src="<?= base_url('dist/img/uploads/categories/' . $foto_category) ?>" alt="" id="photo_product" style="position:absolute;width:200px;height:175px;">
             <div class="border-upload text-center">
               <input type="text" name="base64_input" id="base64_input">
               <input class="file-input" type="file" name="foto" accept=".jpg, .jpeg, .png" hidden>
@@ -29,7 +36,7 @@
           <div class="col">
             <div class="form-group">
               <label class="form-label required">Nama Kategori</label>
-              <input type="text" name="name" class="form-control rounded-4" value="<?= $category ?? '' ?>">
+              <input type="text" name="name" class="form-control rounded-4" value="<?= $category ?? '' ?>" required>
             </div>
           </div>
         </div>

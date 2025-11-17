@@ -62,7 +62,8 @@ class Categories extends CI_Controller
 		$data = [
 			'foto_product' => '',
 			'submit_url' => 'categories/save',
-			'categories' => $categories
+			'categories' => $categories,
+			'icon' => '',
 		];
 		$this->M_app->admin_template($data, 'categories/admin_form_category');
 	}
@@ -73,39 +74,36 @@ class Categories extends CI_Controller
 		$product = $this->M_category->update_category('foto_default', 'product_category', 'update');
 
 		if ($product) {
-			$data = [
-				'status' => 200,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-success" role="alert">
+	Berhasil mengubah data kategori produk
+</div>';
 		} else {
-			$data = [
-				'status' => 400,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-danger" role="alert">
+	Gagal mengubah data kategori produk
+</div>';
 		}
-		$this->session->set_userdata($data);
+
+		$this->session->set_flashdata('message', $alert);
 
 		redirect('admin/categories/edit/' . $id);
 	}
 
 	public function save()
 	{
-		$product = $this->M_category->save_product(1, 'products', 'insert');
+		$product = $this->M_category->save_product(1, 'product_category', 'insert');
 
 		if ($product) {
-			$data = [
-				'status' => 200,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-success" role="alert">
+	Berhasil menambah data kategori produk
+</div>';
 		} else {
-			$data = [
-				'status' => 400,
-				'msg_akun' => $this->session->userdata('id_akun'),
-			];
+			$alert = '<div class="alert alert-danger" role="alert">
+	Gagal menambah data kategori produk
+</div>';
 		}
-		$this->session->set_userdata($data);
+		$this->session->set_flashdata('message', $alert);
 
-		redirect('admin/categories/create');
+		redirect('admin/categories');
 	}
 
 	public function promo()
