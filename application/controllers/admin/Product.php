@@ -117,6 +117,26 @@ class Product extends CI_Controller
 		redirect('admin/product/edit/' . $id);
 	}
 
+	public function delete()
+	{
+		$id = $this->input->post('id');
+		$this->db->where(['id' => $id]);
+		$delete = $this->db->delete('products');
+		if ($delete) {
+			$alert = '<div class="alert alert-success" role="alert">
+	Berhasil menghapus data produk
+</div>';
+		} else {
+			$alert = '<div class="alert alert-danger" role="alert">
+	Gagal menghapus data produk
+</div>';
+		}
+
+		$this->session->set_flashdata('message', $alert);
+
+		redirect('admin/product');
+	}
+
 	public function promo()
 	{
 		$data = [];

@@ -31,19 +31,19 @@
           <div class="col">
             <div class="form-group">
               <label class="form-label required">Nama Produk</label>
-              <input type="text" name="name" class="form-control rounded-4" value="<?= $name ?? '' ?>">
+              <input type="text" name="name" class="form-control rounded-4" value="<?= $name ?? '' ?>" required>
             </div>
             <div class="form-group">
               <label class="form-label required">SKU</label>
-              <input type="text" name="sku" class="form-control" value="<?= $sku ?? '' ?>">
+              <input type="text" name="sku" class="form-control" value="<?= $sku ?? '' ?>" required>
             </div>
             <div class="form-group">
               <label class="form-label required">Harga</label>
-              <input type="number" name="price" class="form-control" value="<?= $price ?? '' ?>">
+              <input type="number" name="price" class="form-control" value="<?= $price ?? '' ?>" required>
             </div>
             <div class="form-group">
               <label class="form-label required">Stok</label>
-              <input type="number" name="stock" class="form-control" value="<?= $stock ?? '' ?>">
+              <input type="number" name="stock" class="form-control" value="<?= $stock ?? '' ?>" required>
             </div>
             <div class="form-group">
               <label class="form-label">Category</label>
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
               <label class="form-label required">Discount</label>
-              <input type="number" name="discount" class="form-control" min="0" max="100" value="<?= $discount ?? '' ?>">
+              <input type="number" name="discount" class="form-control" min="0" max="100" value="<?= $discount ?? '' ?>" required>
             </div>
             <div class="form-group">
               <label for="" class="form-label">Deskripsi Produk</label>

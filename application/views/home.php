@@ -41,8 +41,9 @@
           <a href="#" class="col-4 text-end">Lihat Semua</a>
         </div>
         <div class="d-flex">
-          <?php foreach ($categories as $cat) : ?>
+          <?php foreach ($categories as $key => $cat) : ?>
             <?php
+            if($key >= 4) break; // limit to 4 categories shown
             if ($cat->icon == '') {
               $icon = "dist/img/uploads/categories/default_image.png";
             } else {
