@@ -9,25 +9,30 @@ class M_product extends CI_Model
     $this->load->model('M_app');
   }
 
-  public function getId($table)
+  public function get_total_product()
   {
-    $q = $this->db->query("SELECT MAX(id) AS kd_max FROM $table")->row_array();
-    $tmp = ((int) $q['kd_max']) + 1;
-    return sprintf("%04s", $tmp);
+    $total = $this->db->select('count(*) total_product')
+      ->from('products')->get()->row_array();
+    if ($total) {
+      return $total['total_product'];
+    } 
+    
+    return 0;
   }
 
   // integer $id product id
   // integer $category 
   // bool $is_discount
-  public function get_all_products($id, $category, $is_discount){
+  public function get_all_products($id, $category, $is_discount)
+  {
     $where = '';
-    if($id){
+    if ($id) {
       $where .= " AND id = $id";
     }
-    if($category){
+    if ($category) {
       $where .= " AND category = $category";
     }
-    if($is_discount){
+    if ($is_discount) {
       $where .= " AND discount > 0";
     }
 
@@ -79,7 +84,7 @@ class M_product extends CI_Model
     $this->db->trans_start();
     // $this->db->insert('product', $user);
     $this->db->insert($table, $data);
-    
+
     $this->db->trans_complete();
 
     if ($this->db->trans_status()) {
@@ -98,7 +103,7 @@ class M_product extends CI_Model
 
     $foto = $this->input->post('foto_product');
 
-    $data = $this->update_prod($foto ,$foto_default);
+    $data = $this->update_prod($foto, $foto_default);
 
     $this->db->trans_start();
     $this->db->where(['id' => $id]);
@@ -109,7 +114,6 @@ class M_product extends CI_Model
     if ($this->db->trans_status()) {
       // $this->M_app->log_activity(' mengubah data ' . $activity . ' [' . $id . ']');
       return true;
-
     } else {
 
       return false;
@@ -149,5 +153,4 @@ class M_product extends CI_Model
       return false;
     }
   }
-
 }

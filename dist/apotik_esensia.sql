@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `long` varchar(200) NOT NULL DEFAULT '',
   `lat` varchar(200) NOT NULL DEFAULT '',
   `jalan` varchar(200) NOT NULL DEFAULT '',
+  `jarak` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `address_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -57,23 +58,23 @@ CREATE TABLE IF NOT EXISTS `cart_products` (
   `customer_id` int(11) DEFAULT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Data exporting was unselected.
 
--- Dumping structure for table esensia_apotek.invoice
-CREATE TABLE IF NOT EXISTS `invoice` (
+-- Dumping structure for table esensia_apotek.invoices
+CREATE TABLE IF NOT EXISTS `invoices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
   `order_price` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `expiry_date` datetime NOT NULL,
   `payment_id` int(11) NOT NULL DEFAULT 0,
-  `payment_method` varchar(100) NOT NULL DEFAULT '0',
-  `other` varchar(200) NOT NULL DEFAULT '0',
+  `payment_method` varchar(100) DEFAULT '0',
+  `other` varchar(200) DEFAULT '0',
   `is_paid` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -100,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ongkir` int(11) DEFAULT NULL,
   `jarak` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -113,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `order_products` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -129,8 +130,10 @@ CREATE TABLE IF NOT EXISTS `products` (
   `description` text NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
+  `tipe` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -144,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `product_category` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 

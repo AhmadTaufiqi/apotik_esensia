@@ -16,6 +16,43 @@ class M_orders extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
+  public function get_total_orders($is_today)
+  {
+    $today = date('Y-m-d');
+    $query = 'SELECT * FROM orders';
+    $query .= ' WHERE 1 = 1';
+    
+    if ($is_today) {
+      $query .= " AND created_at LIKE '$today%'";
+    }
+
+    $total = $this->db->query($query)->result_array();
+    if ($total) {
+      return $total;
+    }
+
+    return [];
+  }
+
+  public function get_total_income($is_today)
+  {
+    $today = date('Y-m-d');
+    $query = 'SELECT sum(cost_price) total_income FROM orders';
+    $query .= " WHERE status = 'shipped'";
+    
+    if ($is_today) {
+      $query .= " AND created_at LIKE '$today%'";
+    }
+
+    $total = $this->db->query($query)->row_array();
+
+    if ($total['total_income']) {
+      return $total['total_income'];
+    }
+
+    return 0;
+  }
+
   public function get_order_product($user_id)
   {
     $this->db->trans_start();
@@ -148,7 +185,7 @@ class M_orders extends CI_Model
     $arr_result = [
       'order_id' => $order_id,
     ];
-    
+
     if ($this->db->trans_status()) {
 
       //belum dibuat tabel nya
@@ -167,7 +204,7 @@ class M_orders extends CI_Model
     $products = $this->input->post('product_id');
     $qty = $this->input->post('product_qty');
 
-    foreach($products as $i => $id){
+    foreach ($products as $i => $id) {
       $data = [
         'order_id' => $order_id,
         'product_id' => $id,
@@ -178,7 +215,6 @@ class M_orders extends CI_Model
       $this->db->insert('order_products', $data);
       $this->db->trans_complete();
     }
-    
   }
 
   public function update_product($foto_default, $table, $activity)

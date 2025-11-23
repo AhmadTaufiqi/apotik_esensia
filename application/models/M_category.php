@@ -16,12 +16,23 @@ class M_category extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
+  public function get_total_categories()
+  {
+    $total = $this->db->select('count(*) total_categories')
+      ->from('product_category')->get()->row_array();
+    if ($total) {
+      return $total['total_categories'];
+    }
+
+    return 0;
+  }
+
   public function data_prod($role)
   {
     $data = [
       // 'id' => $this->uuid->v4(),
       'category' => ucwords($this->input->post('name')),
-			'icon' => $this->M_app->uploadBase64('categories', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
+      'icon' => $this->M_app->uploadBase64('categories', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
 
       'created_at' => $this->M_app->datetime(),
       // 'updated_at' => $this->M_app->datetime(),

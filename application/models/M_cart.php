@@ -16,6 +16,24 @@ class M_cart extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
+  public function get_total_prod_oncart($is_today)
+  {
+    $today = date('Y-m-d');
+    $query = 'SELECT count(*) total_oncart FROM cart_products';
+    $query .= ' WHERE status = 1';
+
+    if ($is_today) {
+      $query .= " AND created_at LIKE '$today%'";
+    }
+
+    $total = $this->db->query($query)->row_array();
+    if ($total) {
+      return $total['total_oncart'];
+    }
+
+    return 0;
+  }
+
   public function get_cart_product($id)
   {
     $this->db->trans_start();

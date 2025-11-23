@@ -28,10 +28,22 @@ body {
   line-height: 1.2;
 }
 
+body button {
+  color: #444444;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
 main {
   /* min-height: 100vh; */
   /* display: flex; */
   background-color: #f2f2f2;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #444444;
 }
 
 .vertical .navbar-brand .logo2 {
@@ -259,8 +271,12 @@ div:has(> button.btn-add-to-cart) {
 
 .card {
   border: 1px solid rgb(241, 241, 241);
-  border-radius: 10px;
+  border-radius: 17px;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.03);
+}
+
+.mobile-container .card {
+  border-radius: 12px;
 }
 
 .bg-dark {
