@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Orders extends CI_Controller
+class User extends CI_Controller
 {
   public function __construct()
   {
@@ -24,24 +24,15 @@ class Orders extends CI_Controller
 
   public function index()
   {
-    $orders = $this->M_orders->get_all_orders();
+    $user_id = $this->session->userdata('id_akun');
+    $orders = $this->M_orders->get_order($user_id);
 
     $data = [
-			'title' => 'Pesanan',
+			'title' => 'Manajemen User',
       'data' => $orders
     ];
 
-    $this->M_app->admin_template($data, 'order/admin_orders');
-  }
-
-  public function payment()
-  {
-    $this->load->view('order/index');
-  }
-
-  public function shipping()
-  {
-    $this->load->view('order/index');
+    $this->M_app->admin_template($data, 'user_management');
   }
 
   public function ongkir()

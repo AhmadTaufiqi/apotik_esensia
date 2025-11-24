@@ -86,8 +86,8 @@
         <div class="card p-3 h-100">
           <div class="d-flex justify-content-between mb-2">
             <div>
-              <div class="fw-bold">Pesanan Belum Dibayar</div>
-              <small class="text-muted">12 bulan terakhir (data dummy)</small>
+              <div class="fw-bold">Pesanan Gagal</div>
+              <small class="text-muted">1 Minggu (unpaid/missing)</small>
             </div>
           </div>
           <canvas id="chart-monthly" style="height:260px"></canvas>

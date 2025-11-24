@@ -27,7 +27,7 @@
                 <li class="nav-item w-100 <?= $this->uri->segment(2) == 'product' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin/product" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
-                    <span class="ml-2 item-text">Products</span>
+                    <span class="ml-2 item-text">Produk</span>
                   </a>
                 </li>
               </ul>
@@ -35,7 +35,7 @@
                 <li class="nav-item w-100 <?= $this->uri->segment(2) == 'categories' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin/categories" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
-                    <span class="ml-2 item-text">Products Category</span>
+                    <span class="ml-2 item-text">Kategori Produk</span>
                   </a>
                 </li>
               </ul>
@@ -43,7 +43,15 @@
                 <li class="nav-item w-100 <?= $this->uri->segment(2) == 'orders' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin/orders" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
-                    <span class="ml-2 item-text">Orders</span>
+                    <span class="ml-2 item-text">Pesanan</span>
+                  </a>
+                </li>
+              </ul>
+              <ul class="navbar-nav flex-fill w-100 mb-2">
+                <li class="nav-item w-100 <?= $this->uri->segment(2) == 'user' ? 'active' : ''?>">
+                  <a href="<?= base_url()?>admin/user" class="nav-link">
+                    <i class="fas fa-users fa-lg"></i>
+                    <span class="ml-2 item-text">Manajemen User</span>
                   </a>
                 </li>
               </ul>

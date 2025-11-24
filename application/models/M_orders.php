@@ -124,14 +124,13 @@ class M_orders extends CI_Model
     return $order;
   }
 
-  public function get_order_onchart($product_id, $user_id)
+  public function get_all_orders()
   {
     $this->db->trans_start();
-    $order = $this->db->select('*')
-      ->from('orders o')
-      ->where(['o.product_id' => $product_id,])
-      ->get()
-      ->result_object();
+    $query = 'SELECT * FROM orders o';
+    $query .= ' INNER JOIN users u ON u.id=o.customer_id';
+    $query .= ' WHERE 1 = 1';
+      $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
     return $order;
