@@ -1,6 +1,6 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex mb-3">
-    <h2 class="mb-0">Produk</h2>
+    <h2 class="mb-0"><?= $title ?></h2>
     <a href="<?= base_url() ?>admin/product/create" class="btn btn-primary ms-auto text-light" style="align-content:center;">
       <i class="fas fa-plus me-1"></i>
       Tambah Produk

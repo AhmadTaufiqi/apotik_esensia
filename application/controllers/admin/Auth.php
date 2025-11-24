@@ -28,7 +28,7 @@ class Auth extends CI_Controller
 
 		//if usser ada
 		if ($user) {
-			if ($user['role'] == 1 || $user['role'] == 2 || $user['role'] == 6 || $user['role'] == 8) {
+			if ($user['role'] == 1) {
 				//cek password
 				if ($password == $user['password']) {
 					$user_foto = 'default.png';

@@ -28,6 +28,7 @@ class Orders extends CI_Controller
     $orders = $this->M_orders->get_order($user_id);
 
     $data = [
+			'title' => 'Pesanan',
       'data' => $orders
     ];
 

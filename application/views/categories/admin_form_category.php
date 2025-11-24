@@ -3,7 +3,7 @@
     <div class="card col-12 col-lg-9 px-0">
       <div class="card-body">
         <?= $this->session->flashdata('message') ?>
-        <h3 class="mb-3">Create Category</h3>
+        <h4 class="mb-3"><?= $title ?></h4>
         <?php
         $foto_category = $icon ?? '';
 

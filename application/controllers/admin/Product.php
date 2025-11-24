@@ -29,6 +29,7 @@ class Product extends CI_Controller
 		$select_category = 'SELECT pc.category FROM product_category pc WHERE pc.id = p.category';
 		$prod = $this->db->query("SELECT p.*,($select_category) t_category FROM products p ORDER BY p.created_at DESC")->result();
 		$data = [
+			'title' => 'Produk',
 			'data' => $prod
 		];
 
@@ -45,6 +46,7 @@ class Product extends CI_Controller
 		$categories = $this->db->query('SELECT * FROM product_category')->result();
 
 		$data = [
+			'title' => 'Tambah Produk',
 			'foto_product' => '',
 			'submit_url' => 'product/save',
 			'categories' => $categories
@@ -62,6 +64,7 @@ class Product extends CI_Controller
 			->get()->row_object();
 
 		$data = [
+			'title' => 'Edit Produk',
 			'categories' => $categories,
 			'submit_url' => 'product/update',
 			'id' => $product->id,
@@ -90,8 +93,7 @@ class Product extends CI_Controller
   Gagal menyimpan data produk
 </div>';
 		}
-		var_dump($alert);
-		exit;
+
 		$this->session->set_flashdata('message', $alert);
 
 		redirect('admin/product/create');

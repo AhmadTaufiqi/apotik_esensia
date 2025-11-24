@@ -28,6 +28,7 @@ class Categories extends CI_Controller
 		// $this->load->view('index');
 		$prod = $this->db->query("SELECT * FROM product_category ORDER BY created_at DESC")->result();
 		$data = [
+			'title' => 'Kategori Produk',
 			'data' => $prod
 		];
 
@@ -47,6 +48,7 @@ class Categories extends CI_Controller
 			->get()->row_object();
 
 		$data = [
+			'title' => 'Edit Kategori',
 			'submit_url' => 'categories/update',
 			'id' => $category->id,
 			'category' => $category->category,
@@ -60,6 +62,7 @@ class Categories extends CI_Controller
 		$categories = $this->db->query('SELECT * FROM product_category')->result();
 
 		$data = [
+			'title' => 'Tambah Kategori',
 			'foto_product' => '',
 			'submit_url' => 'categories/save',
 			'categories' => $categories,

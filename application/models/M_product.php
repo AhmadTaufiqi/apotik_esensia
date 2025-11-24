@@ -15,13 +15,13 @@ class M_product extends CI_Model
       ->from('products')->get()->row_array();
     if ($total) {
       return $total['total_product'];
-    } 
-    
+    }
+
     return 0;
   }
 
   // integer $id product id
-  // integer $category 
+  // integer $category
   // bool $is_discount
   public function get_all_products($id, $category, $is_discount)
   {
@@ -43,17 +43,16 @@ class M_product extends CI_Model
   public function data_prod($role)
   {
     $data = [
-      // 'id' => $this->uuid->v4(),
       'name' => ucwords($this->input->post('name')),
       'sku' => $this->input->post('sku'),
       'price' => $this->input->post('price'),
-      // 'is_discount' => $this->input->post('is_discount'),
+      'stock' => $this->input->post('stock'),
       'discount' => $this->input->post('discount'),
-      'image' => $this->M_app->uploadFile('products', 'jpg|jpeg|png', 'file', 'default_image.png'),
+      // 'image' => $this->M_app->uploadFile('products', 'jpg|jpeg|png', 'file', 'default_image.png'),
+      'image' => $this->M_app->uploadBase64('products', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
       'description' => $this->input->post('description'),
       'category' => $this->input->post('category'),
       'created_at' => $this->M_app->datetime(),
-      // 'updated_at' => $this->M_app->datetime(),
     ];
 
     return $data;
@@ -66,12 +65,11 @@ class M_product extends CI_Model
       'sku' => $this->input->post('sku'),
       'price' => $this->input->post('price'),
       'stock' => $this->input->post('stock'),
-      'is_discount' => $this->input->post('is_discount'),
       'discount' => $this->input->post('discount'),
       'image' => $this->M_app->updateBase64('products', $foto, 'jpg|jpeg|png', 'base64_input', $foto_default),
       'description' => $this->input->post('description'),
       'category' => $this->input->post('category'),
-      'created_at' => $this->M_app->datetime(),
+      // 'created_at' => $this->M_app->datetime(),
     ];
 
     return $prod;

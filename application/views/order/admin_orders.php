@@ -1,10 +1,6 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex mb-3">
-    <h1 class="mb-0">Orders</h1>
-    <a href="<?= base_url()?>admin/product/create" class="btn btn-primary ms-auto" style="align-content:center;">
-      <i class="fas fa-plus me-1"></i>
-      Create Order
-    </a>
+    <h2 class="mb-0"><?= $title ?></h2>
   </div>
 
   <div class="card">

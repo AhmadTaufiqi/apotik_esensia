@@ -1,10 +1,10 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <form action="<?= base_url('admin/' . $submit_url) ?>" method="POST" enctype="multipart/form-data">
 
-    
+
     <div class="card col-12 col-lg-9 px-0">
       <div class="card-body">
-        <h3 class="mb-3">Create Product</h3>
+        <h4 class="mb-3"><?= $title ?></h4>
         <?= $this->session->flashdata('message') ?>
         <?php
         $foto_product = $image ?? '';
