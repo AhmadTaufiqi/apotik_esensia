@@ -163,10 +163,13 @@
         const data = [];
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
         const now = new Date();
-        // last 6 months
-        for (let i = 5; i >= 0; i--) {
+        // last 7 days
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
           const m = new Date(now.getFullYear(), now.getMonth() - i, 1);
-          labels.push(monthNames[m.getMonth()] + ' ' + m.getFullYear());
+
+          labels.push(d.getDate() + ' ' + monthNames[d.getMonth()]);
+
           data.push(Math.floor(Math.random() * 800) + 50);
         }
         return {
