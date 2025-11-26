@@ -86,7 +86,7 @@
         <div class="card p-3 h-100">
           <div class="d-flex justify-content-between mb-2">
             <div>
-              <div class="fw-bold">Pesanan Gagal</div>
+              <div class="fw-bold">Pesanan Dibatalkan</div>
               <small class="text-muted">1 Minggu (unpaid/missing)</small>
             </div>
           </div>
@@ -221,7 +221,7 @@
       data: {
         labels: dummy.monthly.labels,
         datasets: [{
-          label: 'Produk Terlaris Bulan November',
+          label: 'Produk Batal Dipesan',
           data: dummy.monthly.data,
           backgroundColor: 'rgba(13,110,253,0.8)'
         }]

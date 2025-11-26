@@ -67,9 +67,9 @@
       </a>
     </div>
 
-    <input type="text" name="total_cost_price" value="<?= $total_price ?>">
-    <input type="text" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
-    <input type="text" name="payment_method" id="payment_method">
+    <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
+    <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
+    <input type="hidden" name="payment_method" id="payment_method">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
       <button id="btn_create_order" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
@@ -131,13 +131,13 @@
       <div class="row g-2">
         <div class="col-6">
           <div class="payment-option" data-value="BCA Virtual Account">
-            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/6/68/Logo_BCA.svg/512px-Logo_BCA.svg.png" alt="BCA VA" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bca.png" alt="BCA VA" />
             <span>BCA VA</span>
           </div>
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="BRI Virtual Account">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bank_BRI_logo.svg/512px-Bank_BRI_logo.svg.png" alt="BRI VA" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bri.png" alt="BRI VA" />
             <span>BRI VA</span>
           </div>
         </div>
@@ -149,7 +149,7 @@
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="BNI Virtual Account">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_BNI.svg/512px-Logo_BNI.svg.png" alt="BNI VA" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bni.png" alt="BNI VA" />
             <span>BNI VA</span>
           </div>
         </div>
@@ -197,7 +197,7 @@
     <div id="selectedMethod" class="text-center text-muted">
       Belum ada metode yang dipilih
     </div>
-    <input type="text" id="temp_payment_method" name="payment_method">
+    <input type="hidden" id="temp_payment_method" name="payment_method">
     <div class="ms-auto">
       <button class="btn btn-sm btn-success" id="save_payment_method">Simpan</button>
     </div>
