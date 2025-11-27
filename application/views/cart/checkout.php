@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <input type="hidden" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
+        <input type="text" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
         <input type="hidden" name="product_id[<?= $i ?>]" value="<?= $prod_dataset['id'] ?>">
         <input type="hidden" name="product_qty[<?= $i ?>]" value="<?= $quantity ?>">
       <?php endforeach; ?>
@@ -92,31 +92,31 @@
       <div class="row g-2">
         <div class="col-6">
           <div class="payment-option" data-value="Bank BCA">
-            <img src="https://upload.wikimedia.org/wikipedia/id/thumb/6/68/Logo_BCA.svg/512px-Logo_BCA.svg.png" alt="BCA" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bca.png" alt="BCA" />
             <span>Bank BCA</span>
           </div>
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="Bank BRI">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bank_BRI_logo.svg/512px-Bank_BRI_logo.svg.png" alt="BRI" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bri.png" alt="BRI" />
             <span>Bank BRI</span>
           </div>
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="Bank Mandiri">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Logo_Bank_Mandiri.svg/512px-Logo_Bank_Mandiri.svg.png" alt="Mandiri" />
+            <img src="<?= base_url()?>dist/img/payment_methods/mandiri.png" alt="Mandiri" />
             <span>Bank Mandiri</span>
           </div>
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="Bank BNI">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_BNI.svg/512px-Logo_BNI.svg.png" alt="BNI" />
+            <img src="<?= base_url()?>dist/img/payment_methods/bni.png" alt="BNI" />
             <span>Bank BNI</span>
           </div>
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="CIMB Niaga">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/CIMB_Niaga_logo.svg/512px-CIMB_Niaga_logo.svg.png" alt="CIMB Niaga" />
+            <img src="<?= base_url()?>dist/img/payment_methods/cimb-niaga.png" alt="CIMB Niaga" />
             <span>CIMB Niaga</span>
           </div>
         </div>
@@ -143,7 +143,7 @@
         </div>
         <div class="col-6">
           <div class="payment-option" data-value="Mandiri Virtual Account">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Logo_Bank_Mandiri.svg/512px-Logo_Bank_Mandiri.svg.png" alt="Mandiri VA" />
+            <img src="<?= base_url()?>dist/img/payment_methods/mandiri.png" alt="Mandiri VA" />
             <span>Mandiri VA</span>
           </div>
         </div>
@@ -161,7 +161,7 @@
       <div class="category-title">
         <i class="bi bi-wallet2 category-icon"></i> E-Wallet
       </div>
-      <div class="row g-2">
+      <div class="row g-2" hidden>
         <div class="col-6">
           <div class="payment-option" data-value="GoPay">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/GoPay_logo.svg/512px-GoPay_logo.svg.png" alt="GoPay" />
@@ -185,7 +185,7 @@
       <div class="row g-2">
         <div class="col-12">
           <div class="payment-option" data-value="QRIS (All Payment QR)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Logo_QRIS.svg/512px-Logo_QRIS.svg.png" alt="QRIS" />
+            <img src="<?= base_url()?>dist/img/payment_methods/qris.png" alt="QRIS" />
             <span>QRIS (All Payment QR)</span>
           </div>
         </div>

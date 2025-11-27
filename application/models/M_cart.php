@@ -224,7 +224,7 @@ class M_cart extends CI_Model
       'updated_at' => $this->M_app->datetime()
     ];
 
-    $this->db->where_in(['id' => $arr_id])->update('cart_products', $data);
+    $this->db->where_in('id', $arr_id)->update('cart_products', $data);
     $this->db->trans_complete();
     if ($this->db->trans_status()) {
       // $this->M_app->log_activity($activity);
