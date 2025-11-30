@@ -586,3 +586,13 @@ a {
   font-size: 1.1rem;
   color: #0d6efd;
 }
+
+
+/* change select2 style like as bootstrap style */
+
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid #dee2e6 !important;
+  padding-top: 0.3rem;
+  padding-bottom: 0.55rem!important;
+  padding-left: 0.55rem!important;
+}

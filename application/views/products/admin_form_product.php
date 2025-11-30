@@ -47,10 +47,16 @@
             </div>
             <div class="form-group">
               <label class="form-label">Category</label>
-              <select name="category" id="" class="form-control">
-                <option value=""></option>
+              <select name="category[]" id="category_select" class="form-control select2" multiple="multiple" data-placeholder="Pilih kategori">
                 <?php foreach ($categories as $cat) : ?>
-                  <option value="<?= $cat->id ?>" <?= (isset($category) && $category == $cat->id) ? 'selected' : '' ?>><?= $cat->category ?></option>
+                  <?php
+                    $selected = '';
+                    if (isset($category)) {
+                      if (is_array($category) && in_array($cat->id, $category)) $selected = 'selected';
+                      elseif (!is_array($category) && $category == $cat->id) $selected = 'selected';
+                    }
+                  ?>
+                  <option value="<?= $cat->id ?>" <?= $selected ?>><?= $cat->category ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -73,3 +79,19 @@
     </div>
   </form>
 </main>
+<script>
+  // Initialize Select2 for category selection (multiple)
+  document.addEventListener("DOMContentLoaded", function() {
+  
+    console.log(typeof $)
+    if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
+      // select2 not loaded; nothing to do
+      return;
+    }
+    $('#category_select').select2({
+      width: '100%',
+      placeholder: $('#category_select').data('placeholder') || 'Pilih kategori',
+      allowClear: true
+    });
+  });
+</script>

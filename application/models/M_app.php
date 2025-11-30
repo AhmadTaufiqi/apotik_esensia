@@ -44,6 +44,39 @@ class M_app extends CI_Model
         $this->load->view('layouts/foot-cart');
     }
 
+    public function getOrderStatusHtml($status)
+    {
+        $statusData = [
+            'unpaid' => [
+                'icon' => 'fas fa-money-bill',
+                'label' => 'Belum Dibayar',
+                'class' => 'order-status-unpaid'
+            ],
+            'processing' => [
+                'icon' => 'fas fa-box',
+                'label' => 'Dikemas',
+                'class' => 'order-status-processing'
+            ],
+            'sending' => [
+                'icon' => 'fas fa-motorcycle',
+                'label' => 'Dikirim',
+                'class' => 'order-status-sending'
+            ],
+            'shipped' => [
+                'icon' => 'fas fa-box-open',
+                'label' => 'Pesanan Tiba',
+                'class' => 'order-status-shipped'
+            ]
+        ];
+
+        if (!isset($statusData[$status])) {
+            return '<div class="order-status-unknown"><i class="fas fa-question-circle"></i><span>Unknown</span></div>';
+        }
+
+        $data = $statusData[$status];
+        return '<div class="' . $data['class'] . '"><i class="me-1 ' . $data['icon'] . '"></i><span>' . $data['label'] . '</span></div>';
+    }
+
        public function uploadBase64($dir, $types, $name, $default)
     {
         $image = $this->input->post($name);

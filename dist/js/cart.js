@@ -1,5 +1,6 @@
 $(document).ready(function() {
   $('.btn-add-to-cart').on('click', function() {
+    console.log('clicked');
     if (!is_login) {
       window.location = "auth/logout";
     }
@@ -12,7 +13,7 @@ $(document).ready(function() {
     var product_id = $(this).data('product-id');
 
     $.post({
-      url: 'cart/addToCart',
+      url: base_url + 'cart/addToCart',
       data: {
         'product_id': product_id
       },

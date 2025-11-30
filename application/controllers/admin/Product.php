@@ -75,7 +75,7 @@ class Product extends CI_Controller
 			'stock' => $product->stock,
 			'discount' => $product->discount,
 			'description' => $product->description,
-			'category' => $product->category,
+			'category' => explode(',', $product->categories),
 		];
 		$this->M_app->admin_template($data, 'products/admin_form_product');
 	}
@@ -102,7 +102,7 @@ class Product extends CI_Controller
 	public function update()
 	{
 		$id = $this->input->post('id');
-		$product = $this->M_product->update_product('foto_default', 'products', 'update');
+		$product = $this->M_product->update_product('default_image.png', 'products', 'update');
 
 		if ($product) {
 			$alert = '<div class="alert alert-success" role="alert">

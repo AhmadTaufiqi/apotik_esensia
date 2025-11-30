@@ -20,7 +20,7 @@
             <?php foreach ($data as $order) : ?>
               <tr>
                 <td><?= $order['name'] ?></td>
-                <td><?= $order['status'] ?></td>
+                <td class="order_status"><?= $order['status'] ?></td>
                 <td><?= $order['created_at'] ?></td>
                 <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
                 <td>
@@ -44,3 +44,27 @@
     </div>
   </div>
 </main>
+
+<script>
+  (function(){
+    const populateUrl = '<?= base_url("admin/orders/populateOrderStatus") ?>';
+
+    // For each status cell, request the formatted HTML and replace the cell content
+    document.querySelectorAll('td.order_status').forEach(function(td){
+      const raw = td.textContent || td.innerText || '';
+      const status = raw.trim();
+      if (!status) return;
+
+      // AJAX GET request
+      fetch(populateUrl + '?status=' + encodeURIComponent(status))
+        .then(function(res){ return res.text(); })
+        .then(function(html){
+          // replace the cell innerHTML with returned HTML
+          td.innerHTML = html;
+        })
+        .catch(function(err){
+          console.error('Error fetching status HTML', err);
+        });
+    });
+  })();
+</script>

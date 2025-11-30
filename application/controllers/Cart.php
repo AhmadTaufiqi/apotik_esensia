@@ -39,8 +39,8 @@ class Cart extends CI_Controller
 	public function addToCart()
 	{
 		// belum btul karena ditambah status
-		$user_id = $this->session->userdata('id_akun');
 		$product_id = $this->input->post('product_id');
+		$user_id = $this->session->userdata('id_akun');
 		$cart = $this->M_cart->get_user_cart_by_prod_id($product_id, $user_id, 1);
 
 

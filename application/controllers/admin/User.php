@@ -7,7 +7,7 @@ class User extends CI_Controller
   {
     parent::__construct();
     $this->load->model('M_app');
-    $this->load->model('M_orders');
+    $this->load->model('M_user');
 
     $is_nologin = false;
 
@@ -25,11 +25,11 @@ class User extends CI_Controller
   public function index()
   {
     $user_id = $this->session->userdata('id_akun');
-    $orders = $this->M_orders->get_order($user_id);
+    $users = $this->M_user->get_users();
 
     $data = [
 			'title' => 'Manajemen User',
-      'data' => $orders
+      'data' => $users
     ];
 
     $this->M_app->admin_template($data, 'user_management');

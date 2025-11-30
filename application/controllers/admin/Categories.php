@@ -74,7 +74,7 @@ class Categories extends CI_Controller
 	public function update()
 	{
 		$id = $this->input->post('id');
-		$product = $this->M_category->update_category('foto_default', 'product_category', 'update');
+		$product = $this->M_category->update_category('default_image.png', 'product_category', 'update');
 
 		if ($product) {
 			$alert = '<div class="alert alert-success" role="alert">

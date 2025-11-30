@@ -90,16 +90,16 @@
           <div class="col">
             <span class="fw-bold">Promo</span>
           </div>
-          <a href="<?= base_url('Products/Promo') ?>" class="col-4 text-end">Lihat Semua</a>
+          <a href="<?= base_url('Products') ?>" class="col-4 text-end">Lihat Semua</a>
         </div>
         <div class="slide-products">
           <div class="product-items">
             <?php foreach ($products as $pd) : ?>
-              <div class="col-5 p-0">
+              <a href="<?= base_url('products/detail/' . $pd->id) ?>" class="col-5 p-0" style="text-decoration: none; color: inherit;">
                 <div class="card card-product">
                   <div>
                     <div class="product-image">
-                      <button class="btn-add-to-cart" data-product-id="<?= $pd->id ?>"><i class="fas fa-plus"></i></button>
+                      <button class="btn-add-to-cart" data-product-id="<?= $pd->id ?>" onclick="event.stopPropagation(); event.preventDefault(); return false;"><i class="fas fa-plus"></i></button>
                       <img src="<?= base_url() ?>dist/img/uploads/products/<?= $pd->image ?>" alt="" class="w-100">
                     </div>
                     <p class="product-name"><?= $pd->name ?></p>
@@ -111,7 +111,7 @@
                     <p class="price">Rp.<?= number_format($price - ($price * $pd->discount / 100), 0, '', '.') ?></p>
                   </div>
                 </div>
-              </div>
+              </a>
             <?php endforeach; ?>
             <!-- <div class="col-5 p-0">
               <div class="card card-product">

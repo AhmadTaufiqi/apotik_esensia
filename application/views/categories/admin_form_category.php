@@ -36,7 +36,7 @@
           <div class="col">
             <div class="form-group">
               <label class="form-label required">Nama Kategori</label>
-              <input type="text" name="name" class="form-control rounded-4" value="<?= $category ?? '' ?>" required>
+              <input type="text" name="name" class="form-control rounded-4" value="<?= $category ?? '' ?>" required maxlength="50">
             </div>
           </div>
         </div>

@@ -15,6 +15,59 @@ class M_user extends CI_Model
         return sprintf("%04s", $tmp);
     }
 
+    public function get_users(){
+        // Basic fetch: return all non-deleted users
+        $this->db->trans_start();
+        $q = $this->db->select('*')
+            ->from('users')
+            ->where('deleted_at IS NULL', null, false)
+            ->get();
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status()) {
+            return $q->result_array();
+        }
+
+        return [];
+    }
+
+    /**
+     * Flexible users fetch with options
+     * $opts = [ 'where' => [...], 'order_by' => 'created_at DESC', 'limit' => 10, 'offset' => 0 ]
+     */
+    public function fetch_users($opts = [])
+    {
+        $this->db->trans_start();
+        $this->db->select('*')->from('users');
+
+        // exclude deleted by default
+        if (empty($opts['include_deleted'])) {
+            $this->db->where('deleted_at IS NULL', null, false);
+        }
+
+        if (!empty($opts['where']) && is_array($opts['where'])) {
+            $this->db->where($opts['where']);
+        }
+
+        if (!empty($opts['order_by'])) {
+            $this->db->order_by($opts['order_by']);
+        }
+
+        if (!empty($opts['limit'])) {
+            $offset = isset($opts['offset']) ? (int)$opts['offset'] : 0;
+            $this->db->limit((int)$opts['limit'], $offset);
+        }
+
+        $q = $this->db->get();
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status()) {
+            return $q->result_array();
+        }
+
+        return [];
+    }
+
     public function get_user_by_id($id) {
         $this->db->trans_start();
         $user = $this->db->select('*')

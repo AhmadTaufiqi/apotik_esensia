@@ -33,6 +33,24 @@ class Orders extends CI_Controller
 
     $this->M_app->admin_template($data, 'order/admin_orders');
   }
+  
+  public function populateOrderStatus()
+  {
+    // Accept status via GET or POST and return HTML fragment for that status
+    $status = $this->input->get_post('status');
+    if (empty($status)) {
+      // default to unpaid if not provided
+      $status = 'unpaid';
+    }
+
+    // Use the model method to generate HTML
+    $html = $this->M_app->getOrderStatusHtml($status);
+
+    // Return as HTML
+    header('Content-Type: text/html; charset=utf-8');
+    echo $html;
+    return;
+  }
 
   public function payment()
   {
