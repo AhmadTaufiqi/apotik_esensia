@@ -21,6 +21,9 @@
   <link rel="stylesheet" href="<?= base_url() ?>dist/css/style.css">
   <link rel="stylesheet" href="<?= base_url() ?>dist/cropperjs/dist/cropper.css">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- DataTables CSS -->
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700" rel="stylesheet" />
 
   <title><?= $title ?></title>

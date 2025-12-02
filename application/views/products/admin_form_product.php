@@ -61,8 +61,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label required">Discount</label>
-              <input type="number" name="discount" class="form-control" min="0" max="100" value="<?= $discount ?? '' ?>" required>
+              <label class="form-label required">Diskon</label>
+              <input type="number" name="discount" class="form-control" min="0" max="100" value="<?= $discount ?? 0 ?>" required maxlength="100" minlength="0">
             </div>
             <div class="form-group">
               <label for="" class="form-label">Deskripsi Produk</label>

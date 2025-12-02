@@ -10,7 +10,7 @@
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table">
+        <table class="table datatable">
           <thead>
             <tr>
               <th>Sku</th>
@@ -30,13 +30,13 @@
                 <td><?= number_format(empty($prod->price) ? 0 : $prod->price, 0, ',', '.') ?></td>
                 <td><?= $prod->stock ?></td>
                 <td><?= $prod->t_category ?></td>
-                <td><?= $prod->discount ?></td>
+                <td><?= $prod->discount ?> %</td>
                 <td>
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a href="" class="dropdown-item">
+                    <a href="<?= base_url('admin/product/detail/' . $prod->id) ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
                     <a class="dropdown-item" href="<?= base_url('admin/product/edit/' . $prod->id) ?>">
                       <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>

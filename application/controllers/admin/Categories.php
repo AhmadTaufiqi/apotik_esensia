@@ -37,7 +37,30 @@ class Categories extends CI_Controller
 
 	public function detail($id)
 	{
-		$id = $this->input->get('id');
+		// accept id from URL segment or GET as fallback
+		if (empty($id)) {
+			$id = $this->input->get('id');
+		}
+
+		if (empty($id)) {
+			show_404();
+		}
+
+		$category = $this->db->select('*')
+			->from('product_category')
+			->where(['id' => $id])
+			->get()->row();
+
+		if (empty($category)) {
+			show_404();
+		}
+
+		$data = [
+			'title' => 'Detail Kategori',
+			'category' => $category,
+		];
+
+		$this->M_app->admin_template($data, 'categories/admin_view_category');
 	}
 
 	public function edit($id)

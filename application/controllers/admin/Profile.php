@@ -53,9 +53,17 @@ class Profile extends CI_Controller
 		$data = [
 			'name' => $this->input->post('name'),
 			'telp' => $this->input->post('telp'),
-			// 'foto' => $this->M_app->updateFile('users', $foto, 'jpg|jpeg|png', 'file', 'default.png')
-			'foto' => $this->M_app->uploadBase64('users', 'jpg|jpeg|png', 'foto_base64', 'default.png'),
 		];
+
+		$update_foto = $this->M_app->updateBase64('users', $foto, 'jpg|jpeg|png', 'foto_base64', 'default.png');
+
+
+		if ($update_foto) {
+			$data = [
+				'foto' => $update_foto
+			];
+			$this->session->set_userdata('foto_akun', $update_foto);
+		}
 
 		$update = $this->M_app->update('users', ['id' => $id], $data, $activity);
 		if ($update) {
@@ -63,11 +71,6 @@ class Profile extends CI_Controller
 				'status' => 200,
 				'msg_akun' => $this->session->userdata('id_akun'),
 			];
-
-			$foto = [
-				'foto_akun' => $data['foto']
-			];
-			$this->session->set_userdata($foto);
 		} else {
 			$msg = [
 				'status' => 400,

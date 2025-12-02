@@ -8,10 +8,10 @@ localStorage.setItem("old_photo_profile",img.getAttribute('src'));
 
 const img_cropper = document.querySelector('#img_cropper');
 var cropper = new Cropper(img_cropper,{
-    aspectRatio:4/5,
+    aspectRatio:4/4,
     zoomable:false,
     minContainerHeight:250,
-    minContainerWidth:300,
+    minContainerWidth:250,
 })
 
 //if user hover on img div

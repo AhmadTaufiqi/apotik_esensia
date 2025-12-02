@@ -10,7 +10,7 @@
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table">
+        <table class="table datatable">
           <thead>
             <tr>
               <th>icon</th>
@@ -29,8 +29,6 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a href="" class="dropdown-item">
-                      <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
                     <a class="dropdown-item" href="<?= base_url('admin/categories/edit/' . $cat->id) ?>">
                       <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(1)">

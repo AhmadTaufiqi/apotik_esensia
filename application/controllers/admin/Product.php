@@ -38,7 +38,32 @@ class Product extends CI_Controller
 
 	public function detail($id)
 	{
-		$id = $this->input->get('id');
+		// accept id from URL segment or GET as fallback
+		if (empty($id)) {
+			$id = $this->input->get('id');
+		}
+
+		if (empty($id)) {
+			show_404();
+		}
+
+		$select_category = 'SELECT pc.category FROM product_category pc WHERE pc.id = p.category';
+		$product = $this->db->query("SELECT p.*,($select_category) t_category FROM products p WHERE p.id = " . $this->db->escape($id))->row();
+
+		if (empty($product)) {
+			show_404();
+		}
+
+		// load categories for sidebar/display if needed
+		$categories = $this->db->query('SELECT * FROM product_category')->result();
+
+		$data = [
+			'title' => 'Detail Produk',
+			'product' => $product,
+			'categories' => $categories,
+		];
+
+		$this->M_app->admin_template($data, 'products/admin_view_product');
 	}
 
 	public function create()
@@ -75,7 +100,7 @@ class Product extends CI_Controller
 			'stock' => $product->stock,
 			'discount' => $product->discount,
 			'description' => $product->description,
-			'category' => explode(',', $product->categories),
+			'category' => explode(',', $product->categories == '' ? '' : $product->categories),
 		];
 		$this->M_app->admin_template($data, 'products/admin_form_product');
 	}

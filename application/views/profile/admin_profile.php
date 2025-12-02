@@ -12,7 +12,7 @@
 					</li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">						
+					<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
 						<form action="<?= base_url('admin/profile/save') ?>" method="post" enctype="multipart/form-data">
 							<div class="row p-2">
 								<div class="col">
@@ -23,13 +23,13 @@
 									<div class="avatar d-flex align-items-center mb-3">
 										<div class="profile-pic-div">
 											<img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto != '' ? $foto : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
-											<input type="file" id="file" name="file" max="2000" accept=".jpg,.jpeg,.png">
+											<input type="file" id="file" name="foto" max="2000" accept=".jpg,.jpeg,.png">
+
 											<label for="file" id="uploadBtn">Pilih Foto</label>
 										</div>
-										<!-- <input type="text" id="foto_base64" name="foto_base64" max="2000"> -->
+										<input type="hidden" id="foto_base64" name="foto_base64" max="2000">
 									</div>
 								</div>
-								<input type="text" name="foto" value="<?=$foto?>">
 								<div class="col text-right">
 									<button type="reset" class="btn btn-large btn-light" style="border-radius: 33px;">Cancel</button>
 									<button type="submit" class="btn btn-primary" style="border-radius: 33px;">Save Changes</button>

@@ -10,33 +10,18 @@
   } ?>
   <ul class="nav ml-auto">
     <li class="nav-item dropdown me-2">
-      <a class="btn btn-light p-2 my-2" href="#" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="document.getElementById('notif-count').style.display='none'">
+      <a class="btn btn-light p-2 my-2" href="#" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa fa-bell fa-lg text-muted"></i>
-        <span id="notif-count" class="badge bg-danger text-white rounded-pill position-absolute" style="top:6px;right:-2px;font-size:10px;padding:3px 6px;">3</span>
+        <span id="notif-count" class="badge bg-danger text-white rounded-pill position-absolute" style="top:6px;right:-2px;font-size:10px;padding:3px 6px;display:none">0</span>
       </a>
       <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" aria-labelledby="notifDropdown" style="width:320px;">
         <li class="dropdown-header small text-muted px-3 py-2">Notifikasi</li>
         <li><hr class="dropdown-divider my-0"></li>
-        <li>
-          <a class="dropdown-item d-flex align-items-start" href="#">
-            <div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>
-            <div>
-              <div class="small fw-bold">Order Baru: INV1001</div>
-              <div class="small text-muted">Pembayaran diterima • 10 menit lalu</div>
-            </div>
-          </a>
-        </li>
-        <!-- <li>
-          <a class="dropdown-item d-flex align-items-start" href="#">
-            <div class="me-2 mt-1"><i class="fa fa-exclamation-triangle text-warning"></i></div>
-            <div>
-              <div class="small fw-bold">Stok Menipis</div>
-              <div class="small text-muted">Produk Paracetamol tersisa 5 pcs</div>
-            </div>
-          </a>
-        </li> -->
+        <div id="notif-list">
+          <li class="text-center small text-muted py-2">Memuat notifikasi...</li>
+        </div>
         <li><hr class="dropdown-divider my-0"></li>
-        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin/notifications') ?>">Lihat semua notifikasi</a></li>
+        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin/orders') ?>">Lihat semua notifikasi</a></li>
       </ul>
     </li>
     <li class="nav-item">
@@ -55,3 +40,44 @@
     </li>
   </ul>
 </nav>
+<script>
+  (function(){
+    const url = '<?= base_url('admin/orders/latestNotifications') ?>';
+    fetch(url)
+      .then(r => r.json())
+      .then(function(res){
+        const list = document.getElementById('notif-list');
+        const countEl = document.getElementById('notif-count');
+        if (!list) return;
+        list.innerHTML = '';
+        if (res.data && res.data.length) {
+          res.data.forEach(function(n){
+            const li = document.createElement('li');
+            li.className = 'dropdown-item d-flex align-items-start';
+            const a = document.createElement('a');
+            a.href = n.link || '<?= base_url('admin/orders') ?>';
+            a.className = 'd-flex align-items-start w-100 text-decoration-none text-reset';
+            a.innerHTML = '<div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>' +
+                          '<div><div class="small fw-bold">'+(n.title || '')+'</div>' +
+                          '<div class="small text-muted">'+(n.message || '')+'</div></div>';
+            li.appendChild(a);
+            list.appendChild(li);
+          });
+        } else {
+          const li = document.createElement('li');
+          li.className = 'text-center small text-muted py-2';
+          li.textContent = 'Belum ada notifikasi';
+          list.appendChild(li);
+        }
+
+        if (res.count && parseInt(res.count) > 0) {
+          countEl.style.display = 'inline-block';
+          countEl.textContent = res.count;
+        } else {
+          countEl.style.display = 'none';
+        }
+      }).catch(function(err){
+        console.error('Error loading notifications', err);
+      });
+  })();
+</script>

@@ -136,6 +136,32 @@ class M_orders extends CI_Model
     return $order;
   }
 
+  /**
+   * Get recent orders that should be shown as notifications.
+   * Conditions:
+   * - order.status = 'unpaid'
+   * - OR invoice.is_paid = 1 AND order.status NOT IN ('shipped','sending')
+   */
+  public function get_recent_notifications($limit = 5)
+  {
+    $this->db->trans_start();
+
+    $sql = "SELECT o.id AS order_id, o.status AS order_status, o.created_at AS order_created, u.nama AS customer_name, i.is_paid
+            FROM orders o
+            LEFT JOIN users u ON u.id = o.customer_id
+            LEFT JOIN invoices i ON i.order_id = o.id
+            WHERE (o.status = 'unpaid')
+               OR (i.is_paid = 1 AND (o.status IS NULL OR o.status NOT IN ('shipped','sending','completed')))
+            ORDER BY o.created_at DESC
+            LIMIT ?";
+
+    $query = $this->db->query($sql, [$limit]);
+    $res = $query->result_array();
+
+    $this->db->trans_complete();
+    return $res;
+  }
+
   public function data_order()
   {
     $data = [
