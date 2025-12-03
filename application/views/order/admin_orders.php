@@ -3,6 +3,61 @@
     <h4 class="mb-0"><?= $title ?></h4>
   </div>
 
+  <!-- Filter Form -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <form method="get" action="<?= base_url('admin/orders') ?>" class="row mx-0 g-3">
+        <!-- Search by name or order ID -->
+        <div class="col-md-3 px-1">
+          <label for="search" class="form-label">Cari Nama / Order ID</label>
+          <input type="text" class="form-control" id="search" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>" placeholder="Cari...">
+        </div>
+
+        <!-- Date Range -->
+        <div class="col-md-3 px-1">
+          <label for="date_range" class="form-label">Rentang Tanggal</label>
+          <input type="text" class="form-control" id="date_range" placeholder="Pilih rentang tanggal">
+          <input type="hidden" id="date_from" name="date_from" value="<?= htmlspecialchars($filters['date_from'] ?? '') ?>">
+          <input type="hidden" id="date_to" name="date_to" value="<?= htmlspecialchars($filters['date_to'] ?? '') ?>">
+        </div>
+
+        <!-- Customer Filter -->
+        <div class="col-md-3 px-1">
+          <label for="customer_id" class="form-label">Customer</label>
+          <select class="form-select form-control" id="customer_id" name="customer_id">
+            <option value="">Semua Customer</option>
+            <?php if (!empty($customers)) : ?>
+              <?php foreach ($customers as $cust) : ?>
+                <option value="<?= $cust->id ?>" <?= (isset($filters['customer_id']) && $filters['customer_id'] == $cust->id) ? 'selected' : '' ?>>
+                  <?= htmlspecialchars($cust->name) ?>
+                </option>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="col-md-2 px-1">
+          <label for="status" class="form-label">Status Pesanan</label>
+          <select class="form-select form-control" id="status" name="status">
+            <option value="">Semua Status</option>
+            <option value="unpaid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
+            <option value="processing" <?= (isset($filters['status']) && $filters['status'] === 'processing') ? 'selected' : '' ?>>Processing</option>
+            <option value="sending" <?= (isset($filters['status']) && $filters['status'] === 'sending') ? 'selected' : '' ?>>Sending</option>
+            <option value="shipped" <?= (isset($filters['status']) && $filters['status'] === 'shipped') ? 'selected' : '' ?>>Shipped</option>
+            <option value="completed" <?= (isset($filters['status']) && $filters['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
+          </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 d-flex gap-2 px-1">
+          <button type="submit" class="btn btn-primary">Filter</button>
+          <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">Reset</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
@@ -46,6 +101,49 @@
 </main>
 
 <script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    // Initialize DateRangePicker
+    const dateFromVal = '<?= htmlspecialchars($filters['date_from'] ?? '') ?>';
+    const dateToVal = '<?= htmlspecialchars($filters['date_to'] ?? '') ?>';
+    let startDate = moment().subtract(29, 'days');
+    let endDate = moment();
+
+    // If filter values exist, use them
+    if (dateFromVal && dateToVal) {
+      startDate = moment(dateFromVal, 'YYYY-MM-DD');
+      endDate = moment(dateToVal, 'YYYY-MM-DD');
+    }
+
+    $('#date_range').daterangepicker({
+      startDate: startDate,
+      endDate: endDate,
+      locale: {
+        format: 'DD/MM/YYYY',
+        separator: ' - ',
+        applyLabel: 'Terapkan',
+        cancelLabel: 'Batal',
+        fromLabel: 'Dari',
+        toLabel: 'Sampai',
+        customRangeLabel: 'Custom',
+        daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+        monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+      },
+      ranges: {
+        'Hari Ini': [moment(), moment()],
+        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+        '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+        'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+        'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+    }, function(start, end) {
+      // Update hidden fields with selected date range
+      $('#date_from').val(start.format('YYYY-MM-DD'));
+      $('#date_to').val(end.format('YYYY-MM-DD'));
+    });
+  });
+
   (function(){
     const populateUrl = '<?= base_url("admin/orders/populateOrderStatus") ?>';
 

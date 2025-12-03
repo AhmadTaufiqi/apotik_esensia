@@ -88,6 +88,9 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <!-- DateRangePicker JS (requires Moment.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="<?= base_url() ?>dist/js/jquery.stickOnScroll.js"></script>
     <script src="<?= base_url() ?>dist/js/apps.js"></script>
     <script src="<?= base_url() ?>dist/cropperjs/dist/cropper.js"></script>

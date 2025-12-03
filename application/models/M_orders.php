@@ -137,6 +137,56 @@ class M_orders extends CI_Model
   }
 
   /**
+   * Get orders with optional filters.
+   * 
+   * @param array $filters Array with keys: search (order/customer name), date_from, date_to, customer_id, status
+   * @return array
+   */
+  public function get_all_orders_filtered($filters = [])
+  {
+    $this->db->trans_start();
+
+    $query = 'SELECT * FROM orders o ';
+    $query .= 'INNER JOIN users u ON u.id=o.customer_id ';
+    $query .= 'WHERE 1=1 ';
+
+    // Search filter (customer name or order ID)
+    if (!empty($filters['search'])) {
+      $search = $this->db->escape_like_str($filters['search']);
+      $query .= "AND (u.name LIKE '%$search%' OR o.id LIKE '%$search%') ";
+    }
+
+    // Date range filter
+    if (!empty($filters['date_from'])) {
+      $date_from = $this->db->escape($filters['date_from']);
+      $query .= "AND DATE(o.created_at) >= $date_from ";
+    }
+    if (!empty($filters['date_to'])) {
+      $date_to = $this->db->escape($filters['date_to']);
+      $query .= "AND DATE(o.created_at) <= $date_to ";
+    }
+
+    // Customer filter
+    if (!empty($filters['customer_id'])) {
+      $customer_id = intval($filters['customer_id']);
+      $query .= "AND o.customer_id = $customer_id ";
+    }
+
+    // Status filter
+    if (!empty($filters['status'])) {
+      $status = $this->db->escape($filters['status']);
+      $query .= "AND o.status = $status ";
+    }
+
+    $query .= 'ORDER BY o.created_at DESC';
+
+    $order = $this->db->query($query)->result_array();
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
+  /**
    * Get recent orders that should be shown as notifications.
    * Conditions:
    * - order.status = 'unpaid'
@@ -146,7 +196,7 @@ class M_orders extends CI_Model
   {
     $this->db->trans_start();
 
-    $sql = "SELECT o.id AS order_id, o.status AS order_status, o.created_at AS order_created, u.nama AS customer_name, i.is_paid
+    $sql = "SELECT o.id AS order_id, o.status AS order_status, o.created_at AS order_created, u.name AS customer_name, i.is_paid
             FROM orders o
             LEFT JOIN users u ON u.id = o.customer_id
             LEFT JOIN invoices i ON i.order_id = o.id

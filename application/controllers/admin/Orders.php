@@ -24,11 +24,37 @@ class Orders extends CI_Controller
 
   public function index()
   {
-    $orders = $this->M_orders->get_all_orders();
+    // Read filter parameters
+    $search = $this->input->get('search');
+    $date_from = $this->input->get('date_from');
+    $date_to = $this->input->get('date_to');
+    $customer_id = $this->input->get('customer_id');
+    $status = $this->input->get('status');
+
+    // Build filters array
+    $filters = [
+      'search' => $search,
+      'date_from' => $date_from,
+      'date_to' => $date_to,
+      'customer_id' => $customer_id,
+      'status' => $status,
+    ];
+
+    // Get filtered orders (use filtered method if any filter is set, otherwise use default)
+    if (!empty($search) || !empty($date_from) || !empty($date_to) || !empty($customer_id) || !empty($status)) {
+      $orders = $this->M_orders->get_all_orders_filtered($filters);
+    } else {
+      $orders = $this->M_orders->get_all_orders();
+    }
+
+    // Get list of unique customers for filter dropdown
+    $customers = $this->db->select('id, name')->from('users')->where(['deleted_at' => null, 'role' => 2])->order_by('name', 'ASC')->get()->result();
 
     $data = [
-			'title' => 'Pesanan',
-      'data' => $orders
+      'title' => 'Pesanan',
+      'data' => $orders,
+      'customers' => $customers,
+      'filters' => $filters,
     ];
 
     $this->M_app->admin_template($data, 'order/admin_orders');

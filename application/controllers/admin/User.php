@@ -39,4 +39,68 @@ class User extends CI_Controller
   {
     $this->load->view('order/ongkir');
   }
+
+  public function view($id)
+  {
+    if (empty($id)) {
+      $id = $this->input->get('id');
+    }
+
+    if (empty($id)) show_404();
+
+    $user = $this->M_user->get_user_by_id($id);
+    if (empty($user)) show_404();
+
+    $address = $this->M_user->get_user_address_by_id($id);
+
+    $data = [
+      'title' => 'Detail User',
+      'user' => $user,
+      'address' => $address
+    ];
+
+    $this->M_app->admin_template($data, 'users/admin_view_user');
+  }
+
+  public function edit($id)
+  {
+    if (empty($id)) show_404();
+
+    $user = $this->M_user->get_user_by_id($id);
+    if (empty($user)) show_404();
+
+    $address = $this->M_user->get_user_address_by_id($id);
+
+    $data = [
+      'title' => 'Edit User',
+      'id' => $user['id'],
+      'name' => $user['name'],
+      'email' => $user['email'],
+      'telp' => $user['telp'],
+      'role' => $user['role'],
+      'profile' => $user['foto'] ?? '',
+      'address' => $address,
+      'submit_url' => 'user/update'
+    ];
+
+    $this->M_app->admin_template($data, 'users/admin_form_user');
+  }
+
+  public function update()
+  {
+    $id = $this->input->post('id');
+    $role = $this->input->post('role');
+
+    // use update_identitas which handles users and user_identitas updates
+    $updated = $this->M_user->update_identitas('', 'user', $role);
+
+    if ($updated) {
+      $alert = '<div class="alert alert-success" role="alert">\n\tBerhasil mengubah data user\n</div>';
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">\n\tGagal mengubah data user\n</div>';
+    }
+
+    $this->session->set_flashdata('message', $alert);
+    redirect('admin/user/edit/' . $id);
+  }
 }
