@@ -21,7 +21,7 @@ class M_orders extends CI_Model
     $today = date('Y-m-d');
     $query = 'SELECT * FROM orders';
     $query .= ' WHERE 1 = 1';
-    
+
     if ($is_today) {
       $query .= " AND created_at LIKE '$today%'";
     }
@@ -39,7 +39,7 @@ class M_orders extends CI_Model
     $today = date('Y-m-d');
     $query = 'SELECT sum(cost_price) total_income FROM orders';
     $query .= " WHERE status = 'shipped'";
-    
+
     if ($is_today) {
       $query .= " AND created_at LIKE '$today%'";
     }
@@ -130,10 +130,37 @@ class M_orders extends CI_Model
     $query = 'SELECT * FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
-      $order = $this->db->query($query)->result_array();
+    $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
     return $order;
+  }
+
+  public function get_weekly_orders($where)
+  {
+    $start_date = date('Y-m-d', strtotime('-6 days'));
+    $end_date = date('Y-m-d');
+
+    // Sesuaikan nama tabel/kolom (orders, created_at, total_price) sesuai DB Anda
+    $this->db->select("DATE(created_at) AS date, COUNT(*) AS order_count, IFNULL(SUM(cost_price),0) AS total_amount", false);
+
+    if (!empty($where)) {
+      $this->db->where($where);
+    }
+
+    // optional: filter range tanggal jika diberikan (expects 'YYYY-MM-DD')
+    if (!empty($start_date) && !empty($end_date)) {
+      $this->db->where("DATE(created_at) BETWEEN " . $this->db->escape($start_date) . " AND " . $this->db->escape($end_date));
+    }
+
+    // status should be completed orders
+    // $this->db->where('status', 'completed');
+
+    $this->db->group_by("DATE(created_at)");
+    $this->db->order_by("DATE(created_at) ASC");
+
+    $query = $this->db->get('orders');
+    return $query->result_array();
   }
 
   /**

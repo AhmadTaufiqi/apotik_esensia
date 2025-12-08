@@ -43,7 +43,7 @@ class Dashboard extends CI_Controller
 			->where(['id' => $user_id])
 			->get()
 			->row_array();
-			
+
 		$data = [
 			'title' => 'Dashboard',
 			'total_product' => $total_product,
@@ -55,6 +55,47 @@ class Dashboard extends CI_Controller
 		];
 
 		$this->M_app->admin_template($data, 'dashboard');
+	}
+
+	public function get_weekly_orders()
+	{
+		$weekly_orders = $this->M_orders->get_weekly_orders(null);
+
+		if ($weekly_orders) {
+			$start_date = date('Y-m-d', strtotime('-6 days'));
+			$end_date = date('Y-m-d');
+
+			$data['labels'] = [];
+			$data['data'] = [];
+			$data['success'] = true;
+
+			// populate 7 days (start_date .. end_date) into labels
+			$periodStart = new DateTime($start_date);
+			$periodEnd = new DateTime($end_date);
+			$periodEnd->modify('+1 day'); // include end date in DatePeriod
+
+			$interval = new DateInterval('P1D');
+			$daterange = new DatePeriod($periodStart, $interval, $periodEnd);
+
+			// echo json_encode($weekly_orders);
+			foreach ($daterange as $date) {
+				$data['labels'][] = $date->format('Y-m-d');
+
+				$column_values = array_column($weekly_orders, 'date'); // Get all 'name' values
+				$row_key = array_search($date->format('Y-m-d'), $column_values); // Find the key of 'Bob'
+
+				if ($row_key != '') {
+					$total_amount = $weekly_orders[$row_key]['total_amount'];
+					$data['data'][] = number_format($total_amount, 0, ',', '.');
+				} else {
+					$data['data'][] = '';
+				}
+			}
+		} else {
+			$data['success'] = false;
+		}
+
+		echo json_encode($data);
 	}
 
 	public function save()

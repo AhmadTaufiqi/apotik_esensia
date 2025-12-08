@@ -46,6 +46,10 @@ main {
   color: #444444;
 }
 
+.navbar-nav .nav-link {
+  padding: 0.8rem 0;
+}
+
 .vertical .navbar-brand .logo2 {
   display: none;
 }

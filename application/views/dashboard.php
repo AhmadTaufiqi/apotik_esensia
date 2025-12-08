@@ -135,7 +135,8 @@
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  (function() {
+  document.addEventListener("DOMContentLoaded", function() {
+
     // Dummy data generation
     const dummy = {
       // smaller sample numbers for a concise dashboard
@@ -195,6 +196,21 @@
 
     // daily chart
     const ctxDaily = document.getElementById('chart-daily').getContext('2d');
+    var data_ajax = $.ajax({
+      url: '<?= base_url("admin/dashboard/get_weekly_orders") ?>',
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        if (response.success) {
+          dummy.daily.labels = response.labels;
+          dummy.daily.data = response.data;
+        }
+      },
+      error: function() {
+        console.error('Failed to fetch weekly orders data');
+      }
+    });
+
     new Chart(ctxDaily, {
       type: 'line',
       data: {
@@ -232,5 +248,5 @@
       }
     });
 
-  })();
+  });
 </script>

@@ -25,12 +25,44 @@ class Product extends CI_Controller
 
 	public function index()
 	{
-		// $this->load->view('index');
+		// filters: search (name/sku), category, date_from/date_to (created_at)
 		$select_category = 'SELECT pc.category FROM product_category pc WHERE pc.id = p.category';
-		$prod = $this->db->query("SELECT p.*,($select_category) t_category FROM products p ORDER BY p.created_at DESC")->result();
+
+		$search = $this->input->get('search');
+		$category = $this->input->get('category');
+		$date_from = $this->input->get('date_from');
+		$date_to = $this->input->get('date_to');
+
+		$where = " WHERE p.deleted_at IS NULL ";
+
+		if (!empty($search)) {
+			$s = $this->db->escape_like_str($search);
+			$where .= " AND (p.name LIKE '%".$s."%' OR p.sku LIKE '%".$s."%') ";
+		}
+
+		if (!empty($category)) {
+			$where .= " AND p.category = " . $this->db->escape($category) . " ";
+		}
+
+		if (!empty($date_from) && !empty($date_to)) {
+			$where .= " AND p.created_at >= " . $this->db->escape($date_from) . " AND p.created_at <= " . $this->db->escape($date_to . ' 23:59:59') . " ";
+		}
+
+		$sql = "SELECT p.*,($select_category) t_category FROM products p " . $where . " ORDER BY p.created_at DESC";
+		$prod = $this->db->query($sql)->result();
+
+		$categories = $this->db->query('SELECT * FROM product_category')->result();
+
 		$data = [
 			'title' => 'Produk',
-			'data' => $prod
+			'data' => $prod,
+			'categories' => $categories,
+			'filters' => [
+				'search' => $search,
+				'category' => $category,
+				'date_from' => $date_from,
+				'date_to' => $date_to,
+			]
 		];
 
 		$this->M_app->admin_template($data, 'products/admin_product');
