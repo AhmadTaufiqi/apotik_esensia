@@ -196,22 +196,8 @@
 
     // daily chart
     const ctxDaily = document.getElementById('chart-daily').getContext('2d');
-    var data_ajax = $.ajax({
-      url: '<?= base_url("admin/dashboard/get_weekly_orders") ?>',
-      type: 'GET',
-      dataType: 'json',
-      success: function(response) {
-        if (response.success) {
-          dummy.daily.labels = response.labels;
-          dummy.daily.data = response.data;
-        }
-      },
-      error: function() {
-        console.error('Failed to fetch weekly orders data');
-      }
-    });
 
-    new Chart(ctxDaily, {
+    var chart_daily = new Chart(ctxDaily, {
       type: 'line',
       data: {
         labels: dummy.daily.labels,
@@ -248,5 +234,35 @@
       }
     });
 
+    $.ajax({
+      url: '<?= base_url("admin/dashboard/get_weekly_orders") ?>',
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        if (response.success) {
+          dummy.daily.labels = response.labels;
+          dummy.daily.data = response.data;
+          updateChart(chart_daily, response);
+        }
+      },
+      error: function() {
+        console.error('Failed to fetch weekly orders data');
+      }
+    });
+
+    function updateChart(chart, newData) {
+      // Assuming newData has properties like 'labels' and 'values'
+      console.log(chart);
+      chart.data.labels = newData.labels;
+      chart.data.datasets[0].data = newData.data; // Adjust index if multiple datasets
+      // If you have multiple datasets, you might loop through them
+      /*
+      newData.datasets.forEach((dataset, index) => {
+          chart.data.datasets[index].data = dataset.data;
+      });
+      */
+
+      chart.update(); // Re-render the chart with the new data
+    }
   });
 </script>

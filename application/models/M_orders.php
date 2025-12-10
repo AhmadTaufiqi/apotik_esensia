@@ -227,7 +227,7 @@ class M_orders extends CI_Model
             FROM orders o
             LEFT JOIN users u ON u.id = o.customer_id
             LEFT JOIN invoices i ON i.order_id = o.id
-            WHERE (o.status = 'unpaid')
+            WHERE (o.status = 'paid')
                OR (i.is_paid = 1 AND (o.status IS NULL OR o.status NOT IN ('shipped','sending','completed')))
             ORDER BY o.created_at DESC
             LIMIT ?";

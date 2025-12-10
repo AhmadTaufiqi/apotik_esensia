@@ -59,7 +59,41 @@ class Orders extends CI_Controller
 
     $this->M_app->admin_template($data, 'order/admin_orders');
   }
-  
+
+  public function detail($id)
+  {
+    // accept id from URL segment or GET as fallback
+    if (empty($id)) {
+      $id = $this->input->get('id');
+    }
+
+    if (empty($id)) {
+      show_404();
+    }
+
+    $select_category = 'SELECT pc.category FROM product_category pc WHERE pc.id = p.category';
+    $order = $this->db->query("SELECT * FROM orders WHERE id = " . $this->db->escape($id))->row();
+
+    $join = "INNER JOIN order_products ON order_products.product_id=products.id";
+    $order_product = $this->db->query("SELECT * FROM order_products $join WHERE order_id = $this->db->escape($id)")->result_array;
+    var_dump($order_product);
+
+    if (empty($order)) {
+      show_404();
+    }
+
+    // load categories for sidebar/display if needed
+    $categories = $this->db->query('SELECT * FROM product_category')->result();
+
+    $data = [
+      'title' => 'Detail Order',
+      'product' => $order,
+      'categories' => $categories,
+    ];
+
+    $this->M_app->admin_template($data, 'order/admin_view_order');
+  }
+
   public function populateOrderStatus()
   {
     // Accept status via GET or POST and return HTML fragment for that status
@@ -86,7 +120,7 @@ class Orders extends CI_Controller
     $list = $this->M_orders->get_recent_notifications($limit);
 
     // map to a friendly structure
-    $data = array_map(function($r){
+    $data = array_map(function ($r) {
       $title = 'Order Baru #' . ($r['order_id'] ?? '');
       if (($r['order_status'] ?? '') === 'unpaid') {
         $subtitle = 'Status: unpaid';
