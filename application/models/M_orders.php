@@ -127,7 +127,7 @@ class M_orders extends CI_Model
   public function get_all_orders()
   {
     $this->db->trans_start();
-    $query = 'SELECT * FROM orders o';
+    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $order = $this->db->query($query)->result_array();
@@ -173,7 +173,7 @@ class M_orders extends CI_Model
   {
     $this->db->trans_start();
 
-    $query = 'SELECT * FROM orders o ';
+    $query = 'SELECT o.*, o.id order_id , u.user_id FROM orders o ';
     $query .= 'INNER JOIN users u ON u.id=o.customer_id ';
     $query .= 'WHERE 1=1 ';
 

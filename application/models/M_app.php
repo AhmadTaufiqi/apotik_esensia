@@ -52,6 +52,11 @@ class M_app extends CI_Model
                 'label' => 'Belum Dibayar',
                 'class' => 'order-status-unpaid'
             ],
+            'paid' => [
+                'icon' => 'fas fa-money-bill',
+                'label' => 'Sudah Dibayar',
+                'class' => 'order-status-paid'
+            ],
             'processing' => [
                 'icon' => 'fas fa-box',
                 'label' => 'Dikemas',
@@ -66,6 +71,11 @@ class M_app extends CI_Model
                 'icon' => 'fas fa-box-open',
                 'label' => 'Pesanan Tiba',
                 'class' => 'order-status-shipped'
+            ],
+            'completed' => [
+                'icon' => 'fas fa-box-open',
+                'label' => 'Completed',
+                'class' => 'order-status-completed'
             ]
         ];
 

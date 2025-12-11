@@ -16,7 +16,7 @@
                 </a>
               </div>
               <ul class="navbar-nav flex-fill w-100 mb-2" style="border-bottom:solid 1px #e9e9e9">
-                <li class="nav-item w-100">
+                <li class="nav-item w-100 <?= $this->uri->segment(2) == 'dashboard' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin/dashboard" class="nav-link">
                     <i class="fas fa-th fa-lg"></i>
                     <span class="ml-2 item-text">Dashboard</span>

@@ -83,11 +83,9 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a href="" class="dropdown-item">
+                    <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <a class="dropdown-item" href="<?= base_url('admin/product/edit/' . $order['id']) ?>">
-                      <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['id'] ?>)">
+                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
                   </div>
                 </td>

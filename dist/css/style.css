@@ -369,6 +369,10 @@ div:has(> button.btn-add-to-cart) {
   color: #e22f2f;
 }
 
+.order-status-paid {
+  color: #22c4ed;
+}
+
 .order-status-sending {
   color: #ffcc00;
 }
@@ -378,7 +382,10 @@ div:has(> button.btn-add-to-cart) {
 }
 
 .order-status-shipped {
-  color: #07ebbd;
+  color: #07eba7;
+}
+.order-status-completed {
+  color: #00a659;
 }
 
 .form-group .form-label.required::after,
