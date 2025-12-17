@@ -375,4 +375,63 @@ class M_orders extends CI_Model
       return false;
     }
   }
+
+  // Shipping related methods
+  public function update_shipping_status($order_id, $shipping_status)
+  {
+    $this->db->trans_start();
+    $this->db->where('id', $order_id);
+    $this->db->update('orders', [
+      'shipping_status' => $shipping_status,
+      'updated_at' => $this->M_app->datetime()
+    ]);
+    $this->db->trans_complete();
+
+    return $this->db->trans_status();
+  }
+
+  public function confirm_arrived($order_id, $customer_id)
+  {
+    $this->db->trans_start();
+
+    // Verify order belongs to customer and is in sending status
+    $order = $this->db->where('id', $order_id)
+                     ->where('customer_id', $customer_id)
+                     ->where('shipping_status', 'sending')
+                     ->get('orders')->row();
+
+    if (!$order) {
+      $this->db->trans_rollback();
+      return false;
+    }
+
+    // Update shipping status to arrived
+    $this->db->where('id', $order_id);
+    $this->db->update('orders', [
+      'shipping_status' => 'arrived',
+      'status' => 'completed', // Also update main order status
+      'updated_at' => $this->M_app->datetime()
+    ]);
+
+    $this->db->trans_complete();
+    return $this->db->trans_status();
+  }
+
+  public function get_orders_by_shipping_status($status = null)
+  {
+    $this->db->trans_start();
+    $this->db->select('o.*, u.name as customer_name');
+    $this->db->from('orders o');
+    $this->db->join('users u', 'o.customer_id = u.id');
+
+    if ($status) {
+      $this->db->where('o.shipping_status', $status);
+    }
+
+    $this->db->order_by('o.created_at', 'DESC');
+    $result = $this->db->get()->result_array();
+    $this->db->trans_complete();
+
+    return $result;
+  }
 }

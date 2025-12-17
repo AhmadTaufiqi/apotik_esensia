@@ -65,7 +65,7 @@
           <thead>
             <tr>
               <th>Customer</th>
-              <th>Status pesanan</th>
+              <th colspan="2">Status pesanan</th>
               <th>Tanggal</th>
               <th>Nominal</th>
               <th width="10%">Action</th>
@@ -76,6 +76,12 @@
               <tr>
                 <td><?= $order['name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
+                <td>
+                  <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' :
+                                           (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
+                    <?= isset($order['shipping_status']) ? ucfirst(str_replace('_', ' ', $order['shipping_status'])) : 'Not shipped' ?>
+                  </span>
+                </td>
                 <td><?= $order['created_at'] ?></td>
                 <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
                 <td>
@@ -85,6 +91,8 @@
                   <div class="dropdown-menu">
                     <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
+                    <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
+                      <span class="iconify mr-2" data-icon="fas:shipping-fast"></span>Kelola Pengiriman</a>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
                   </div>

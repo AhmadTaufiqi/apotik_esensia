@@ -6,7 +6,7 @@
           <img src="<?= base_url() ?>dist/img/logo.png" alt="" height="30" class="rounded-circle">
         </div>
         <div class="col pe-2">
-          <?php if ($this->uri->segment(1) == 'home') : ?>
+          <?php if ($this->uri->segment(1) == 'home' || $this->uri->segment(1) == '') : ?>
             <div class="search-container">
               <input type="text" class="form-control search-input" placeholder="Search...">
               <i class="fas fa-search search-icon"></i>

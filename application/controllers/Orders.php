@@ -86,6 +86,23 @@ class Orders extends CI_Controller
     $this->load->view('order/index');
   }
 
+  public function confirm_arrived($order_id = null)
+  {
+    if (empty($order_id) || !$this->session->userdata('id_akun')) {
+      redirect('auth/login');
+    }
+
+    $customer_id = $this->session->userdata('id_akun');
+
+    if ($this->M_orders->confirm_arrived($order_id, $customer_id)) {
+      $this->session->set_flashdata('success', 'Terima kasih! Pesanan telah dikonfirmasi diterima.');
+    } else {
+      $this->session->set_flashdata('error', 'Gagal mengkonfirmasi pesanan. Pastikan pesanan dalam status pengiriman.');
+    }
+
+    redirect('orders/detail/' . $order_id);
+  }
+
   public function ongkir()
   {
     $this->load->view('order/ongkir');

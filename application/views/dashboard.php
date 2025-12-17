@@ -151,8 +151,8 @@
         for (let i = 4; i >= 0; i--) {
           const d = new Date();
           d.setDate(d.getDate() - i);
-          labels.push(d.toLocaleDateString());
-          data.push(Math.floor(Math.random() * 800) + 200);
+          // labels.push(d.toLocaleDateString());
+          // data.push(Math.floor(Math.random() * 800) + 200);
         }
         return {
           labels,

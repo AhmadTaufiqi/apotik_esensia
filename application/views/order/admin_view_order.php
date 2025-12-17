@@ -1,98 +1,170 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
-  <div class="d-flex mb-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><?= $title ?></h4>
+    <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
+      <i class="fas fa-arrow-left me-2"></i>Kembali
+    </a>
   </div>
 
-  <!-- Filter Form -->
+  <!-- Order Information Card -->
   <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Informasi Pesanan</h5>
+    </div>
     <div class="card-body">
-      <form method="get" action="<?= base_url('admin/orders') ?>" class="row mx-0 g-3">
-        <!-- Search by name or order ID -->
-        <div class="col-md-3 px-1">
-          <label for="search" class="form-label">Cari Nama / Order ID</label>
-          <input type="text" class="form-control" id="search" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>" placeholder="Cari...">
-        </div>
-
-        <!-- Date Range -->
-        <div class="col-md-3 px-1">
-          <label for="date_range" class="form-label">Rentang Tanggal</label>
-          <input type="text" class="form-control" id="date_range" placeholder="Pilih rentang tanggal">
-          <input type="hidden" id="date_from" name="date_from" value="<?= htmlspecialchars($filters['date_from'] ?? '') ?>">
-          <input type="hidden" id="date_to" name="date_to" value="<?= htmlspecialchars($filters['date_to'] ?? '') ?>">
-        </div>
-
-        <!-- Customer Filter -->
-        <div class="col-md-3 px-1">
-          <label for="customer_id" class="form-label">Customer</label>
-          <select class="form-select form-control" id="customer_id" name="customer_id">
-            <option value="">Semua Customer</option>
-            <?php if (!empty($customers)) : ?>
-              <?php foreach ($customers as $cust) : ?>
-                <option value="<?= $cust->id ?>" <?= (isset($filters['customer_id']) && $filters['customer_id'] == $cust->id) ? 'selected' : '' ?>>
-                  <?= htmlspecialchars($cust->name) ?>
-                </option>
-              <?php endforeach; ?>
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table table-borderless">
+            <tr>
+              <td width="40%" class="fw-bold">Order ID</td>
+              <td width="5%">:</td>
+              <td>#<?= $order['id'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Tanggal Order</td>
+              <td>:</td>
+              <td><?= date('d F Y H:i', strtotime($order['created_at'])) ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Status Pesanan</td>
+              <td>:</td>
+              <td class="order_status"><?= $order['status'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Total Harga</td>
+              <td>:</td>
+              <td class="text-success fw-bold">Rp <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Harga Asli</td>
+              <td>:</td>
+              <td>Rp <?= number_format($order['raw_cost_price'], 0, ',', '.') ?></td>
+            </tr>
+            <?php if ($order['cost_price'] < $order['raw_cost_price']) : ?>
+            <tr>
+              <td class="fw-bold">Diskon</td>
+              <td>:</td>
+              <td class="text-danger">Rp <?= number_format($order['raw_cost_price'] - $order['cost_price'], 0, ',', '.') ?></td>
+            </tr>
             <?php endif; ?>
-          </select>
+          </table>
         </div>
-
-        <!-- Status Filter -->
-        <div class="col-md-2 px-1">
-          <label for="status" class="form-label">Status Pesanan</label>
-          <select class="form-select form-control" id="status" name="status">
-            <option value="">Semua Status</option>
-            <option value="unpaid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Unpaid</option>
-            <option value="processing" <?= (isset($filters['status']) && $filters['status'] === 'processing') ? 'selected' : '' ?>>Processing</option>
-            <option value="sending" <?= (isset($filters['status']) && $filters['status'] === 'sending') ? 'selected' : '' ?>>Sending</option>
-            <option value="shipped" <?= (isset($filters['status']) && $filters['status'] === 'shipped') ? 'selected' : '' ?>>Shipped</option>
-            <option value="completed" <?= (isset($filters['status']) && $filters['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
-          </select>
+        <div class="col-md-6">
+          <table class="table table-borderless">
+            <tr>
+              <td width="40%" class="fw-bold">Nama Customer</td>
+              <td width="5%">:</td>
+              <td><?= $order['customer_name'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Email</td>
+              <td>:</td>
+              <td><?= $order['customer_email'] ?? '-' ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">No. Telepon</td>
+              <td>:</td>
+              <td><?= $order['customer_phone'] ?? '-' ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Alamat</td>
+              <td>:</td>
+              <td>
+                <?php if (!empty($order['address_kota']) || !empty($order['address_kecamatan'])) : ?>
+                  <?php 
+                    $address_parts = [];
+                    if (!empty($order['address_kelurahan'])) $address_parts[] = 'Kel. ' . $order['address_kelurahan'];
+                    if (!empty($order['address_kecamatan'])) $address_parts[] = 'Kec. ' . $order['address_kecamatan'];
+                    if (!empty($order['address_kota'])) $address_parts[] = $order['address_kota'];
+                    if (!empty($order['address_provinsi'])) $address_parts[] = $order['address_provinsi'];
+                    if (!empty($order['address_kode_pos'])) $address_parts[] = $order['address_kode_pos'];
+                    
+                    echo implode(', ', $address_parts);
+                    
+                    if (!empty($order['address_catatan'])) {
+                      echo '<br><small class="text-muted">Catatan: ' . htmlspecialchars($order['address_catatan']) . '</small>';
+                    }
+                  ?>
+                <?php else : ?>
+                  <?= $order['customer_address'] ?? '-' ?>
+                <?php endif; ?>
+              </td>
+            </tr>
+          </table>
         </div>
-
-        <!-- Buttons -->
-        <div class="col-12 d-flex gap-2 px-1">
-          <button type="submit" class="btn btn-primary">Filter</button>
-          <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">Reset</a>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 
+  <!-- Order Products Card -->
   <div class="card">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0"><i class="fas fa-box me-2"></i>Produk yang Dipesan</h5>
+    </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table datatable">
-          <thead>
+        <table class="table table-hover">
+          <thead class="table-light">
             <tr>
-              <th>Customer</th>
-              <th>Status pesanan</th>
-              <th>Tanggal</th>
-              <th>Nominal</th>
-              <th width="10%">Action</th>
+              <th width="5%">No</th>
+              <th width="10%">Gambar</th>
+              <th width="30%">Nama Produk</th>
+              <th width="15%">SKU</th>
+              <th width="15%" class="text-end">Harga</th>
+              <th width="10%" class="text-center">Qty</th>
+              <th width="15%" class="text-end">Subtotal</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($data as $order) : ?>
+            <?php if (!empty($order_products)) : ?>
+              <?php 
+              $no = 1;
+              $total = 0;
+              foreach ($order_products as $item) : 
+                $subtotal = $item['price'] * $item['qty'];
+                $total += $subtotal;
+              ?>
+                <tr>
+                  <td><?= $no++ ?></td>
+                  <td>
+                    <?php if (!empty($item['image'])) : ?>
+                      <img src="<?= base_url('dist/img/uploads/products/' . $item['image']) ?>" 
+                           alt="<?= $item['name'] ?>" 
+                           class="img-thumbnail" 
+                           style="width: 60px; height: 60px; object-fit: cover;">
+                    <?php else : ?>
+                      <img src="<?= base_url('dist/img/uploads/products/default_image.png') ?>" 
+                           alt="No Image" 
+                           class="img-thumbnail" 
+                           style="width: 60px; height: 60px; object-fit: cover;">
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <div class="fw-bold"><?= $item['name'] ?></div>
+                    <?php if (!empty($item['description'])) : ?>
+                      <small class="text-muted"><?= substr($item['description'], 0, 50) ?>...</small>
+                    <?php endif; ?>
+                  </td>
+                  <td><?= $item['sku'] ?></td>
+                  <td class="text-end">Rp <?= number_format($item['price'], 0, ',', '.') ?></td>
+                  <td class="text-center">
+                    <span class="badge bg-secondary"><?= $item['qty'] ?></span>
+                  </td>
+                  <td class="text-end fw-bold">Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
+                </tr>
+              <?php endforeach; ?>
+              <tr class="table-active">
+                <td colspan="6" class="text-end fw-bold">Total:</td>
+                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($total, 0, ',', '.') ?></td>
+              </tr>
+            <?php else : ?>
               <tr>
-                <td><?= $order['name'] ?></td>
-                <td class="order_status"><?= $order['status'] ?></td>
-                <td><?= $order['created_at'] ?></td>
-                <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
-                <td>
-                  <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-vertical"></i>
-                  </button>
-                  <div class="dropdown-menu">
-                    <a href="" class="dropdown-item">
-                      <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <a class="dropdown-item" href="<?= base_url('admin/product/edit/' . $order['id']) ?>">
-                      <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['id'] ?>)">
-                      <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
-                  </div>
+                <td colspan="7" class="text-center text-muted py-4">
+                  <i class="fas fa-inbox fa-3x mb-3"></i>
+                  <p>Tidak ada produk dalam pesanan ini</p>
                 </td>
               </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
@@ -102,67 +174,25 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-
-    // Initialize DateRangePicker
-    const dateFromVal = '<?= htmlspecialchars($filters['date_from'] ?? '') ?>';
-    const dateToVal = '<?= htmlspecialchars($filters['date_to'] ?? '') ?>';
-    let startDate = moment().subtract(29, 'days');
-    let endDate = moment();
-
-    // If filter values exist, use them
-    if (dateFromVal && dateToVal) {
-      startDate = moment(dateFromVal, 'YYYY-MM-DD');
-      endDate = moment(dateToVal, 'YYYY-MM-DD');
-    }
-
-    $('#date_range').daterangepicker({
-      startDate: startDate,
-      endDate: endDate,
-      locale: {
-        format: 'DD/MM/YYYY',
-        separator: ' - ',
-        applyLabel: 'Terapkan',
-        cancelLabel: 'Batal',
-        fromLabel: 'Dari',
-        toLabel: 'Sampai',
-        customRangeLabel: 'Custom',
-        daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-        monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-      },
-      ranges: {
-        'Hari Ini': [moment(), moment()],
-        'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-        '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-        'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
-        'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      }
-    }, function(start, end) {
-      // Update hidden fields with selected date range
-      $('#date_from').val(start.format('YYYY-MM-DD'));
-      $('#date_to').val(end.format('YYYY-MM-DD'));
-    });
-  });
-
-  (function(){
     const populateUrl = '<?= base_url("admin/orders/populateOrderStatus") ?>';
 
-    // For each status cell, request the formatted HTML and replace the cell content
-    document.querySelectorAll('td.order_status').forEach(function(td){
-      const raw = td.textContent || td.innerText || '';
+    // For the status cell, request the formatted HTML and replace the cell content
+    const statusCell = document.querySelector('td.order_status');
+    if (statusCell) {
+      const raw = statusCell.textContent || statusCell.innerText || '';
       const status = raw.trim();
-      if (!status) return;
-
-      // AJAX GET request
-      fetch(populateUrl + '?status=' + encodeURIComponent(status))
-        .then(function(res){ return res.text(); })
-        .then(function(html){
-          // replace the cell innerHTML with returned HTML
-          td.innerHTML = html;
-        })
-        .catch(function(err){
-          console.error('Error fetching status HTML', err);
-        });
-    });
-  })();
+      if (status) {
+        // AJAX GET request
+        fetch(populateUrl + '?status=' + encodeURIComponent(status))
+          .then(function(res) { return res.text(); })
+          .then(function(html) {
+            // replace the cell innerHTML with returned HTML
+            statusCell.innerHTML = html;
+          })
+          .catch(function(err) {
+            console.error('Error fetching status HTML', err);
+          });
+      }
+    }
+  });
 </script>
