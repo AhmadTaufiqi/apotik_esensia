@@ -26,7 +26,7 @@
   <div class="row g-2">
     <?php if (!empty($products)) : ?>
       <?php foreach ($products as $pd) : ?>
-        <div class="col-6 col-md-3">
+        <div class="col-6 col-md-4">
           <a href="<?= base_url('products/detail/' . $pd->id) ?>" style="text-decoration: none; color: inherit;">
             <div class="card card-product">
               <div>

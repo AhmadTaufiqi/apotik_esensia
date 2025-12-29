@@ -34,11 +34,14 @@ class Orders extends CI_Controller
   public function detail($id)
   {
     $order = $this->M_orders->get_order_by_id($id);
+    $status = $this->M_app->getOrderStatusHtml($order['status']);
+    
     $order_products = $this->M_orders->get_order_product_by_orderid($id);
 
     $data = [
       'title' => 'Detail Order',
       'order' => $order,
+      'order_status' => $status,
       'order_products' => $order_products,
     ];
     $this->M_app->templateCart($data, 'order/detail');

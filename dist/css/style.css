@@ -373,6 +373,10 @@ div:has(> button.btn-add-to-cart) {
   color: #22c4ed;
 }
 
+.order-status-payment-accepted {
+  color: #fe3fc5;
+}
+
 .order-status-sending {
   color: #ffcc00;
 }

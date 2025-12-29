@@ -2,26 +2,12 @@
   <div class="content p-2">
     <?php
     $total_price_order = 0;
-    if ($order['status'] == 'unpaid') {
-      $icon = 'fas fa-money-bill';
-      $status = 'Belum Dibayar';
-    } elseif ($order['status'] == 'processing') {
-      $icon = 'fas fa-box';
-      $status = 'Dikemas';
-    } elseif ($order['status'] == 'sending') {
-      $icon = 'fas fa-motorcycle';
-      $status = 'Dikirim';
-    } elseif ($order['status'] == 'shipped') {
-      $icon = 'fas fa-box-open';
-      $status = 'Pesanan Tiba';
-    }
     ?>
     <div class="card card-product-cart mb-2 flex-col p-3">
       <div class="d-flex mb-3">
         <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
-        <div class="d-flex align-items-center ms-auto order-status-<?= $order['status'] ?>">
-          <i class="<?= $icon ?> fa-lg me-1"></i>
-          <small><?= $status ?></small>
+        <div class="ms-auto">
+          <?= $order_status ?>
         </div>
       </div>
 

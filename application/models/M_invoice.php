@@ -49,7 +49,7 @@ class M_invoice extends CI_Model
       'order_id' => $data['order_id'],
       'order_price' => $data['order_price'],
       'created_at' => $this->M_app->datetime(),
-      'expiry_date' => date('Y-m-d H:i:s', strtotime('+1 day')),
+      'expired_at' => date('Y-m-d H:i:s', strtotime('+1 day')),
       'payment_id' => $data['payment_id'],
       'payment_method' => $data['payment_method'],
       'other' => $data['other'],

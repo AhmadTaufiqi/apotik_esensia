@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table esensia_apotek.cart: ~1 rows (approximately)
+-- Dumping data for table esensia_apotek.cart: ~2 rows (approximately)
 DELETE FROM `cart`;
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
 INSERT INTO `cart` (`id`, `qty`, `status`, `created_at`, `updated_at`, `created_by`, `customer_id`) VALUES
@@ -68,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `cart_products` (
   `customer_id` int(11) DEFAULT NULL,
   `status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table esensia_apotek.cart_products: ~13 rows (approximately)
+-- Dumping data for table esensia_apotek.cart_products: ~15 rows (approximately)
 DELETE FROM `cart_products`;
 /*!40000 ALTER TABLE `cart_products` DISABLE KEYS */;
 INSERT INTO `cart_products` (`id`, `product_id`, `qty`, `created_at`, `updated_at`, `customer_id`, `status`) VALUES
@@ -85,8 +85,10 @@ INSERT INTO `cart_products` (`id`, `product_id`, `qty`, `created_at`, `updated_a
 	(20, 1, 1, '2025-11-17 19:11:51', '2025-11-27 22:11:16', 1, b'0'),
 	(21, 11, 2, '2025-11-17 19:11:52', '2025-11-27 22:11:16', 1, b'0'),
 	(22, 1, 3, '2025-11-22 22:11:13', '2025-11-27 22:11:16', 1, b'0'),
-	(23, 1, 2, '2025-11-27 20:11:20', '2025-11-27 22:11:16', 1, b'1'),
-	(24, 2, 3, '2025-11-27 20:11:24', '2025-11-27 22:11:06', 1, b'0');
+	(23, 1, 3, '2025-11-27 20:11:20', '2025-11-27 22:11:16', 1, b'1'),
+	(24, 2, 3, '2025-11-27 20:11:24', '2025-11-27 22:11:06', 1, b'0'),
+	(25, 2, 5, '2025-11-30 19:11:14', '2025-11-30 19:11:14', 1, b'1'),
+	(26, 10, 2, '2025-12-29 16:12:13', '2025-12-29 16:12:13', 1, b'1');
 /*!40000 ALTER TABLE `cart_products` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.invoices
@@ -95,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `order_id` int(11) DEFAULT NULL,
   `order_price` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
-  `expiry_date` datetime NOT NULL,
+  `expired_at` datetime NOT NULL,
   `payment_id` int(11) NOT NULL DEFAULT 0,
   `payment_method` varchar(100) DEFAULT '0',
   `other` varchar(200) DEFAULT '0',
@@ -106,11 +108,11 @@ CREATE TABLE IF NOT EXISTS `invoices` (
 -- Dumping data for table esensia_apotek.invoices: ~4 rows (approximately)
 DELETE FROM `invoices`;
 /*!40000 ALTER TABLE `invoices` DISABLE KEYS */;
-INSERT INTO `invoices` (`id`, `order_id`, `order_price`, `created_at`, `expiry_date`, `payment_id`, `payment_method`, `other`, `is_paid`) VALUES
+INSERT INTO `invoices` (`id`, `order_id`, `order_price`, `created_at`, `expired_at`, `payment_id`, `payment_method`, `other`, `is_paid`) VALUES
 	(8, 25, 14426, '2025-11-16 20:11:51', '2025-11-17 20:53:51', 0, 'BRI Virtual Account', NULL, b'0'),
 	(9, 26, 121236, '2025-11-17 21:11:18', '2025-11-18 21:10:18', 0, 'Bank BNI', NULL, b'0'),
 	(10, 27, 44426, '2025-11-27 20:11:36', '2025-11-28 20:07:36', 0, 'BNI Virtual Account', NULL, b'0'),
-	(11, 28, 134966, '2025-11-27 22:11:06', '2025-11-28 22:30:06', 0, 'BRI Virtual Account', NULL, b'0');
+	(11, 28, 134966, '2025-12-27 22:39:00', '2025-12-28 22:30:06', 0, 'BRI Virtual Account', NULL, b'0');
 /*!40000 ALTER TABLE `invoices` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.log_activity
@@ -121,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `log_activity` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table esensia_apotek.log_activity: ~11 rows (approximately)
+-- Dumping data for table esensia_apotek.log_activity: ~21 rows (approximately)
 DELETE FROM `log_activity`;
 /*!40000 ALTER TABLE `log_activity` DISABLE KEYS */;
 INSERT INTO `log_activity` (`id`, `user_id`, `activity`, `created_at`) VALUES
@@ -135,13 +137,24 @@ INSERT INTO `log_activity` (`id`, `user_id`, `activity`, `created_at`) VALUES
 	('0a3fb233-3674-445e-9923-b698ef51fe7c', '1', 'test123 mengubah data users [1]', '2025-10-13 21:44:41'),
 	('06b6118e-154b-47b8-8029-8ffb107e172d', '1', 'test123 mengubah data users [1]', '2025-10-13 21:56:46'),
 	('97904de6-8749-41e3-b4c4-d2f6b0288c99', '1', 'test123 mengubah data users [1]', '2025-10-13 21:59:27'),
-	('284980ba-736a-43c2-b96a-d3c68b28ec17', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-11-19 21:58:15');
+	('284980ba-736a-43c2-b96a-d3c68b28ec17', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-11-19 21:58:15'),
+	('3af60bf9-9553-467c-bc97-ccb7522934ab', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 21:57:41'),
+	('e5e96378-9503-4c7a-be4f-dd424697c398', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 21:57:57'),
+	('79585fac-6b92-44c1-8b42-bd2fe49ca585', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 21:59:22'),
+	('74ec3a49-fd05-4be8-b5b5-e0f2c71ea59c', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:29:54'),
+	('cbe379d7-a196-4767-8f86-3725ad2abe71', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:30:01'),
+	('833e9466-51a1-4404-918d-04809ffc991f', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:42:13'),
+	('b932a41d-d4ca-4f8e-9450-c9a20dae457e', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:42:17'),
+	('96ba640b-dbad-4a84-9d2e-a42f61c462c9', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:42:18'),
+	('f66fcae8-ecf6-4e6d-a46a-0b019e75949d', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-02 22:44:05'),
+	('93c02ebd-2072-44a0-a55d-8a79bde0e517', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-03 19:04:15'),
+	('58019988-6677-4096-ad50-c1b8bacea545', '2', 'ahmad taufiqi admin mengubah data users [2]', '2025-12-03 19:04:17');
 /*!40000 ALTER TABLE `log_activity` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.orders
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` enum('onchart','unpaid','processing','sending','shipped','completed') DEFAULT NULL,
+  `status` enum('unpaid','paid','payment accepted','processing','sending','shipped','completed') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
@@ -151,16 +164,19 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ongkir` int(11) DEFAULT NULL,
   `jarak` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table esensia_apotek.orders: ~4 rows (approximately)
+-- Dumping data for table esensia_apotek.orders: ~7 rows (approximately)
 DELETE FROM `orders`;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
 INSERT INTO `orders` (`id`, `status`, `created_at`, `updated_at`, `created_by`, `customer_id`, `cost_price`, `raw_cost_price`, `ongkir`, `jarak`) VALUES
-	(25, 'unpaid', '2025-11-16 20:11:51', '2025-11-16 20:11:51', NULL, 1, 93921, 150042, NULL, NULL),
-	(26, 'shipped', '2025-11-23 21:11:18', '2025-11-17 21:11:18', NULL, 1, 106811, 138021, NULL, NULL),
-	(27, 'unpaid', '2025-11-27 20:11:36', '2025-11-27 20:11:36', NULL, 1, 30000, 60000, NULL, NULL),
-	(28, 'unpaid', '2025-11-27 22:11:06', '2025-11-27 22:11:06', NULL, 1, 120540, 123000, NULL, NULL);
+	(25, 'unpaid', '2025-12-11 20:11:51', '2025-11-16 20:11:51', NULL, 1, 93921, 150042, NULL, NULL),
+	(26, 'processing', '2025-12-03 21:11:18', '2025-11-17 21:11:18', NULL, 1, 106811, 138021, NULL, NULL),
+	(27, 'paid', '2025-12-02 20:11:36', '2025-11-27 20:11:36', NULL, 1, 30000, 60000, NULL, NULL),
+	(28, 'unpaid', '2025-12-03 22:11:06', '2025-11-27 22:11:06', NULL, 1, 120540, 123000, NULL, NULL),
+	(29, 'completed', '2025-12-07 22:11:06', '2025-11-27 22:11:06', NULL, 1, 120540, 123000, NULL, NULL),
+	(30, 'payment accepted', '2025-12-29 16:12:08', '2025-12-29 16:12:08', NULL, 1, 120540, 123000, NULL, NULL),
+	(31, 'unpaid', '2025-12-29 16:12:24', '2025-12-29 16:12:24', NULL, 1, 120540, 123000, NULL, NULL);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.order_products
@@ -172,9 +188,9 @@ CREATE TABLE IF NOT EXISTS `order_products` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table esensia_apotek.order_products: ~6 rows (approximately)
+-- Dumping data for table esensia_apotek.order_products: ~8 rows (approximately)
 DELETE FROM `order_products`;
 /*!40000 ALTER TABLE `order_products` DISABLE KEYS */;
 INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `qty`, `created_at`, `updated_at`) VALUES
@@ -183,7 +199,9 @@ INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `qty`, `created_at
 	(47, 26, 1, 1, '2025-11-17 21:11:18', '2025-11-17 21:11:18'),
 	(48, 26, 11, 2, '2025-11-17 21:11:18', '2025-11-17 21:11:18'),
 	(49, 27, 1, 3, '2025-11-27 20:11:36', '2025-11-27 20:11:36'),
-	(50, 28, 2, 3, '2025-11-27 22:11:06', '2025-11-27 22:11:06');
+	(50, 28, 2, 3, '2025-11-27 22:11:06', '2025-11-27 22:11:06'),
+	(51, 30, 10, 3, '2025-12-29 16:12:08', '2025-12-29 16:12:08'),
+	(52, 31, 10, 3, '2025-12-29 16:12:24', '2025-12-29 16:12:24');
 /*!40000 ALTER TABLE `order_products` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.products
@@ -200,18 +218,23 @@ CREATE TABLE IF NOT EXISTS `products` (
   `created_at` datetime DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `tipe` varchar(150) DEFAULT NULL,
+  `categories` varchar(100) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table esensia_apotek.products: ~5 rows (approximately)
+-- Dumping data for table esensia_apotek.products: ~8 rows (approximately)
 DELETE FROM `products`;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` (`id`, `name`, `sku`, `price`, `is_discount`, `discount`, `image`, `description`, `category`, `created_at`, `stock`, `tipe`) VALUES
-	(1, 'Tempra Anggur Sirup 60ml (per Botol) 60Ml Liter', 'TMPSY01', '20000', b'0', 50, 'pec1763484199.png', 'TEMPRA SIRUP merupakan obat untuk meredakan demam dan nyeri sakit kepala pada anak-anak. Sirup tempra paracetamol ini dapat menghambat pembentukan prostaglandin yang memicu nyeri dan juga bekerja pada pusat pengatur suhu di hipotalamus untuk menurunkan demam.', 3, '2025-11-18 23:11:19', 11, NULL),
-	(2, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 2, 'chi1763974855.png', 'Sanmol Forte sirup diproduksi oleh PT. Sanbe Farma dan telah terdaftar pada BPOM. Pada setiap 5ml sirup Sanmol Forte mengandung 250mg paracetamol. Sanmol Forte dapat digunakan untuk meredakan nyeri seperti sakit kepala, sakit gigi, serta demam yang menyertai flu dan setelah imunisasi.', 5, '2025-11-19 21:11:54', 5, NULL),
-	(9, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 0, '1759750699.png', 'Sanmol Forte sirup diproduksi oleh PT. Sanbe Farma dan telah terdaftar pada BPOM. Pada setiap 5ml sirup Sanmol Forte mengandung 250mg paracetamol. Sanmol Forte dapat digunakan untuk meredakan nyeri seperti sakit kepala, sakit gigi, serta demam yang menyertai flu dan setelah imunisasi.', 1, '2025-10-06 18:10:19', NULL, NULL),
-	(10, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 2, 'sot1763974689.png', 'asdasdasdasd', 1, '2025-10-06 18:10:43', 200, NULL),
-	(11, 'Sanmol Forte 260mg/5ml Sirup 70ml (per Botol)', 'snm250', '42000', b'0', 5, 'pec1763974903.png', 'asdasdasdasd', 1, '2025-10-06 18:10:43', 100, NULL);
+INSERT INTO `products` (`id`, `name`, `sku`, `price`, `is_discount`, `discount`, `image`, `description`, `category`, `created_at`, `stock`, `tipe`, `categories`, `deleted_at`) VALUES
+	(1, 'Tempra Anggur Sirup 60ml (per Botol) 60Ml Liter', 'TMPSY01', '20000', b'0', 50, 'pec1763484199.png', 'TEMPRA SIRUP merupakan obat untuk meredakan demam dan nyeri sakit kepala pada anak-anak. Sirup tempra paracetamol ini dapat menghambat pembentukan prostaglandin yang memicu nyeri dan juga bekerja pada pusat pengatur suhu di hipotalamus untuk menurunkan demam.', 3, '2025-11-18 23:11:19', 11, NULL, NULL, NULL),
+	(2, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 2, 'chi1763974855.png', 'Sanmol Forte sirup diproduksi oleh PT. Sanbe Farma dan telah terdaftar pada BPOM. Pada setiap 5ml sirup Sanmol Forte mengandung 250mg paracetamol. Sanmol Forte dapat digunakan untuk meredakan nyeri seperti sakit kepala, sakit gigi, serta demam yang menyertai flu dan setelah imunisasi.', 5, '2025-11-19 21:11:54', 5, NULL, NULL, NULL),
+	(9, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 0, '1759750699.png', 'Sanmol Forte sirup diproduksi oleh PT. Sanbe Farma dan telah terdaftar pada BPOM. Pada setiap 5ml sirup Sanmol Forte mengandung 250mg paracetamol. Sanmol Forte dapat digunakan untuk meredakan nyeri seperti sakit kepala, sakit gigi, serta demam yang menyertai flu dan setelah imunisasi.', 1, '2025-10-06 18:10:19', NULL, NULL, NULL, NULL),
+	(10, 'Sanmol Forte 250mg/5ml Sirup 60ml (per Botol)', 'snm250', '41000', b'0', 2, 'sot1763974689.png', 'asdasdasdasd', 1, '2025-10-06 18:10:43', 200, NULL, '2', NULL),
+	(11, 'Sanmol Forte 260mg/5ml Sirup 70ml (per Botol)', 'snm250', '42000', b'0', 5, 'pec1763974903.png', 'asdasdasdasd', 1, '2025-10-06 18:10:43', 100, NULL, NULL, NULL),
+	(16, 'Tempra Anggur Paracetamol 2-6 Tahun 60ml', 'TMP009291', '20000', b'0', 10, 'tem1764398958.png', 'tempra paracetamol rasa anggur untuk anak 2-6 tahun 60ml', 4, '2025-11-29 13:11:18', 1000, NULL, '3,4', NULL),
+	(17, 'Sgm Eksplor Gain Optigrow 1 Plus Vanila 400g Box (per Pcs)', 'SGME0132231', '54000', b'0', 5, 'sgm1764399370.png', 'SGM EKSPLOR GAIN OPTIGROW merupakan susu formula pertumbuhan khusus untuk anak usia 1 tahun ke atas. Secara khusus, susu ini dirancang untuk mendukung anak beresiko gagal tumbuh, gizi kurang ataupun gizi buruk.\r\n\r\n \r\n\r\nPENTING BUNDA KETAHUI\r\n\r\nSusu formula bayi bukan pengganti Air Susu Ibu (ASI). ASI Ekslusif diberikan sejak bayi lahir sampai usia 6 bulan dan dilanjutkan sampai dengan bayi berusia 2 tahun, ASI adalah makanan terbaik untuk bayi Anda.\r\n\r\n \r\n\r\nPenggunaan SGM Eksplor Gain Optigrow atas nasehat dokter, bidan dan perawat berdasarkan indikasi medis.', 2, '2025-11-29 13:11:10', 100, NULL, '2,4', NULL),
+	(18, 'Sgm Eksplor Gain Optigrow 1 Plus Vanila 400g Box (per Pcs)', 'SGM001', '56000', b'0', 6, 'sgm1764407456.png', 'tes', 2, '2025-11-29 13:11:17', 5, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 
 -- Dumping structure for table esensia_apotek.product_category
@@ -245,18 +268,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(250) DEFAULT NULL,
   `role` tinyint(1) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `foto` text DEFAULT NULL,
   `telp` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table esensia_apotek.users: ~2 rows (approximately)
+-- Dumping data for table esensia_apotek.users: ~3 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `deleted_at`, `updated_at`, `foto`, `telp`) VALUES
-	(1, 'ahmad taufiqis', 'ahmadtaufiky@gmail.com', '1234', 2, NULL, '2025-10-13 21:10:27', 'das1763040846.png', '087878878787'),
-	(2, 'ahmad taufiqi admin', 'ahmadtaufiky1@gmail.com', '1234', 1, NULL, '2025-11-19 21:11:15', 'default.png', '089329392392');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `deleted_at`, `created_at`, `updated_at`, `foto`, `telp`) VALUES
+	(1, 'ahmad taufiqis', 'ahmadtaufiky@gmail.com', '1234', 2, NULL, '2025-12-03 22:09:36', '2025-10-13 21:10:27', 'das1763040846.png', '0878723873872'),
+	(2, 'ahmad taufiqi admin', 'ahmadtaufiky1@gmail.com', '1234', 1, NULL, '2025-12-02 22:09:46', '2025-12-03 19:12:17', 'tem1764690245.png', '0893293923921'),
+	(3, 'ahmad taufiqis', 'ahmadtaufiky2@gmail.com', '1234', 2, NULL, '2025-12-01 22:09:36', '2025-10-13 21:10:27', 'das1763040846.png', '0878723873872');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

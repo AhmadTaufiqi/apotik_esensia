@@ -57,6 +57,11 @@ class M_app extends CI_Model
                 'label' => 'Sudah Dibayar',
                 'class' => 'order-status-paid'
             ],
+            'payment accepted' => [
+                'icon' => 'fas fa-money-bill',
+                'label' => 'Pembayaran Diterima',
+                'class' => 'order-status-payment-accepted'
+            ],
             'processing' => [
                 'icon' => 'fas fa-box',
                 'label' => 'Dikemas',

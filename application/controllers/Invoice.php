@@ -27,8 +27,18 @@ class Invoice extends CI_Controller
   public function index($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
-// var_dump($invoice);exit;
-    // if($invoice){
+    
+    //if expired should delete the order & invoice
+
+    if($invoice){
+      if ($invoice['is_paid'] == 0 && strtotime($invoice['expired_at']) < time()) {
+        // delete order
+        $this->M_orders->delete_order_by_id($order_id);
+        //delete invoice
+        $this->M_invoice->delete_invoice_by_orderid($order_id);
+        redirect(base_url('orders'));
+      }
+  // var_dump($invoice);exit;
     //   $input = [
     //     'order_id' => $order_id,
     //     'order_price' => $invoice['order_price'] + $invoice['ongkir'],
@@ -38,7 +48,7 @@ class Invoice extends CI_Controller
     //     'is_paid' => $invoice['is_paid'],
     //   ];
 
-    // }
+    }
     $data = [
       'title' => 'Bayar Pesanan',
       'invoice' => $invoice
