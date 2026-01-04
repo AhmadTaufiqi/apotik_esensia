@@ -41,29 +41,41 @@
     $payment_image = 'gopay.png';
   }
   ?>
-  <!-- Metode Pembayaran -->
-  <div class="card p-3 mb-2">
-    <div class="fw-bold mb-2">Metode Pembayaran</div>
-    <div class="d-flex align-items-center mb-2">
-      <img src="<?= base_url('dist/img/payment_methods/') . $payment_image ?>" width="45" class="me-2 rounded-1" alt="<?= $invoice['payment_method'] ?>">
-      <div>
-        <div class="fw-semibold"><?= $invoice['payment_method'] ?></div>
-        <div class="d-flex align-items-center mt-1">
-          <span class="va-number me-2" style="font-weight: 500;"><?= $invoice['payment_id'] ?></span>
-          <button class="btn btn-sm btn-success py-0" onclick="copyVA()">Salin</button>
+
+  <?php if ($method['method_name'] != 'Qris') : ?>
+    <!-- Metode Pembayaran -->
+    <div class="card p-3 mb-2">
+      <div class="fw-bold mb-2">Metode Pembayaran</div>
+      <div class="d-flex align-items-center mb-2">
+        <img src="<?= base_url('dist/img/') . $method['image'] ?>" width="45" class="me-2 rounded-1" alt="<?= $invoice['payment_method'] ?>">
+        <div>
+          <div class="fw-semibold"><?= $invoice['payment_method'] ?></div>
+          <div class="d-flex align-items-center mt-1">
+            <span class="va-number me-2" style="font-weight: 500;"><?= $invoice['payment_id'] ?></span>
+            <button class="btn btn-sm btn-success py-0" onclick="copyVA()">Salin</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
+  <?php endif; ?>
   <!-- Total Pembayaran -->
   <div class="card p-3 text-center mb-2">
+    <?php
+    $metode = 'qris';
+    if ($metode == 'qris') : ?>
+      <div class="method-qris py-2 px-5">
+        <img src="<?= base_url() ?>dist/img/qr_pay_example.png" alt="" style="width:100%;">
+      </div>
+    <?php endif; ?>
+
     <div class="text-muted mb-1">Total Pembayaran</div>
     <div class="h4 fw-bold color-esensia mb-0"><?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></div>
+    <span class="py-1">Masukkan sesuai nominal tertera</span>
   </div>
 
   <!-- Petunjuk Pembayaran -->
-  <div class="card p-3 mb-2">
+  <div class="card p-3 mb-2" hidden>
     <div class="fw-bold mb-3">Petunjuk Pembayaran</div>
 
     <ul class="nav nav-tabs nav-fill small" id="paymentTab" role="tablist">
@@ -81,9 +93,9 @@
     <div class="tab-content mt-3 small" id="paymentTabContent">
       <div class="tab-pane fade show active" id="m-banking">
         <ol>
-          <li>Buka aplikasi BCA Mobile dan pilih menu <strong>m-BCA</strong>.</li>
-          <li>Pilih <strong>m-Transfer</strong> &gt; <strong>BCA Virtual Account</strong>.</li>
-          <li>Masukkan nomor <strong>123456789012345</strong> dan tekan <strong>OK</strong>.</li>
+          <li>Buka aplikasi BANK Mobile dan pilih menu <strong>m-BANK</strong>.</li>
+          <li>Pilih <strong>m-Transfer</strong> &gt; <strong><?= $method['method_name'] ?></strong>.</li>
+          <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong> dan tekan <strong>OK</strong>.</li>
           <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
         </ol>
       </div>
@@ -107,6 +119,36 @@
       </div>
     </div>
   </div>
+
+
+  <form action="">
+    <?php
+    $foto_bukti_transfer = $image ?? '';
+    if ($foto_bukti_transfer != '') {
+    ?>
+      <input type="hidden" name="foto_product" value="<?= $image ?>">
+    <?php }
+    ?>
+
+    <input type="hidden" name="id" value="<?= $id ?? '' ?>">
+
+    <div class="d-flex justify-content-center">
+      <div class="uploadcms mb-3 upload-container" style="min-height: 290px;width:95%; position: relative;">
+        <div class="mb-2" style="display: contents;">
+          <img class="rounded-15 mb-4" src="<?= base_url('dist/img/uploads/bukti_transfer/' . ($foto_bukti_transfer == '' ? 'default_image.png' : $foto_bukti_transfer)) ?>" alt="" id="photo_product" style="position:absolute;width:235px;height:175px;">
+          <div class="border-upload text-center">
+            <input type="text" name="base64_input" id="base64_input">
+            <input class="file-input" type="file" name="foto" capture="camera" accept="image/*" hidden>
+            <!-- <i class="fa-solid fa-image" style="font-size: 40px; color: #989898; margin-left: -7%;"></i> -->
+            <p style="color: #989898; margin-left: -7%;">Pilih Foto</p>
+          </div>
+        </div>
+        <div style="position:absolute ; bottom:25px">
+          <h5>Upload Bukti Transfer</h5>
+        </div>
+      </div>
+    </div>
+  </form>
 
   <!-- Tombol Aksi -->
   <div class="d-flex">

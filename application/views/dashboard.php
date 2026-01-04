@@ -1,7 +1,7 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
 
-  <div class="container-fluid">
-    <div class="row mb-3">
+  <div>
+    <div class="row mb-2">
       <div class="col-12">
         <h4 class="mb-0">Dashboard</h4>
         <small class="text-muted">Ringkasan cepat performa toko (data dummy)</small>
@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <div class="row mb-3">
+    <div class="row mb-2">
       <div class="col-lg-7 mb-3">
         <div class="card p-3 h-100">
           <div class="d-flex justify-content-between mb-2">

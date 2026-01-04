@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PHPUnit\Framework\MockObject\DuplicateMethodException;
+
 class Product extends CI_Controller
 {
 
@@ -37,7 +40,7 @@ class Product extends CI_Controller
 
 		if (!empty($search)) {
 			$s = $this->db->escape_like_str($search);
-			$where .= " AND (p.name LIKE '%".$s."%' OR p.sku LIKE '%".$s."%') ";
+			$where .= " AND (p.name LIKE '%" . $s . "%' OR p.sku LIKE '%" . $s . "%') ";
 		}
 
 		if (!empty($category)) {
@@ -196,6 +199,68 @@ class Product extends CI_Controller
 		redirect('admin/product');
 	}
 
+	public function importExcel()
+	{
+		$data = [];
+
+		$action = $this->input->post('action');
+
+		// if (isset($_FILES["import_excel_file"]["name"])) {
+		if ($_FILES["import_excel_file"]["name"] != '') {
+
+			$_SESSION['progress'] = 0;
+
+			$path = $_FILES["import_excel_file"]["tmp_name"];
+			$spreadsheet = IOFactory::load($path);
+			$worksheet = $spreadsheet->getActiveSheet();
+			$rows = $worksheet->toArray();
+
+			$data_to_insert = [];
+
+			// Iterate over rows (skip the first row if it's a header)
+			foreach ($rows as $key => $row) {
+				if ($key <= 1) {
+					continue; // Skip header row
+				}
+
+				// Assuming your Excel columns map to: Column A=Name, Column B=Email
+				$data_to_insert[] = [
+					'name' => $row[0],
+					'sku' => $row[1],
+					'price' => $row[2],
+					'discount' => $row[3],
+					'image' => $row[4],
+					'description' => $row[5],
+					'category' => $row[6],
+					'stock' => $row[7],
+					// 'tipe' => $row[8],
+					// 'categories' => $row[9],
+					// Add more fields as needed
+				];
+
+				$_POST['name'] = $row[0];
+				$_POST['sku'] = $row[1];
+				$_POST['price'] = $row[2];
+				$_POST['discount'] = $row[3];
+				$_POST['description'] = $row[5];
+				$_POST['category'] = explode(',',$row[6]);
+				$_POST['stock'] = $row[7];
+
+				$this->M_product->save_product('admin', 'products', 'import');
+			}
+
+			echo json_encode(['status' => 'done']);
+			// Optional: Insert data into your MySQL database using CodeIgniter's query builder
+			// $this->db->insert_batch('your_table_name', $data_to_insert);
+
+			// echo "<pre>";
+			// print_r($data_to_insert); // Display imported data
+			// echo "</pre>";
+			// echo "Import successful!";
+		} else {
+			echo "Error: No file selected.";
+		}
+	}
 	public function promo()
 	{
 		$data = [];

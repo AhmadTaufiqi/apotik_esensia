@@ -287,6 +287,10 @@ div:has(> button.btn-add-to-cart) {
   background-color: #222222;
 }
 
+.form-control[type=file] {
+  line-height: 1.5;
+}
+
 .form-control:focus {
   border-color: #29873d;
   box-shadow: 0 0 2px 4px rgb(43 255 76 / 24%);

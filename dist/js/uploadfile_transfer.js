@@ -5,14 +5,6 @@ const progressArea = document.querySelector(".progress-area");
 const uploadedArea = document.querySelector(".uploaded-area");
 const img_ktp = $("#photo_product");
 
-const img_cropper_ktp = document.querySelector('#img_product_cropper');
-var cropper = new Cropper(img_cropper_ktp,{
-    aspectRatio:7/6,
-    zoomable:false,
-    minContainerHeight:250,
-    minContainerWidth:300,
-})
-
 // form click event
 container.addEventListener("click", () =>{
   console.log('clicked')
@@ -30,31 +22,9 @@ fileInput.onchange = ({target})=>{
     reader.addEventListener('load', function () {
       var is_submit = 0;
       $('#modal_product_resizer').modal('show')
-      cropper.replace(reader.result)
               
       $('#modal_product_resizer').on('shown.bs.modal', function () {
-          cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
-          $('#output_product_resizer').attr('src',cropped_img)
-          
-          $('#btn_cropper').on('click',function(){
-            cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
-
-            $('#output_product_resizer').attr('src',cropped_img)
-          })
-          $('#submit_product_cropper').on('click',function(){
-            console.log(is_submit)
-              is_submit = 1;
-              const cropped_img2 = cropper.getCroppedCanvas().toDataURL('image/png')
-              console.log(cropped_img2);
-              
-              $('#base64_input').val(cropped_img2)
-              checkImageProductResolution()
-              
-              // file.val(dataURLtoFile(cropped_img2,choosedFile.name))
-              img_ktp.attr('src', cropped_img2);
-              img_ktp.show()
-              $('#modal_product_resizer').modal('hide')
-          })
+  
       })
 
       $('#modal_product_resizer').on('hidden.bs.modal', function () {

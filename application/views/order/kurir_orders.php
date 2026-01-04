@@ -44,9 +44,6 @@
             <option value="unpaid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Belum Dibayar</option>
             <option value="paid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Sudah Dibayar</option>
             <option value="payment accepted" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Pembayaran Diterima</option>
-            <option value="processing" <?= (isset($filters['status']) && $filters['status'] === 'processing') ? 'selected' : '' ?>>Dikemas</option>
-            <option value="sending" <?= (isset($filters['status']) && $filters['status'] === 'sending') ? 'selected' : '' ?>>Dalam Pengiriman</option>
-            <option value="shipped" <?= (isset($filters['status']) && $filters['status'] === 'shipped') ? 'selected' : '' ?>>Diterima</option>
             <option value="completed" <?= (isset($filters['status']) && $filters['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
           </select>
         </div>
@@ -62,7 +59,7 @@
 
   <div class="card">
     <div class="card-body">
-      <div class="table-responsive">
+      <div class="">
         <table class="table datatable">
           <thead>
             <tr>
@@ -79,8 +76,7 @@
                 <td><?= $order['name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
                 <td>
-                  <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' :
-                                           (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
+                  <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' : (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
                     <?= isset($order['shipping_status']) ? ucfirst(str_replace('_', ' ', $order['shipping_status'])) : 'Not shipped' ?>
                   </span>
                 </td>
@@ -90,13 +86,27 @@
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
-                  <div class="dropdown-menu">
+                  <div class="dropdown-menu" style="width:240px">
                     <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
-                      <span class="iconify mr-2" data-icon="fas:shipping-fast"></span>Kelola Pengiriman</a>
+
+                    <?php if ($order['status'] == 'paid') : ?>
+                      <a href="<?= base_url('kasir/orders/reviewPayment/') . $order['order_id'] ?>" class="dropdown-item">
+                        <div class="d-flex">
+                          <span class="fas fa-check me-2"></span>
+                          <span class="text-wrap">
+                            Review & konfirmasi pembayaran
+                          </span>
+                        </div>
+                      </a>
+                    <?php endif; ?>
+
+                    <?php if ($order['status'] == 'payment accepted') : ?>
+                      <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
+                        <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a>
+                    <?php endif; ?>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
-                      <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
+                      <span class="fas fa-trash me-2"></span>Hapus</button>
                   </div>
                 </td>
               </tr>
@@ -152,23 +162,25 @@
     });
   });
 
-  (function(){
-    const populateUrl = '<?= base_url("admin/orders/populateOrderStatus") ?>';
+  (function() {
+    const populateUrl = '<?= base_url("kurir/orders/populateOrderStatus") ?>';
 
     // For each status cell, request the formatted HTML and replace the cell content
-    document.querySelectorAll('td.order_status').forEach(function(td){
+    document.querySelectorAll('td.order_status').forEach(function(td) {
       const raw = td.textContent || td.innerText || '';
       const status = raw.trim();
       if (!status) return;
 
       // AJAX GET request
       fetch(populateUrl + '?status=' + encodeURIComponent(status))
-        .then(function(res){ return res.text(); })
-        .then(function(html){
+        .then(function(res) {
+          return res.text();
+        })
+        .then(function(html) {
           // replace the cell innerHTML with returned HTML
           td.innerHTML = html;
         })
-        .catch(function(err){
+        .catch(function(err) {
           console.error('Error fetching status HTML', err);
         });
     });

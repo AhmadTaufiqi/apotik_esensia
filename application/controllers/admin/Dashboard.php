@@ -17,8 +17,8 @@ class Dashboard extends CI_Controller
 
 		if (empty($this->session->userdata('id_akun'))) {
 			$is_nologin = true;
-		} elseif ($this->session->userdata('role') != 1) {
-			$is_nologin = true;
+		// } elseif ($this->session->userdata('role') != 1) {
+		// 	$is_nologin = true;
 		}
 
 		if ($is_nologin) {

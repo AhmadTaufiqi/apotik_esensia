@@ -17,6 +17,16 @@ class M_app extends CI_Model
         $this->load->view($content);
         $this->load->view('layouts/admin/foot');
     }
+    
+    public function kasir_template($data, $content)
+    {
+        $this->load->view('layouts/admin/head', $data);
+        // $this->load->view('layouts/topbar-search', $data);
+        $this->load->view("layouts/kasir/navbar");
+        $this->load->view('layouts/kasir/menu');
+        $this->load->view($content);
+        $this->load->view('layouts/admin/foot');
+    }
 
     public function template($data, $content)
     {
@@ -28,7 +38,8 @@ class M_app extends CI_Model
         $this->load->view('layouts/foot');
     }
 
-    public function login_template($data, $content){
+    public function login_template($data, $content)
+    {
         $this->load->view('layouts/head', $data);
         $this->load->view($content);
         $this->load->view('layouts/foot');
@@ -44,9 +55,9 @@ class M_app extends CI_Model
         $this->load->view('layouts/foot-cart');
     }
 
-    public function getOrderStatusHtml($status)
+    public function order_statuses()
     {
-        $statusData = [
+        return [
             'unpaid' => [
                 'icon' => 'fas fa-money-bill',
                 'label' => 'Belum Dibayar',
@@ -83,47 +94,53 @@ class M_app extends CI_Model
                 'class' => 'order-status-completed'
             ]
         ];
+    }
+
+    public function getOrderStatusHtml($status)
+    {
+        $statusData = $this->order_statuses();
 
         if (!isset($statusData[$status])) {
-            return '<div class="order-status-unknown"><i class="fas fa-question-circle"></i><span>Unknown</span></div>';
+            return '<div class="order-status-unknown"><i class="fas fa-question-circle me-1"></i><span>Unknown</span></div>';
         }
 
         $data = $statusData[$status];
         return '<div class="' . $data['class'] . '"><i class="me-1 ' . $data['icon'] . '"></i><span>' . $data['label'] . '</span></div>';
     }
 
-       public function uploadBase64($dir, $types, $name, $default)
+    public function uploadBase64($dir, $types, $name, $default)
     {
         $image = $this->input->post($name);
 
         $filename = $default;
-        if($image != ''){
+        if ($image != '') {
             $filename = $_FILES['foto']['name'];
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
             // $filename =  substr($filename,0,3).time().'.'.$ext;
-            $filename =  substr($filename,0,3).time().'.png';
-            $image_parts = explode(";base64,",$image);
-            $image_type_aux = explode("image/",$image_parts[0]);
+            $filename =  substr($filename, 0, 3) . time() . '.png';
+            $image_parts = explode(";base64,", $image);
+            $image_type_aux = explode("image/", $image_parts[0]);
             $image_type = base64_decode($image_type_aux[1]);
             $image_base64 = base64_decode($image_parts[1]);
-            $file = './dist/img/uploads/'.$dir.'/'.$filename;
-            file_put_contents($file,$image_base64);
+            $file = './dist/img/uploads/' . $dir . '/' . $filename;
+            file_put_contents($file, $image_base64);
         }
 
         return $filename;
     }
 
-    public function updateBase64($dir,$file, $types, $name, $default){
+    public function updateBase64($dir, $file, $types, $name, $default)
+    {
         $image = $this->input->post($name);
 
-        if($image != ''){
+        if ($image != '') {
             // Only remove the old file when it's not the default and the file exists
-            $oldPath = './dist/img/uploads/'.$dir.'/'.$file;
+            $oldPath = './dist/img/uploads/' . $dir . '/' . $file;
             if (!empty($file) && $file !== $default && file_exists($oldPath) && is_file($oldPath)) {
                 @unlink($oldPath);
             }
             return $this->uploadBase64($dir, $types, $name, $default);
-        }else{
+        } else {
             return $file;
         }
     }
@@ -148,7 +165,8 @@ class M_app extends CI_Model
             return $file;
         } else {
             if ($file != $default) {
-                unlink('./dist/img/uploads/'.$dir.'/'.$file); }
+                unlink('./dist/img/uploads/' . $dir . '/' . $file);
+            }
             return $this->uploadFile($dir, $types, $name, $default);
         }
     }
@@ -165,7 +183,8 @@ class M_app extends CI_Model
         return date('Y-m-d H:m:s');
     }
 
-    public function formatTanggalIndonesia() {
+    public function formatTanggalIndonesia()
+    {
         $dateTime = new DateTime();
 
         $formatter = new IntlDateFormatter(
@@ -180,17 +199,18 @@ class M_app extends CI_Model
         return $formatter->format($dateTime);
     }
 
-    public function upload_config($path) {
-		if (!is_dir($path)) 
-		mkdir($path, 0777, TRUE);		
-		$config['upload_path'] 	= './'.$path;		
-		$config['allowed_types'] = 'csv|CSV|xlsx|XLSX|xls|XLS';
-		$config['max_filename']	 = '255';
-		$config['encrypt_name'] = TRUE;
-		$config['max_size']  = 4096; 
-		$this->load->library('upload');
-		$this->upload->initialize($config);
-	}
+    public function upload_config($path)
+    {
+        if (!is_dir($path))
+            mkdir($path, 0777, TRUE);
+        $config['upload_path']     = './' . $path;
+        $config['allowed_types'] = 'csv|CSV|xlsx|XLSX|xls|XLS';
+        $config['max_filename']     = '255';
+        $config['encrypt_name'] = TRUE;
+        $config['max_size']  = 4096;
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+    }
 
     public function select($select, $table, $by = 'created_at', $order = 'DESC')
     {
@@ -274,7 +294,7 @@ class M_app extends CI_Model
     {
         $data['id'] = $this->uuid->v4();
         $data['user_id'] = $this->session->userdata('id_akun');
-        $data['activity'] = $this->session->userdata('nama_akun').$activity;
+        $data['activity'] = $this->session->userdata('nama_akun') . $activity;
         $this->db->insert('log_activity', $data);
     }
 
@@ -284,7 +304,7 @@ class M_app extends CI_Model
         $data['updated_at'] = $this->datetime();
         $this->db->insert($table, $data);
         if ($this->db->affected_rows() > 0) {
-            $this->log_activity(' menambahkan data baru '.$activity);
+            $this->log_activity(' menambahkan data baru ' . $activity);
             return true;
         } else {
             return false;
@@ -297,7 +317,7 @@ class M_app extends CI_Model
         $this->db->where($where);
         $this->db->update($table, $data);
         if ($this->db->affected_rows() > 0) {
-            $this->log_activity(' mengubah data '.$activity);
+            $this->log_activity(' mengubah data ' . $activity);
             return true;
         } else {
             return false;
@@ -310,15 +330,16 @@ class M_app extends CI_Model
         $this->db->where($where);
         $this->db->update($table, $data);
         if ($this->db->affected_rows() > 0) {
-            $this->log_activity(' menghapus data '.$activity);
+            $this->log_activity(' menghapus data ' . $activity);
             return true;
         } else {
             return false;
         }
     }
 
-    public function rollback($table, $where, $activity) {
-        $this->log_activity(' gagal menyimpan data '.$activity);
+    public function rollback($table, $where, $activity)
+    {
+        $this->log_activity(' gagal menyimpan data ' . $activity);
         $this->db->where($where);
         $this->db->delete($table);
     }
@@ -327,15 +348,15 @@ class M_app extends CI_Model
     {
         $this->db->insert_batch($table, $data);
         if ($this->db->affected_rows() > 0) {
-            $this->log_activity(' import data baru '.$activity);
+            $this->log_activity(' import data baru ' . $activity);
             return true;
         } else {
             return false;
         }
     }
 
-    public function update_batch($table, $data, $where, $activity) 
-    {        
+    public function update_batch($table, $data, $where, $activity)
+    {
         $this->db->update_batch($table, $data, $where);
         if ($this->db->affected_rows() > 0) {
             $this->log_activity($activity);
@@ -345,11 +366,11 @@ class M_app extends CI_Model
         }
     }
 
-    public function dashboard_activity() {
+    public function dashboard_activity()
+    {
         $dateNow = $this->date();
         $q = $this->db->query("SELECT a.*, b.nama, b.foto FROM log_activity as a JOIN users as b ON a.user_id = b.id
-            WHERE a.created_at >= '".$dateNow."' AND a.created_at <= '".$dateNow." 23:59:00' ORDER BY created_at DESC LIMIT 5")->result_array();
+            WHERE a.created_at >= '" . $dateNow . "' AND a.created_at <= '" . $dateNow . " 23:59:00' ORDER BY created_at DESC LIMIT 5")->result_array();
         return $q;
     }
-
 }

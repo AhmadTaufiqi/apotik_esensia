@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 // table: invoice. related to order
-class M_invoice extends CI_Model
+class M_payment_method extends CI_Model
 {
   public function __construct()
   {
@@ -17,52 +17,20 @@ class M_invoice extends CI_Model
     return sprintf("%04s", $tmp);
   }
 
-  public function get_invoice_by_orderid($order_id)
+  public function get_payment_method($method_id)
   {
     $this->db->trans_start();
 
     $order = $this->db->select('*')
-      ->from('invoices')
-      ->where(['order_id' => $order_id])
+      ->from('payment_method')
+      ->where(['id' => $method_id])
       ->get()->row_array();
     $this->db->trans_complete();
 
     return $order;
   }
 
-  public function get_order($user_id = null)
-  {
-    $this->db->trans_start();
-    $order = $this->db->select('*')
-      ->from('orders o')
-      ->where('o.customer_id', $user_id)
-      ->get()
-      ->result_array();
-    $this->db->trans_complete();
-
-    return $order;
-  }
-
-  public function confirm_payment($order_id)
-  {
-    $this->db->trans_start();
-
-    // if accepted, invoice status set to confirm
-    $this->db->update('invoices', ['status' => 'confirm'], ['order_id' => $order_id]);
-
-    // if accepted, order status set to processing
-    $this->db->update('orders', ['status' => 'payment accepted'], ['id' => $order_id]);
-    $this->db->trans_complete();
-
-    if ($this->db->trans_status()) {
-      // $this->M_app->log_activity(' import data baru ' . $activity);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public function data_invoice($data)
+  public function data_method($data)
   {
     $data = [
       'order_id' => $data['order_id'],
@@ -94,7 +62,7 @@ class M_invoice extends CI_Model
 
   public function save_invoice($table, $input, $activity)
   {
-    $data = $this->data_invoice($input);
+    $data = $this->data_method($input);
 
     $this->db->trans_start();
     // $this->db->insert('product', $user);

@@ -7,6 +7,11 @@ class Auth extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('M_app');
+
+		// admin role = 1
+		// user role = 2
+		// kasir role = 3
+		// kurir role = 4
 	}
 
 	public function index()
@@ -24,11 +29,11 @@ class Auth extends CI_Controller
 		// $password = md5($this->input->post('password'));
 		$password = $this->input->post('password');
 
-		$user = $this->db->get_where('users', ['email' => $email, 'role' => 1, 'deleted_at' => NULL])->row_array();
+		$user = $this->db->get_where('users', ['email' => $email, 'role !=' => 2, 'deleted_at' => NULL])->row_array();
 
 		//if usser ada
 		if ($user) {
-			if ($user['role'] == 1) {
+			if ($user['role'] != 2) {
 				//cek password
 				if ($password == $user['password']) {
 					$user_foto = 'default.png';
@@ -46,11 +51,15 @@ class Auth extends CI_Controller
 
 					$this->session->set_userdata($data);
 
-					if ($user['role'] == 8) {
-						redirect(base_url('komplain'));
-					} else {
+					if ($user['role'] == 1) {
 						// redirect(base_url('admin/dashboard'));
 						redirect(base_url('admin/product'));
+					} elseif ($user['role'] == 3) {
+						// menampilan orders status 
+						redirect(base_url('kasir/Orders'));
+					} elseif ($user['role'] == 4) {
+						// hanya order yang sudah terbayar dan perlu di kirim
+						redirect(base_url('kurir/Orders'));
 					}
 				} else {
 					var_dump("password salah");
@@ -62,7 +71,7 @@ class Auth extends CI_Controller
 				redirect(base_url('admin/auth'));
 			}
 		} else {
-			$this->session->set_flashdata('msg', '<small class="text-danger pl-2">username tidak terdaftar</small>');
+			$this->session->set_flashdata('msg', '<small class="text-danger pl-2">email tidak terdaftar</small>');
 			redirect(base_url('admin/auth'));
 		}
 	}

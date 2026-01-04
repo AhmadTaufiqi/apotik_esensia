@@ -7,6 +7,7 @@ class M_orders extends CI_Model
   {
     parent::__construct();
     $this->load->model('M_app');
+    $this->load->model('M_invoice');
   }
 
   public function getId($table)
@@ -130,6 +131,24 @@ class M_orders extends CI_Model
     $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
+    $order = $this->db->query($query)->result_array();
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
+  // order statuses shows unpaid, paid, payment accepted
+  public function get_kasir_orders()
+  {
+    $status = ['unpaid', 'paid', 'payment accepted'];
+    // var_dump((implode(',', $status)));exit;
+    $this->db->trans_start();
+    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
+    $query .= ' INNER JOIN users u ON u.id=o.customer_id';
+    $query .= ' WHERE 1 = 1';
+    $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
+    // var_dump($query);
+    // exit;
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
@@ -396,9 +415,9 @@ class M_orders extends CI_Model
 
     // Verify order belongs to customer and is in sending status
     $order = $this->db->where('id', $order_id)
-                     ->where('customer_id', $customer_id)
-                     ->where('shipping_status', 'sending')
-                     ->get('orders')->row();
+      ->where('customer_id', $customer_id)
+      ->where('shipping_status', 'sending')
+      ->get('orders')->row();
 
     if (!$order) {
       $this->db->trans_rollback();

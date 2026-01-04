@@ -10,6 +10,7 @@ class Invoice extends CI_Controller
     $this->load->model('M_app');
     $this->load->model('M_orders');
     $this->load->model('M_invoice');
+    $this->load->model('M_payment_method');
 
     $is_nologin = false;
 
@@ -27,34 +28,33 @@ class Invoice extends CI_Controller
   public function index($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
-    
+
     //if expired should delete the order & invoice
+    $payment_method = [];
 
-    if($invoice){
-      if ($invoice['is_paid'] == 0 && strtotime($invoice['expired_at']) < time()) {
-        // delete order
-        $this->M_orders->delete_order_by_id($order_id);
-        //delete invoice
-        $this->M_invoice->delete_invoice_by_orderid($order_id);
-        redirect(base_url('orders'));
-      }
-  // var_dump($invoice);exit;
-    //   $input = [
-    //     'order_id' => $order_id,
-    //     'order_price' => $invoice['order_price'] + $invoice['ongkir'],
-    //     'payment_id' => $invoice['payment_id'],
-    //     'payment_method' => $this->input->post('payment_methods'),
-    //     'other' => '',
-    //     'is_paid' => $invoice['is_paid'],
-    //   ];
-
+    if ($invoice) {
+      $payment_method = $this->M_payment_method->get_payment_method($invoice['payment_id']);
     }
     $data = [
       'title' => 'Bayar Pesanan',
+      'method' => $payment_method,
       'invoice' => $invoice
     ];
 
     $this->M_app->templateCart($data, 'invoice/index');
+  }
+
+  public function deleteExpired($order_id)
+  {
+    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+
+    if ($invoice['is_paid'] == 0 && strtotime($invoice['expired_at']) < time()) {
+      // delete order
+      $this->M_orders->delete_order_by_id($order_id, 'orders', 'delete');
+      //delete invoice
+      $this->M_invoice->delete_invoice($order_id, 'invoices', 'delete');
+      redirect(base_url('orders'));
+    }
   }
 
   public function detail($id)
