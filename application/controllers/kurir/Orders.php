@@ -45,7 +45,7 @@ class Orders extends CI_Controller
     if (!empty($search) || !empty($date_from) || !empty($date_to) || !empty($customer_id) || !empty($status)) {
       $orders = $this->M_orders->get_all_orders_filtered($filters);
     } else {
-      $orders = $this->M_orders->get_kasir_orders();
+      $orders = $this->M_orders->get_kurir_orders();
     }
 
     // Get list of unique customers for filter dropdown
@@ -157,7 +157,7 @@ class Orders extends CI_Controller
       'order_products' => $order_products,
     ];
 
-    $this->M_app->admin_template($data, 'order/admin_view_order');
+    $this->M_app->admin_template($data, 'order/kurir_orders_detail');
   }
 
   public function populateOrderStatus()
@@ -169,7 +169,6 @@ class Orders extends CI_Controller
       $status = 'unpaid';
     }
 
-    exit;
     // Use the model method to generate HTML
     $html = $this->M_app->getOrderStatusHtml($status);
 

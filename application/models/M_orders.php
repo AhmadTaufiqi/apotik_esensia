@@ -155,6 +155,24 @@ class M_orders extends CI_Model
     return $order;
   }
 
+  // order statuses shows unpaid, paid, payment accepted
+  public function get_kurir_orders()
+  {
+    $status = ['processing','sending'];
+    // var_dump((implode(',', $status)));exit;
+    $this->db->trans_start();
+    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
+    $query .= ' INNER JOIN users u ON u.id=o.customer_id';
+    $query .= ' WHERE 1 = 1';
+    $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
+    // var_dump($query);
+    // exit;
+    $order = $this->db->query($query)->result_array();
+    $this->db->trans_complete();
+
+    return $order;
+  }
+
   public function get_weekly_orders($where)
   {
     $start_date = date('Y-m-d', strtotime('-6 days'));

@@ -1,167 +1,240 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
-  <div>
-    <div class="row">
-      <!-- Bukti Pembayaran -->
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body text-center">
-            <div class="card-header p-0 pb-2 mb-3 text-left">
-              <h5 class="card-title mb-0">Bukti Pembayaran</h5>
-            </div>
-            <?php if (!empty($invoice['proof_of_payment'])) : ?>
-              <img src="<?= base_url('dist/img/uploads/bukti_transfer/' . $invoice['proof_of_payment']) ?>" alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 300px;">
-            <?php else : ?>
-              <div class="text-muted">
-                <i class="fas fa-image fa-3x mb-3"></i>
-                <p>Bukti pembayaran belum diupload</p>
-              </div>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0"><?= $title ?></h4>
+    <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
+      <i class="fas fa-arrow-left me-2"></i>Kembali
+    </a>
+  </div>
 
-      <!-- Data Invoice -->
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="card-header p-0 pb-2 mb-3">
-              <h5 class="card-title mb-0">Data Invoice</h5>
-            </div>
-            <div class="mb-2">
-              <div class="row">
-                <div class="col">
-                  <p class="mb-2"><strong>Total Pembayaran:</strong></p>
-                </div>
-                <div class="col">
-                  <p class="mb-2">Rp <?= number_format($invoice['order_price'] ?? 0, 0, ',', '.') ?></p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p class="mb-2"><strong>Metode Pembayaran:</strong></p>
-                </div>
-                <div class="col">
-                  <p class="mb-2"><?= $invoice['payment_method'] ?? 'N/A' ?></p>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <p class="mb-2"><strong>Tanggal Dibuat:</strong></p>
-                </div>
-                <div class="col">
-                  <p class="mb-2">
-                    <?= date('d-m-Y H:i', strtotime($invoice['created_at'] ?? '')) ?>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <?php if (!empty($invoice['expired_at'])) : ?>
-              <span><strong>Batas Waktu:</strong> <?= date('d-m-Y H:i', strtotime($invoice['expired_at'])) ?></span>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
+  <!-- Order Information Card -->
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Informasi Pesanan</h5>
     </div>
-
-    <!-- Data Order -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="card-header p-0 pb-2 mb-3">
-          <h5 class="card-title mb-0">Data Order</h5>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <h6>Informasi Customer</h6>
-            <p><strong>Nama:</strong> <?= $order['customer_name'] ?? 'N/A' ?></p>
-            <p><strong>Email:</strong> <?= $order['customer_email'] ?? 'N/A' ?></p>
-            <p><strong>Telepon:</strong> <?= $order['customer_phone'] ?? 'N/A' ?></p>
-            <p><strong>Alamat:</strong> <?= $address['kota'] ?? 'N/A' ?></p>
-            <span><strong>Maps:</strong> <a href="https://www.google.com/maps/search/?api=1&query=<?= $address['long']?>,<?= $address['lat'] ?>" target="_blank">Telusuri alamat</a></span>
-          </div>
-          <div class="col-md-6">
-            <h6>Informasi Order</h6>
-            <p><strong>Status Order:</strong>
-              <span class="badge bg-secondary"><?= $order['status'] ?? 'N/A' ?></span>
-            </p>
-            <p><strong>Tanggal Order:</strong> <?= date('d-m-Y H:i', strtotime($order['created_at'] ?? '')) ?></p>
-            <p><strong>Total Harga:</strong> Rp <?= number_format($order['cost_price'] ?? 0, 0, ',', '.') ?></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Produk dalam Order -->
-    <div class="card">
-      <div class="card-body">
-        <div class="card-header p-0 pb-3">
-          <h5 class="card-title mb-0">Produk dalam Order</h5>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table table-borderless">
+            <tr>
+              <td width="40%" class="fw-bold">Order ID</td>
+              <td width="5%">:</td>
+              <td>#<?= $order['id'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Tanggal Order</td>
+              <td>:</td>
+              <td><?= date('d F Y H:i', strtotime($order['created_at'])) ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Status Pesanan</td>
+              <td>:</td>
+              <td class="order_status"><?= $order['status'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Total Harga</td>
+              <td>:</td>
+              <td class="text-success fw-bold">Rp <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Harga Asli</td>
+              <td>:</td>
+              <td>Rp <?= number_format($order['raw_cost_price'], 0, ',', '.') ?></td>
+            </tr>
+            <?php if ($order['cost_price'] < $order['raw_cost_price']) : ?>
               <tr>
-                <th>Produk</th>
-                <th>Jumlah</th>
-                <th>Harga</th>
-                <th>Total</th>
+                <td class="fw-bold">Diskon</td>
+                <td>:</td>
+                <td class="text-danger">Rp <?= number_format($order['raw_cost_price'] - $order['cost_price'], 0, ',', '.') ?></td>
               </tr>
-            </thead>
-            <tbody>
-              <?php if (!empty($order_products)) : ?>
-                <?php foreach ($order_products as $product) : ?>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <?php if (!empty($product['image'])) : ?>
-                          <img src="<?= base_url('dist/img/uploads/products/' . $product['image']) ?>" alt="<?= $product['name'] ?>" class="rounded me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                        <?php endif; ?>
-                        <div>
-                          <strong><?= $product['name'] ?? 'N/A' ?></strong>
-                          <br><small class="text-muted">SKU: <?= $product['sku'] ?? 'N/A' ?></small>
-                        </div>
-                      </div>
-                    </td>
-                    <td><?= $product['qty'] ?? 0 ?></td>
-                    <td>Rp <?= number_format($product['price'] ?? 0, 0, ',', '.') ?></td>
-                    <td>Rp <?= number_format(($product['qty'] ?? 0) * ($product['price'] ?? 0), 0, ',', '.') ?></td>
-                  </tr>
-                <?php endforeach; ?>
-              <?php else : ?>
-                <tr>
-                  <td colspan="4" class="text-center text-muted">Tidak ada produk dalam order ini</td>
-                </tr>
-              <?php endif; ?>
-            </tbody>
+            <?php endif; ?>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-borderless">
+            <tr>
+              <td width="40%" class="fw-bold">Nama Customer</td>
+              <td width="5%">:</td>
+              <td><?= $order['customer_name'] ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Email</td>
+              <td>:</td>
+              <td><?= $order['customer_email'] ?? '-' ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">No. Telepon</td>
+              <td>:</td>
+              <td><?= $order['customer_phone'] ?? '-' ?></td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Alamat</td>
+              <td>:</td>
+              <td>
+                <?php if (!empty($order['address_kota']) || !empty($order['address_kecamatan'])) : ?>
+                  <?php
+                  $address_parts = [];
+                  if (!empty($order['address_kelurahan'])) $address_parts[] = 'Kel. ' . $order['address_kelurahan'];
+                  if (!empty($order['address_kecamatan'])) $address_parts[] = 'Kec. ' . $order['address_kecamatan'];
+                  if (!empty($order['address_kota'])) $address_parts[] = $order['address_kota'];
+                  if (!empty($order['address_provinsi'])) $address_parts[] = $order['address_provinsi'];
+                  if (!empty($order['address_kode_pos'])) $address_parts[] = $order['address_kode_pos'];
+
+                  echo implode(', ', $address_parts);
+
+                  if (!empty($order['address_catatan'])) {
+                    echo '<br><small class="text-muted">Catatan: ' . htmlspecialchars($order['address_catatan']) . '</small>';
+                  }
+                  ?>
+                <?php else : ?>
+                  <?= $order['customer_address'] ?? '-' ?>
+                <?php endif; ?>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Link G-maps</td>
+              <td>:</td>
+              <td>
+                <?php if (!empty($order['address_lat']) && !empty($order['address_long'])) : ?>
+                  <a href="https://www.google.com/maps?q=<?= $order['address_lat'] ?>,<?= $order['address_long'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-map-marker-alt me-1"></i>Lihat Lokasi
+                  </a>
+                <?php else : ?>
+                  -
+                <?php endif; ?>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <div id="map" style="height: 250px;">
+                </div>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Tombol Aksi -->
-    <div class="d-flex justify-content-between mt-4">
-      <a href="<?= base_url('kasir/orders') ?>" class="btn btn-secondary text-light">Kembali ke Daftar Order</a>
-      <div>
-        <?php if (($invoice['is_paid'] ?? 0) == 0) : ?>
-          <button class="btn btn-success text-light me-2" onclick="confirmPayment(<?= $order['id'] ?? 0 ?>)">Konfirmasi Pembayaran</button>
-        <?php endif; ?>
-        <button class="btn btn-danger" onclick="rejectPayment(<?= $order['id'] ?? 0 ?>)">Tolak Pembayaran</button>
+  <!-- Order Products Card -->
+  <div class="card">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0"><i class="fas fa-box me-2"></i>Produk yang Dipesan</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th width="5%">No</th>
+              <th width="10%">Gambar</th>
+              <th width="30%">Nama Produk</th>
+              <th width="15%">SKU</th>
+              <th width="15%" class="text-end">Harga</th>
+              <th width="10%" class="text-center">Qty</th>
+              <th width="15%" class="text-end">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if (!empty($order_products)) : ?>
+              <?php
+              $no = 1;
+              $total = 0;
+              foreach ($order_products as $item) :
+                $subtotal = $item['price'] * $item['qty'];
+                $total += $subtotal;
+              ?>
+                <tr>
+                  <td><?= $no++ ?></td>
+                  <td>
+                    <?php if (!empty($item['image'])) : ?>
+                      <img src="<?= base_url('dist/img/uploads/products/' . $item['image']) ?>" alt="<?= $item['name'] ?>" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                    <?php else : ?>
+                      <img src="<?= base_url('dist/img/uploads/products/default_image.png') ?>" alt="No Image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <div class="fw-bold"><?= $item['name'] ?></div>
+                    <?php if (!empty($item['description'])) : ?>
+                      <small class="text-muted"><?= substr($item['description'], 0, 50) ?>...</small>
+                    <?php endif; ?>
+                  </td>
+                  <td><?= $item['sku'] ?></td>
+                  <td class="text-end">Rp <?= number_format($item['price'], 0, ',', '.') ?></td>
+                  <td class="text-center">
+                    <span class="badge bg-secondary"><?= $item['qty'] ?></span>
+                  </td>
+                  <td class="text-end fw-bold">Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
+                </tr>
+              <?php endforeach; ?>
+              <tr class="table-active">
+                <td colspan="6" class="text-end fw-bold">Total:</td>
+                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($total, 0, ',', '.') ?></td>
+              </tr>
+            <?php else : ?>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">
+                  <i class="fas fa-inbox fa-3x mb-3"></i>
+                  <p>Tidak ada produk dalam pesanan ini</p>
+                </td>
+              </tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </main>
 
-<script>
-  function confirmPayment(orderId) {
-    if (confirm('Apakah Anda yakin ingin mengkonfirmasi pembayaran ini?')) {
-      // Implement confirmation logic here
-      window.location.href = '<?= base_url('kasir/orders/confirmPayment/') ?>' + orderId;
-    }
-  }
+<script src="<?= base_url() ?>dist/leafletjs/leaflet.js"></script>
+<script src="<?= base_url() ?>dist/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
-  function rejectPayment(orderId) {
-    if (confirm('Apakah Anda yakin ingin menolak pembayaran ini?')) {
-      // Implement rejection logic here
-      window.location.href = '<?= base_url('kasir/orders/reject_payment/') ?>' + orderId;
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const populateUrl = '<?= base_url("kurir/orders/populateOrderStatus") ?>';
+
+    // For the status cell, request the formatted HTML and replace the cell content
+    const statusCell = document.querySelector('td.order_status');
+    if (statusCell) {
+      const raw = statusCell.textContent || statusCell.innerText || '';
+      const status = raw.trim();
+      if (status) {
+        // AJAX GET request
+        fetch(populateUrl + '?status=' + encodeURIComponent(status))
+          .then(function(res) {
+            return res.text();
+          })
+          .then(function(html) {
+            // replace the cell innerHTML with returned HTML
+            statusCell.innerHTML = html;
+          })
+          .catch(function(err) {
+            console.error('Error fetching status HTML', err);
+          });
+      }
     }
-  }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    input_long = '<?= $order['address_long']?>';
+    input_lat = '<?= $order['address_lat']?>';
+    my_home_loc = [input_lat, input_long];
+    console.log(my_home_loc);
+    var map = L.map('map', {
+      center: my_home_loc,
+      zoom: 13
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 14,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var map1_marker = L.marker(my_home_loc, {
+      title: 'customer',
+    }).addTo(map);
+    // console.log(map1_marker);
+  });
 </script>

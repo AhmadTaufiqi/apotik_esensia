@@ -87,24 +87,8 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu" style="width:240px">
-                    <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
+                    <a href="<?= base_url('kurir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-
-                    <?php if ($order['status'] == 'paid') : ?>
-                      <a href="<?= base_url('kasir/orders/reviewPayment/') . $order['order_id'] ?>" class="dropdown-item">
-                        <div class="d-flex">
-                          <span class="fas fa-check me-2"></span>
-                          <span class="text-wrap">
-                            Review & konfirmasi pembayaran
-                          </span>
-                        </div>
-                      </a>
-                    <?php endif; ?>
-
-                    <?php if ($order['status'] == 'payment accepted') : ?>
-                      <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
-                        <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a>
-                    <?php endif; ?>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="fas fa-trash me-2"></span>Hapus</button>
                   </div>
@@ -177,6 +161,7 @@
           return res.text();
         })
         .then(function(html) {
+          console.log(html)
           // replace the cell innerHTML with returned HTML
           td.innerHTML = html;
         })
