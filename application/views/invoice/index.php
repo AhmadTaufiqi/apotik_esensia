@@ -137,7 +137,7 @@
         <div class="mb-2" style="display: contents;">
           <img class="rounded-15 mb-4" src="<?= base_url('dist/img/uploads/bukti_transfer/' . ($foto_bukti_transfer == '' ? 'default_image.png' : $foto_bukti_transfer)) ?>" alt="" id="photo_product" style="position:absolute;width:235px;height:175px;">
           <div class="border-upload text-center">
-            <input type="text" name="base64_input" id="base64_input">
+            <input type="hidden" name="base64_input" id="base64_input">
             <input class="file-input" type="file" name="foto" capture="camera" accept="image/*" hidden>
             <!-- <i class="fa-solid fa-image" style="font-size: 40px; color: #989898; margin-left: -7%;"></i> -->
             <p style="color: #989898; margin-left: -7%;">Pilih Foto</p>
@@ -157,6 +157,7 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function copyVA() {
@@ -164,6 +165,18 @@
     navigator.clipboard.writeText(va);
     alert("Nomor VA disalin: " + va);
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    $('.upload-container').on('click', function() {
+
+      Swal.fire({
+        title: "Good job!",
+        text: "You clicked the button!",
+        icon: "success"
+      });
+      $(this).find('.file-input').click();
+    });
+  });
 </script>
 
 <script>

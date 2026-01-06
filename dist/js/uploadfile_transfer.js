@@ -6,10 +6,9 @@ const uploadedArea = document.querySelector(".uploaded-area");
 const img_ktp = $("#photo_product");
 
 // form click event
-container.addEventListener("click", () =>{
-  console.log('clicked')
-  fileInput.click();
-});
+// container.addEventListener("click", () =>{
+//   fileInput.click();
+// });
 
 fileInput.onchange = ({target})=>{
   let file_product = target.files[0]; //getting file [0] this means if user has selected multiple files then get first one only

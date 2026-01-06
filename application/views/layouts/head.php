@@ -20,7 +20,8 @@
   <link rel="stylesheet" href="<?= base_url() ?>dist/cropperjs/dist/cropper.css">
   <link rel="stylesheet" href="<?= base_url() ?>dist/leafletjs/leaflet.css" />
   <link rel="stylesheet" href="<?= base_url() ?>dist/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.min.css">
+  
   <title>Document</title>
   <link href="<?= base_url() ?>dist/img/logo.png" rel="icon">
 </head>

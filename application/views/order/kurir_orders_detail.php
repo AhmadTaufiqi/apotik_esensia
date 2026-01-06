@@ -1,15 +1,20 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><?= $title ?></h4>
-    <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
-      <i class="fas fa-arrow-left me-2"></i>Kembali
-    </a>
+    <div class="btn-action">
+      <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
+        <i class="fas fa-arrow-left me-2"></i>Kembali
+      </a>
+      <a href="<?= base_url('kasir/orders/sendOrder') ?>" class="btn btn-primary text-light">
+        <i class="fas fa-motorcycle me-2"></i>Kirim Pesanan
+      </a>
+    </div>
   </div>
 
   <!-- Order Information Card -->
   <div class="card mb-3">
     <div class="card-header bg-primary text-white">
-      <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Informasi Pesanan</h5>
+      <h5 class="mb-0 text-light"><i class="fas fa-shopping-cart me-2"></i>Informasi Pesanan</h5>
     </div>
     <div class="card-body">
       <div class="row">
@@ -95,8 +100,8 @@
               <td>:</td>
               <td>
                 <?php if (!empty($order['address_lat']) && !empty($order['address_long'])) : ?>
-                  <a href="https://www.google.com/maps?q=<?= $order['address_lat'] ?>,<?= $order['address_long'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-map-marker-alt me-1"></i>Lihat Lokasi
+                  <a href="https://www.google.com/maps?q=<?= $order['address_lat'] ?>,<?= $order['address_long'] ?>" target="_blank" class="btn btn-primary text-white">
+                    <i class="fas fa-map-marker-alt me-1"></i>Buka di Google Maps
                   </a>
                 <?php else : ?>
                   -
@@ -118,7 +123,7 @@
   <!-- Order Products Card -->
   <div class="card">
     <div class="card-header bg-info text-white">
-      <h5 class="mb-0"><i class="fas fa-box me-2"></i>Produk yang Dipesan</h5>
+      <h5 class="mb-0 text-light"><i class="fas fa-box me-2"></i>Produk yang Dipesan</h5>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -218,8 +223,8 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
-    input_long = '<?= $order['address_long']?>';
-    input_lat = '<?= $order['address_lat']?>';
+    input_long = '<?= $order['address_long'] ?>';
+    input_lat = '<?= $order['address_lat'] ?>';
     my_home_loc = [input_lat, input_long];
     console.log(my_home_loc);
     var map = L.map('map', {
