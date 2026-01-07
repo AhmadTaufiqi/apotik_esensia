@@ -62,10 +62,10 @@
           <div class="modal-body">
             <div class="row text-center">
               <div class="col">
-                <img src="" alt="" id="img_cropper" height="250px">
+                <img src="" alt="" id="img_tf_cropper" height="250px">
               </div>
               <div class="col">
-                <img src="" alt="" id="output_resizer" height="250px">
+                <img src="" alt="" id="output_tf_resizer" height="250px">
               </div>
             </div>
           </div>

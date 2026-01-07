@@ -48,6 +48,28 @@
     </div>
     <!-- end modal resizer image -->
 
+    <!-- modal resizer profile image -->
+    <div class="modal fade" id="modal_resizer_transfer" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:350px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Potong foto</h3>
+          </div>
+          <div class="modal-body">
+            <div class="row justify-content-center">
+              <div class="col">
+                <img src="" alt="" id="img_tf_cropper" height="250px">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer py-1">
+            <button id="submit_cropper_tf" class="btn btn-primary rounded-2">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end modal resizer image -->
+
 
     <!-- modal confirm delete -->
     <div id="modal_confirm_delete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle" aria-hidden="true">
@@ -83,7 +105,7 @@
     <script src="<?= base_url() ?>dist/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
-    <!-- <script src="<?= base_url() ?>dist/cropperjs/dist/cropper.js"></script> -->
+    <script src="<?= base_url() ?>dist/cropperjs/dist/cropper.js"></script>
     <script src="<?= base_url() ?>dist/js/cart.js"></script>
     <script src="<?= base_url() ?>dist/js/app.js"></script>
     <script script src="<?= base_url() ?>dist/js/uploadfile_transfer.js">

@@ -28,6 +28,7 @@ class Invoice extends CI_Controller
   public function index($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+    $order = $this->M_orders->get_order_by_id($order_id);
 
     //if expired should delete the order & invoice
     $payment_method = [];
@@ -38,6 +39,7 @@ class Invoice extends CI_Controller
     $data = [
       'title' => 'Bayar Pesanan',
       'method' => $payment_method,
+      'order' => $order,
       'invoice' => $invoice
     ];
 
@@ -68,6 +70,14 @@ class Invoice extends CI_Controller
       'order_products' => $order_products,
     ];
     $this->M_app->templateCart($data, 'order/detail');
+  }
+
+  public function uploadBuktiTf()
+  {
+    $id = $this->input->post('id');
+    $order_id = $this->input->post('order_id');
+    $this->M_invoice->upload_bukti_transfer($id, $order_id);
+    redirect(base_url('/invoice/index/' . $order_id));
   }
 
   public function payment()

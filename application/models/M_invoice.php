@@ -135,6 +135,27 @@ class M_invoice extends CI_Model
     }
   }
 
+  public function upload_bukti_transfer($id, $order_id)
+  {
+    $foto_bukti_transfer = $this->input->post('base64_input');
+
+    $data = [
+      'bukti_transfer' => $foto_bukti_transfer,
+      'is_paid' => 1,
+    ];
+
+    $this->db->trans_start();
+    $this->db->update('orders', ['status' => 'paid'], ['id' => $order_id]);
+    $this->db->update('invoices', $data, ['id' => $id]);
+    $this->db->trans_complete();
+    if ($this->db->trans_status()) {
+      // $this->M_app->log_activity(' import data baru ' . $activity);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public function insert_batch($prod, $identities, $datas, $table, $activity)
   {
     $this->db->trans_start();

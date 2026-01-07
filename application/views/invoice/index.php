@@ -17,10 +17,15 @@
 
   <!-- Status Pembayaran -->
   <div class="card p-3 text-center mb-2">
-    <div class="fw-bold text-success mb-1">Menunggu Pembayaran</div>
-    <div class="text-muted mb-1">Bayar sebelum</div>
-    <!-- Due datetime is stored in data-due as ISO 8601 with timezone. Update this value server-side if needed. -->
-    <div id="due_countdown" class="fw-bold text-danger" data-due="<?= date('Y-m-d H:i', strtotime($invoice['expired_at'])) ?>"><?= date('d-m-y', strtotime($invoice['expired_at'])) ?></div>
+    <?php if ($order['status'] == 'unpaid') : ?>
+      <div class="fw-bold text-success mb-1">Menunggu Pembayaran</div>
+      <div class="text-muted mb-1">Bayar sebelum</div>
+      <!-- Due datetime is stored in data-due as ISO 8601 with timezone. Update this value server-side if needed. -->
+      <div id="due_countdown" class="fw-bold text-danger" data-due="<?= date('Y-m-d H:i', strtotime($invoice['expired_at'])) ?>"><?= date('d-m-y', strtotime($invoice['expired_at'])) ?></div>
+    <?php else : ?>
+      <h4 class="fw-bold text-success mb-1">Pembayaran Sukses</h4>
+      <div class="fw-bold mb-1">Menunggu Konfirmasi</div>
+    <?php endif; ?>
   </div>
 
   <?php
@@ -71,7 +76,9 @@
 
     <div class="text-muted mb-1">Total Pembayaran</div>
     <div class="h4 fw-bold color-esensia mb-0"><?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></div>
-    <span class="py-1">Masukkan sesuai nominal tertera</span>
+    <?php if ($order['status'] == 'unpaid') : ?>
+      <span class="py-1">Masukkan sesuai nominal tertera</span>
+    <?php endif; ?>
   </div>
 
   <!-- Petunjuk Pembayaran -->
@@ -121,43 +128,45 @@
   </div>
 
 
-  <form action="">
+  <form action="<?= base_url() ?>/invoice/uploadBuktiTf" method="POST">
     <?php
-    $foto_bukti_transfer = $image ?? '';
-    if ($foto_bukti_transfer != '') {
+    $image = $invoice['bukti_transfer'];
+    $foto_bukti_transfer = $image ?? base_url() . 'dist/img/uploads/bukti_transfer/default_image.png
+    ';
+    if ($invoice['status'] == 'paid') {
     ?>
-      <input type="hidden" name="foto_product" value="<?= $image ?>">
+      <input type="hidden" name="foto_product" value="<?= $foto_bukti_transfer ?>">
     <?php }
     ?>
-
-    <input type="hidden" name="id" value="<?= $id ?? '' ?>">
+    
+    <input type="hidden" name="id" value="<?= $invoice['id'] ?? '' ?>">
+    <input type="hidden" name="order_id" value="<?= $invoice['order_id'] ?? '' ?>">
 
     <div class="d-flex justify-content-center">
       <div class="uploadcms mb-3 upload-container" style="min-height: 290px;width:95%; position: relative;">
         <div class="mb-2" style="display: contents;">
-          <img class="rounded-15 mb-4" src="<?= base_url('dist/img/uploads/bukti_transfer/' . ($foto_bukti_transfer == '' ? 'default_image.png' : $foto_bukti_transfer)) ?>" alt="" id="photo_product" style="position:absolute;width:235px;height:175px;">
+          <img class="rounded-15 mb-4" src="<?= $foto_bukti_transfer ?>" alt="" id="photo_product" style="position:absolute;width:276px;height:200px;">
           <div class="border-upload text-center">
             <input type="hidden" name="base64_input" id="base64_input">
-            <input class="file-input" type="file" name="foto" capture="camera" accept="image/*" hidden>
+            <input class="file-input" type="file" name="foto" accept="image/*" hidden>
             <!-- <i class="fa-solid fa-image" style="font-size: 40px; color: #989898; margin-left: -7%;"></i> -->
             <p style="color: #989898; margin-left: -7%;">Pilih Foto</p>
           </div>
         </div>
-        <div style="position:absolute ; bottom:25px">
+        <div style="position:absolute ; bottom:20px">
           <h5>Upload Bukti Transfer</h5>
         </div>
       </div>
     </div>
-  </form>
 
-  <!-- Tombol Aksi -->
-  <div class="d-flex">
-    <button class="btn btn-success rounded-15 btn-sm p-2 col">Saya Sudah Bayar</button>
-  </div>
+    <!-- Tombol Aksi -->
+    <div class="d-flex">
+      <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col">Saya Sudah Bayar</button>
+    </div>
+  </form>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function copyVA() {
@@ -165,18 +174,6 @@
     navigator.clipboard.writeText(va);
     alert("Nomor VA disalin: " + va);
   }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    $('.upload-container').on('click', function() {
-
-      Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
-        icon: "success"
-      });
-      $(this).find('.file-input').click();
-    });
-  });
 </script>
 
 <script>

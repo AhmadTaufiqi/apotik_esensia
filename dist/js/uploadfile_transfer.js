@@ -5,28 +5,54 @@ const progressArea = document.querySelector(".progress-area");
 const uploadedArea = document.querySelector(".uploaded-area");
 const img_ktp = $("#photo_product");
 
+const img_cropper_tf = document.querySelector('#img_tf_cropper');
+
+var cropper = new Cropper(img_cropper_tf,{
+    aspectRatio:8/6,
+    zoomable:false,
+    minContainerHeight:250,
+    minContainerWidth:300,
+})
+
 // form click event
-// container.addEventListener("click", () =>{
-//   fileInput.click();
-// });
+container.addEventListener("click", () =>{
+  fileInput.click();
+});
 
 fileInput.onchange = ({target})=>{
   let file_product = target.files[0]; //getting file [0] this means if user has selected multiple files then get first one only
   if(file_product){
 
     const reader = new FileReader(); //FileReader is a predefined function of JS
-    // console.log(file_product)
-    // console.log(reader)
-
     reader.addEventListener('load', function () {
       var is_submit = 0;
-      $('#modal_product_resizer').modal('show')
+      $('#modal_resizer_transfer').modal('show')
+      cropper.replace(reader.result)
               
-      $('#modal_product_resizer').on('shown.bs.modal', function () {
-  
+      $('#modal_resizer_transfer').on('shown.bs.modal', function () {
+          cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
+          $('#output_tf_resizer').attr('src',cropped_img)
+          
+          $('#btn_cropper').on('click',function(){
+            cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
+
+            $('#output_tf_resizer').attr('src',cropped_img)
+          })
+          $('#submit_cropper_tf').on('click',function(){
+              is_submit = 1;
+              const cropped_img2 = cropper.getCroppedCanvas().toDataURL('image/png')
+              
+              $('#base64_input').val(cropped_img2)
+              checkImageResolution()
+              
+              // file.val(dataURLtoFile(cropped_img2,choosedFile.name))
+              img_ktp.attr('src', cropped_img2);
+              img_ktp.show()
+              $('#modal_resizer_transfer').modal('hide')
+          })
       })
 
-      $('#modal_product_resizer').on('hidden.bs.modal', function () {
+      $('#modal_resizer_transfer').on('hidden.bs.modal', function () {
           if(is_submit === 0){
               location.reload()
           }
@@ -85,7 +111,7 @@ function uploadFile(name){
   xhr.send(data); //sending form data
 }
 
-function checkImageProductResolution() {
+function checkImageResolution() {
   const fileInput = document.querySelector(".file-input");
   var file_product = fileInput.files[0];
   let fileName = file_product.name;
@@ -95,7 +121,7 @@ function checkImageProductResolution() {
   var fileInput2 = $('#base64_input');
   var base64_string = fileInput2.val();
   var base64_size = getFileSizeFromBase64(base64_string);
-  console.log('file size ' + base64_size/1024/1024 + ' MB');
+  // console.log('file size ' + base64_size/1024/1024 + ' MB');
   // var cropped_image = dataURLtoFile(base64_string,filename)
   
   img2.onload = function () {
@@ -103,7 +129,7 @@ function checkImageProductResolution() {
       if ((file_product.size/1024/1024) > 4){ //if file size is greater than 4MB
         reduceImageSize(base64_string, 800, 0.7).then((reducedBase64) => {
             var reduced_size = getFileSizeFromBase64(reducedBase64);
-            console.log('reduced size ' + reduced_size/1024/1024 + ' MB');
+            // console.log('reduced size ' + reduced_size/1024/1024 + ' MB');
             if(reduced_size/1024/1024 > 4){
                 alert("Maksimum resolusi gambar harus 4 MB setelah dikompresi");
                 fileInput.value = "";
