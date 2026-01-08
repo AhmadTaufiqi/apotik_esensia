@@ -177,7 +177,7 @@ function getFileSizeFromBase64(base64String) {
   return fileSizeInBytes;
 }
 
-function reduceImageSize(base64ImageData, maxWidth = 800, quality = 0.7) {
+function reduceImageSize(base64ImageData, maxWidth = 800, quality = 0.3) {
     return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {

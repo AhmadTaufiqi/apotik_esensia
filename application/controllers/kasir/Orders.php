@@ -88,10 +88,14 @@ class Orders extends CI_Controller
       'order' => $order,
       'invoice' => $invoice,
       'order_products' => $order_products,
+      'order_status' => $this->M_app->getOrderStatusHtml($order['status']),
     ];
     $this->M_app->kasir_template($data, 'order/kasir_payment_review');
   }
 
+  // request acceptance = order status 'paid' & invoice is_paid = 1
+  // payment accepted = order status 'payment accepted' & invoice is_paid = 1
+  // payment rejected = order status 'payment rejected' & invoice is_paid = 2
   public function confirmPayment($order_id)
   {
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);

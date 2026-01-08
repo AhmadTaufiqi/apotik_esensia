@@ -8,8 +8,8 @@
             <div class="card-header p-0 pb-2 mb-3 text-left">
               <h5 class="card-title mb-0">Bukti Pembayaran</h5>
             </div>
-            <?php if (!empty($invoice['proof_of_payment'])) : ?>
-              <img src="<?= base_url('dist/img/uploads/bukti_transfer/' . $invoice['proof_of_payment']) ?>" alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 300px;">
+            <?php if (!empty($invoice['bukti_transfer'])) : ?>
+              <img src="<?= $invoice['bukti_transfer'] ?>" alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 300px;">
             <?php else : ?>
               <div class="text-muted">
                 <i class="fas fa-image fa-3x mb-3"></i>
@@ -72,19 +72,27 @@
         <div class="row">
           <div class="col-md-6">
             <h6>Informasi Customer</h6>
-            <p><strong>Nama:</strong> <?= $order['customer_name'] ?? 'N/A' ?></p>
-            <p><strong>Email:</strong> <?= $order['customer_email'] ?? 'N/A' ?></p>
-            <p><strong>Telepon:</strong> <?= $order['customer_phone'] ?? 'N/A' ?></p>
-            <p><strong>Alamat:</strong> <?= $address['kota'] ?? 'N/A' ?></p>
-            <span><strong>Maps:</strong> <a href="https://www.google.com/maps/search/?api=1&query=<?= $address['long']?>,<?= $address['lat'] ?>" target="_blank">Telusuri alamat</a></span>
+            <div class="d-flex mb-3"><strong class="me-auto">Nama:</strong> <?= $order['customer_name'] ?? 'N/A' ?></div>
+            <div class="d-flex mb-3"><strong class="me-auto">Email:</strong> <?= $order['customer_email'] ?? 'N/A' ?></div>
+            <div class="d-flex mb-3"><strong class="me-auto">Telepon:</strong> <?= $order['customer_phone'] ?? 'N/A' ?></div>
+            <div class="d-flex mb-3"><strong class="me-auto">Alamat:</strong> <?= $address['kota'] ?? 'N/A' ?></div>
+            <span><strong>Maps:</strong>
+              <?php if (!empty($order['address_lat']) && !empty($order['address_long'])) : ?>
+                <a href="https://www.google.com/maps?q=<?= $order['address_lat'] ?>,<?= $order['address_long'] ?>" target="_blank" class="btn btn-primary text-white">
+                  <i class="fas fa-map-marker-alt me-1"></i>Buka di Google Maps
+                </a>
+              <?php else : ?>
+                -
+              <?php endif; ?>
+            </span>
           </div>
           <div class="col-md-6">
-            <h6>Informasi Order</h6>
-            <p><strong>Status Order:</strong>
-              <span class="badge bg-secondary"><?= $order['status'] ?? 'N/A' ?></span>
-            </p>
-            <p><strong>Tanggal Order:</strong> <?= date('d-m-Y H:i', strtotime($order['created_at'] ?? '')) ?></p>
-            <p><strong>Total Harga:</strong> Rp <?= number_format($order['cost_price'] ?? 0, 0, ',', '.') ?></p>
+            <h6>Informasi Pesanan</h6>
+            <div class="d-flex mb-3"><strong class="me-auto">Status Pesanan:</strong>
+              <?= $order_status ?>
+            </div>
+            <div class="d-flex mb-3"><strong class="me-auto">Tanggal Order:</strong> <?= date('d-m-Y H:i', strtotime($order['created_at'] ?? '')) ?></div>
+            <div class="d-flex mb-3"><strong class="me-auto">Total Harga:</strong> Rp <?= number_format($order['cost_price'] ?? 0, 0, ',', '.') ?></div>
           </div>
         </div>
       </div>
@@ -141,10 +149,11 @@
     <div class="d-flex justify-content-between mt-4">
       <a href="<?= base_url('kasir/orders') ?>" class="btn btn-secondary text-light">Kembali ke Daftar Order</a>
       <div>
-        <?php if (($invoice['is_paid'] ?? 0) == 0) : ?>
+        <!-- tombol konfirmasi & tolak pembayaran hanya muncul jika status order 'paid' dan is_paid pada invoice 1 -->
+        <?php if ($order['status'] == 'paid' && ($invoice['is_paid'] ?? 0) == 1) : ?>
           <button class="btn btn-success text-light me-2" onclick="confirmPayment(<?= $order['id'] ?? 0 ?>)">Konfirmasi Pembayaran</button>
+          <button class="btn btn-danger" onclick="rejectPayment(<?= $order['id'] ?? 0 ?>)">Tolak Pembayaran</button>
         <?php endif; ?>
-        <button class="btn btn-danger" onclick="rejectPayment(<?= $order['id'] ?? 0 ?>)">Tolak Pembayaran</button>
       </div>
     </div>
   </div>
