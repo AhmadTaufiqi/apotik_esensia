@@ -108,7 +108,7 @@ class Orders extends CI_Controller
       if ($confirm) {
         $alert = '<div class="alert alert-success" role="alert">Berhasil menyimpan data produk</div>';
         $this->session->set_flashdata('message', $alert);
-        
+
         redirect(base_url('kasir/Orders'));
       } else {
         $alert = '<div class="alert alert-danger" role="alert">Gagal menyimpan data produk</div>';
@@ -180,6 +180,26 @@ class Orders extends CI_Controller
     header('Content-Type: text/html; charset=utf-8');
     echo $html;
     return;
+  }
+
+  public function updateShipping_status()
+  {
+    $order_id = $this->input->post('order_id');
+    $shipping_status = $this->input->post('shipping_status');
+
+    $update = $this->M_orders->update_shipping_status($order_id, $shipping_status);
+
+    if ($update) {
+      $alert = '<div class="alert alert-success" role="alert">Berhasil memperbarui status pengiriman</div>';
+      $this->session->set_flashdata('message', $alert);
+
+      redirect(base_url('admin/Orders/detail/' . $order_id));
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">Gagal memperbarui status pengiriman</div>';
+      $this->session->set_flashdata('message', $alert);
+
+      redirect(base_url('admin/Orders/detail/' . $order_id));
+    }
   }
 
   public function latestNotifications()

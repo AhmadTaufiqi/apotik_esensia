@@ -40,7 +40,8 @@ class Invoice extends CI_Controller
       'title' => 'Bayar Pesanan',
       'method' => $payment_method,
       'order' => $order,
-      'invoice' => $invoice
+      'invoice' => $invoice,
+      'back_url' => base_url('orders/detail/' . $order_id)
     ];
 
     $this->M_app->templateCart($data, 'invoice/index');
@@ -59,17 +60,26 @@ class Invoice extends CI_Controller
     }
   }
 
-  public function detail($id)
+  public function detail($order_id)
   {
-    $order = $this->M_orders->get_order_by_id($id);
-    $order_products = $this->M_orders->get_order_product_by_orderid($id);
-
+    $order = $this->M_orders->get_order_by_id($order_id);
+    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+    
+    $payment_method = [];
+    
+    if ($invoice) {
+      $payment_method = $this->M_payment_method->get_payment_method($invoice['payment_id']);
+    }
+    
     $data = [
-      'title' => 'Detail Order',
+      'title' => 'Detail Invoice',
+      'method' => $payment_method,
       'order' => $order,
-      'order_products' => $order_products,
+      'invoice' => $invoice,
+      'back_url' => base_url('orders/detail/' . $order_id)
     ];
-    $this->M_app->templateCart($data, 'order/detail');
+    
+    $this->M_app->templateCart($data, 'invoice/index');
   }
 
   public function uploadBuktiTf()

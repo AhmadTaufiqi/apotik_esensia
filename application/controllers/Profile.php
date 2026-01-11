@@ -83,6 +83,7 @@ class Profile extends CI_Controller
 			'name' => $this->session->userdata('nama_akun'),
 			'foto_akun' => $this->session->userdata('foto_akun'),
 			'hp_akun' => $this->session->userdata('hp_akun'),
+      'back_url' => base_url('profile')
 		];
 
 		$this->M_app->templateCart($data, 'profile/edit');

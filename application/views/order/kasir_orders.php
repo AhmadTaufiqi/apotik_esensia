@@ -102,7 +102,7 @@
                     <?php endif; ?>
 
                     <?php if ($order['status'] == 'payment accepted') : ?>
-                      <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
+                      <a href="<?= base_url('kasir/orders/manageShipping/') . $order['order_id'] ?>" class="dropdown-item">
                         <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a>
                     <?php endif; ?>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
@@ -185,4 +185,21 @@
         });
     });
   })();
+
+  function updateShippingStatus() {
+    $('#').on('click', function() {
+      const orderId = $(this).data('order-id');
+      const shippingStatus = $('#shipping_status').val();
+
+      $.post('<?= base_url("kasir/orders/updateShipping_status") ?>', {
+        order_id: orderId,
+        shipping_status: shippingStatus
+      }).done(function(response) {
+        // On success, reload the page or show a success message
+        location.reload();
+      }).fail(function() {
+        alert('Gagal memperbarui status pengiriman');
+      });
+    });
+  }
 </script>

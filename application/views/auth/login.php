@@ -19,10 +19,10 @@
 
           <div class="content p-2 d-flex align-items-center">
             <div class="col-9 text-center mx-auto mb-5">
-              <button class="rounded-15 btn btn-success px-3 mb-3">
+              <a href="<?= base_url('auth/login_google') ?>" class="rounded-15 btn btn-success px-3 mb-3 text-light">
                 <img width="22" style="padding: 2px;" class="rounded-circle bg-white me-1" src="<?= base_url() ?>dist/img/google-logo.png" alt="">
-                Daftar Dengan Google
-              </button>
+                Masuk Dengan Google
+              </a>
               <div class="form-group mb-3">
                 <div class="d-flex align-items-center">
                   <input type="text" id="inputEmail" name="email" class="form-control form-control-lg rounded-15" placeholder="Masukkan Email Anda" required="" autofocus="" style="padding-left:35px; font-size: 14px;">

@@ -43,6 +43,8 @@
       <div class="d-flex mt-3 align-items-center">
         <?php if ($order['status'] == 'unpaid') : ?>
           <a href="<?= base_url('invoice/index/') . $order['id']?>" class="btn btn-sm btn-danger text-light">Bayar Sekarang</a>
+          <?php elseif($order['status'] == 'paid'): ?>
+            <a href="<?= base_url('invoice/detail/') . $order['id']?>" class="btn btn-sm btn-info text-light">Lihat Invoice</a>
         <?php endif; ?>
         <div class="text-end ms-auto d-flex align-items-center">
           <span class="me-1">Total:</span>

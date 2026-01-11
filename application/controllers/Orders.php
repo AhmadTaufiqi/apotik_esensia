@@ -43,6 +43,7 @@ class Orders extends CI_Controller
       'order' => $order,
       'order_status' => $status,
       'order_products' => $order_products,
+      'back_url' => base_url('profile')
     ];
     $this->M_app->templateCart($data, 'order/detail');
   }

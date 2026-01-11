@@ -2,7 +2,7 @@
   <div class="mobile-container">
     <div class="carousel">
       <div class="navbar px-2 bg-dark">
-        <a href="<?= base_url()?>home" class="card text-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+        <a href="<?= isset($back_url) ? $back_url: base_url('home') ?>" class="card text-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
           <i class="fas fa-angle-left fa-xl color-esensia fw-bold"></i>
         </a>
         <div class="col pe-2">

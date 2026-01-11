@@ -66,19 +66,8 @@
   <?php endif; ?>
   <!-- Total Pembayaran -->
   <div class="card p-3 text-center mb-2">
-    <?php
-    $metode = 'qris';
-    if ($metode == 'qris' && $order['status'] == 'unpaid') : ?>
-      <div class="method-qris py-2 px-5">
-        <img src="<?= base_url() ?>dist/img/qr_pay_example.png" alt="" style="width:100%;">
-      </div>
-    <?php endif; ?>
-
     <div class="text-muted mb-1">Total Pembayaran</div>
     <div class="h4 fw-bold color-esensia mb-0"><?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></div>
-    <?php if ($order['status'] == 'unpaid') : ?>
-      <span class="py-1">Masukkan sesuai nominal tertera</span>
-    <?php endif; ?>
   </div>
 
   <!-- Petunjuk Pembayaran -->
@@ -138,7 +127,7 @@
       <input type="hidden" name="foto_product" value="<?= $foto_bukti_transfer ?>">
     <?php }
     ?>
-
+    
     <input type="hidden" name="id" value="<?= $invoice['id'] ?? '' ?>">
     <input type="hidden" name="order_id" value="<?= $invoice['order_id'] ?? '' ?>">
 
@@ -160,11 +149,9 @@
     </div>
 
     <!-- Tombol Aksi -->
-    <?php if ($order['status'] == 'unpaid') : ?>
-      <div class="d-flex">
-        <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col">Saya Sudah Bayar</button>
-      </div>
-    <?php endif; ?>
+    <div class="d-flex">
+      <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col">Saya Sudah Bayar</button>
+    </div>
   </form>
 
 </div>

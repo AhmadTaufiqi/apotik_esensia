@@ -170,6 +170,8 @@ class Orders extends CI_Controller
     $this->load->view('order/ongkir');
   }
 
+
+  // update status shipping and others
   public function manage_shipping($order_id)
   {
     if (empty($order_id)) {
