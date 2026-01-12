@@ -2,7 +2,7 @@
     <div class="mobile-container">
       <div class="carousel">
         <div class="navbar px-2 bg-dark">
-          <a class="card align-items-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+          <a href="<?= base_url('home')?>" class="card align-items-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
             <img class="rounded-circle" width="80%" src="<?= base_url() ?>dist/img/logo.png" alt="">
           </a>
           <div class="col pe-2">

@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <input type="text" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
+        <input type="hidden" name="cart_product_id[<?= $i ?>]" value="<?= $cp['product_cart_id'] ?>">
         <input type="hidden" name="product_id[<?= $i ?>]" value="<?= $prod_dataset['id'] ?>">
         <input type="hidden" name="product_qty[<?= $i ?>]" value="<?= $quantity ?>">
       <?php endforeach; ?>
@@ -69,7 +69,8 @@
 
     <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
     <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
-    <input type="hidden" name="payment_method" id="payment_method">
+    <input type="hidden" name="payment_method_name" id="payment_method_name">
+    <input type="hidden" name="payment_method_id" id="payment_method_id">
     <div class="container-button mt-auto">
       <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
       <button id="btn_create_order" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
@@ -77,118 +78,28 @@
   </form>
 </div>
 
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 60vh;">
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 40vh;">
   <div class="offcanvas-header py-2">
-    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Metode Pembayaran</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body small">
 
-    <!-- Transfer Bank -->
-    <div class="mb-4">
-      <div class="category-title">
-        <i class="bi bi-bank category-icon"></i> Transfer Bank
-      </div>
-      <div class="row g-2">
-        <div class="col-6">
-          <div class="payment-option" data-value="Bank BCA">
-            <img src="<?= base_url()?>dist/img/payment_methods/bca.png" alt="BCA" />
-            <span>Bank BCA</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="Bank BRI">
-            <img src="<?= base_url()?>dist/img/payment_methods/bri.png" alt="BRI" />
-            <span>Bank BRI</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="Bank Mandiri">
-            <img src="<?= base_url()?>dist/img/payment_methods/mandiri.png" alt="Mandiri" />
-            <span>Bank Mandiri</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="Bank BNI">
-            <img src="<?= base_url()?>dist/img/payment_methods/bni.png" alt="BNI" />
-            <span>Bank BNI</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="CIMB Niaga">
-            <img src="<?= base_url()?>dist/img/payment_methods/cimb-niaga.png" alt="CIMB Niaga" />
-            <span>CIMB Niaga</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Virtual Account -->
-    <div class="mb-4">
-      <div class="category-title">
-        <i class="bi bi-credit-card category-icon"></i> Virtual Account
-      </div>
-      <div class="row g-2">
-        <div class="col-6">
-          <div class="payment-option" data-value="BCA Virtual Account">
-            <img src="<?= base_url()?>dist/img/payment_methods/bca.png" alt="BCA VA" />
-            <span>BCA VA</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="BRI Virtual Account">
-            <img src="<?= base_url()?>dist/img/payment_methods/bri.png" alt="BRI VA" />
-            <span>BRI VA</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="Mandiri Virtual Account">
-            <img src="<?= base_url()?>dist/img/payment_methods/mandiri.png" alt="Mandiri VA" />
-            <span>Mandiri VA</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="BNI Virtual Account">
-            <img src="<?= base_url()?>dist/img/payment_methods/bni.png" alt="BNI VA" />
-            <span>BNI VA</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- E-Wallet -->
-    <div class="mb-4">
-      <div class="category-title">
-        <i class="bi bi-wallet2 category-icon"></i> E-Wallet
-      </div>
-      <div class="row g-2" hidden>
-        <div class="col-6">
-          <div class="payment-option" data-value="GoPay">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/GoPay_logo.svg/512px-GoPay_logo.svg.png" alt="GoPay" />
-            <span>GoPay</span>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="payment-option" data-value="ShopeePay">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/ShopeePay_logo.svg/512px-ShopeePay_logo.svg.png" alt="ShopeePay" />
-            <span>ShopeePay</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- QRIS -->
     <div class="mb-4">
-      <div class="category-title">
-        <i class="bi bi-qr-code category-icon"></i> QRIS
-      </div>
       <div class="row g-2">
-        <div class="col-12">
-          <div class="payment-option" data-value="QRIS (All Payment QR)">
-            <img src="<?= base_url()?>dist/img/payment_methods/qris.png" alt="QRIS" />
-            <span>QRIS (All Payment QR)</span>
+        <?php foreach ($payment_method as $pm) : ?>
+          <div class="col-6">
+            <div class="payment-option" data-value="<?= $pm['method_name'] ?>" data-id="<?= $pm['id'] ?>">
+              <?php if (strtolower($pm['bank_name']) == 'qris') : ?>
+                <img src="<?= base_url() ?>dist/img/payment_methods/qris.png" alt="QRIS" />
+              <?php else : ?>
+                <img src="<?= base_url() ?>dist/img/payment_methods/<?= $pm['image'] ?>" alt="QRIS" />
+              <?php endif; ?>
+              <span><?= $pm['method_name'] ?></span>
+            </div>
           </div>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
 
@@ -197,7 +108,8 @@
     <div id="selectedMethod" class="text-center text-muted">
       Belum ada metode yang dipilih
     </div>
-    <input type="hidden" id="temp_payment_method" name="payment_method">
+    <input type="hidden" id="temp_payment_method_name" name="payment_method_name">
+    <input type="hidden" id="temp_payment_method_id" name="payment_method_id">
     <div class="ms-auto">
       <button class="btn btn-sm btn-success" id="save_payment_method">Simpan</button>
     </div>
@@ -214,7 +126,8 @@
       options.forEach((opt) => opt.classList.remove("active"));
       option.classList.add("active");
       selectedText.innerHTML = `<strong>Metode dipilih:</strong> ${option.dataset.value}`;
-      $('#temp_payment_method').val(option.dataset.value);
+      $('#temp_payment_method_id').val(option.dataset.id);
+      $('#temp_payment_method_name').val(option.dataset.value);
     });
   });
 
@@ -223,8 +136,11 @@
     $('#save_payment_method').on('click', function(e) {
       console.log('clicked');
       e.preventDefault();
-      const selectedMethod = $('#temp_payment_method').val();
-      $('#payment_method').val(selectedMethod);
+      const method_id = $('#temp_payment_method_id').val();
+      const selectedMethod = $('#temp_payment_method_name').val();
+      $('#payment_method_id').val(method_id);
+      $('#payment_method_name').val(selectedMethod);
+
       $('#metode-pembayaran').text(selectedMethod);
       $('#offcanvasBottom').offcanvas('hide');
 
@@ -232,10 +148,10 @@
     });
 
     function activatesaveButton() {
-      console.log(isCartEmpty);
-      const payment_method = $('#payment_method').val();
+      // console.log(isCartEmpty);
+      const payment_method = $('#payment_method_id').val();
 
-      if (payment_method == '') {
+      if (payment_method == '' || payment_method == null || payment_method == undefined) {
         $('#btn_create_order').prop('disabled', true);
       } else {
         $('#btn_create_order').prop('disabled', false);

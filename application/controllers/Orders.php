@@ -62,8 +62,8 @@ class Orders extends CI_Controller
     $input_invoice = [
       'order_id' => $save['order_id'],
       'order_price' => round($cost_price + $ongkir),
-      'payment_id' => 0,
-      'payment_method' => $this->input->post('payment_method'),
+      'payment_id' => $this->input->post('payment_method_id'),
+      'payment_method' => $this->input->post('payment_method_name'),
       'other' => null,
       'is_paid' => 0,
     ];

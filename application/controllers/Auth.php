@@ -212,7 +212,7 @@ class Auth extends CI_Controller
 
 				$user = $this->db->get_where('users', ['oauth_id' => $g_id, 'deleted_at' => NULL])->row_array();
 
-				if($user) {
+				if ($user) {
 					$user_foto = 'default.png';
 					if (strlen($user['foto']) > 0 && file_exists(FCPATH . 'dist/img/uploads/users/' . $user['foto'])) {
 						$user_foto = $user['foto'];
@@ -288,19 +288,31 @@ class Auth extends CI_Controller
 						'updated_at' => date('Y-m-d H:i:s')
 					];
 
+					$address = [
+						// 'kecamatan' => '',
+						'long' => '',
+						'lat' => '',
+						'kota' => '',
+						'kelurahan' => '',
+						'kecamatan' => '',
+						'provinsi' => '',
+						'kode_pos' => '',
+						'created_at' => date('Y-m-d H:i:s'),
+						'updated_at' => date('Y-m-d H:i:s')
+					];
+
+					$this->db->trans_start();
 					$this->db->insert('users', $data);
 
-					// // Set session
-					// $user_foto = 'default.png';
-					// $data_session = [
-					// 	'id_akun' => $data['id'],
-					// 	'user_akun' => $data['email'],
-					// 	'nama_akun' => $data['name'],
-					// 	'foto_akun' => $user_foto,
-					// 	'role' => $data['role']
-					// ];
+					$user_id = $this->db->insert_id();
+					$address['user_id'] = $user_id;
+					$this->db->insert('address', $address);
 
-					// $this->session->set_userdata($data_session);
+					$this->db->trans_complete();
+					if (!$this->db->trans_status()) {
+						$this->session->set_flashdata('msg', '<small class="text-danger pl-2">Registrasi Gagal!</small>');
+						redirect(base_url('auth'));
+					}
 
 					$this->session->set_flashdata('msg', '<small class="text-success pl-2">Email berhasil didaftarkan, silakan login</small>');
 					redirect(base_url('auth'));

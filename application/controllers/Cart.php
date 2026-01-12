@@ -25,8 +25,8 @@ class Cart extends CI_Controller
 
 	public function index()
 	{
-		// $user_id = $this->session->userdata('id_akun');
-		$user_id = 1;
+		$user_id = $this->session->userdata('id_akun');
+		// $user_id = 1;
 		$cart = $this->M_cart->get_user_cart($user_id, 1);
 
 		$data = [
@@ -94,9 +94,13 @@ class Cart extends CI_Controller
 			array_push($products, $dataset);
 		}
 
+		$payment_method = $this->db->get('payment_method')->result_array();
+
 		$data = [
 			'title' => 'Buat Pesanan',
 			'cart_products' => $products,
+			'payment_method' => $payment_method,
+      'back_url' => base_url('cart/index')
 		];
 
 		$this->M_app->templateCart($data, 'cart/checkout');
