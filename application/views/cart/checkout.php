@@ -1,19 +1,23 @@
 <div class="d-flex flex-column">
   <form action="<?= base_url() ?>orders/createOrder" method="POST">
     <div class="content p-2">
-      <div class="card mb-2 flex-row py-2 px-3">
+      <div class="card mb-2 py-2 px-3">
         <div class="d-flex">
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column me-auto">
             <div class="d-flex align-items-center mb-2">
               <i class="fas fa-location-dot fa-lg color-esensia"></i>
-              <h5 class="mb-0 ms-2" id="address_name">Taufiqi</h5>
-              <span class="ms-2 small" id="address_phone_number">089777333111</span>
+              <h5 class="mb-0 ms-2" id="address_name"><?= $user['name'] ?? 'Nama tidak tersedia' ?></h5>
+              <span class="ms-2 small" id="address_phone_number"><?= $user['telp'] ?? 'Telepon tidak tersedia' ?></span>
             </div>
             <span>
-              Jl. Ngesrep Barat Dalam III, Srondol Kulon, Kec. Banyumanik, Kota Semarang, Jawa Tengah 50263
+              <?php if ($address) : ?>
+                <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
+              <?php else : ?>
+                Alamat belum diisi. Silakan lengkapi alamat di profil.
+              <?php endif; ?>
             </span>
           </div>
-          <a href="<?= base_url() ?>profile/edit_address" class="col-1 text-end align-self-center">
+          <a href="<?= base_url() ?>profile/edit" class="col-1 text-end align-self-center">
             <i class="fas fa-angle-right fa-xl text-muted"></i>
           </a>
         </div>
@@ -118,6 +122,7 @@
 
 <script>
   const isCartEmpty = '<?= empty($cart_products) ?>';
+  const hasAddress = '<?= ($address && !empty($address['long']) && !empty($address['lat']) && !empty($address['kecamatan']) && !empty($address['kelurahan'])) ? 'true' : 'false' ?>';
   const options = document.querySelectorAll(".payment-option");
   const selectedText = document.getElementById("selectedMethod");
 
@@ -147,11 +152,21 @@
       activatesaveButton();
     });
 
+    $('#btn_create_order').on('click', function(e) {
+      if (hasAddress === 'false') {
+        alert('Alamat belum diisi. Silakan lengkapi alamat di profil.');
+        e.preventDefault();
+        return false;
+      }
+    });
+
     function activatesaveButton() {
       // console.log(isCartEmpty);
       const payment_method = $('#payment_method_id').val();
 
-      if (payment_method == '' || payment_method == null || payment_method == undefined) {
+      console.log(payment_method);
+      console.log(hasAddress);
+      if (payment_method == '' || payment_method == null || payment_method == undefined || hasAddress === 'false') {
         $('#btn_create_order').prop('disabled', true);
       } else {
         $('#btn_create_order').prop('disabled', false);

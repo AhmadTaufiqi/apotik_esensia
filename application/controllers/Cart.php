@@ -9,6 +9,7 @@ class Cart extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_app');
 		$this->load->model('M_cart');
+		$this->load->model('M_user');
 
 		$is_nologin = false;
 
@@ -94,13 +95,17 @@ class Cart extends CI_Controller
 			array_push($products, $dataset);
 		}
 
+		$user = $this->M_user->get_user_by_id($this->session->userdata('id_akun'));
+		$address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
 		$payment_method = $this->db->get('payment_method')->result_array();
 
 		$data = [
 			'title' => 'Buat Pesanan',
 			'cart_products' => $products,
+			'user' => $user,
+			'address' => $address,
 			'payment_method' => $payment_method,
-      'back_url' => base_url('cart/index')
+			'back_url' => base_url('cart/index')
 		];
 
 		$this->M_app->templateCart($data, 'cart/checkout');
