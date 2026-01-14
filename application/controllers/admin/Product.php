@@ -215,48 +215,47 @@ class Product extends CI_Controller
 			$worksheet = $spreadsheet->getActiveSheet();
 			$rows = $worksheet->toArray();
 
-			$data_to_insert = [];
-
 			// Iterate over rows (skip the first row if it's a header)
 			foreach ($rows as $key => $row) {
-				if ($key <= 1) {
+				if ($key <= 0) {
 					continue; // Skip header row
 				}
 
-				// Assuming your Excel columns map to: Column A=Name, Column B=Email
-				$data_to_insert[] = [
-					'name' => $row[0],
-					'sku' => $row[1],
-					'price' => $row[2],
-					'discount' => $row[3],
-					'image' => $row[4],
-					'description' => $row[5],
-					'category' => $row[6],
-					'stock' => $row[7],
-					// 'tipe' => $row[8],
-					// 'categories' => $row[9],
-					// Add more fields as needed
-				];
+				// Get category ids for this row
+
+				// Insert unique categories and get ids
+				$category_id = 0;
+
+				$existing = $this->db->get_where('product_category', ['category' => $row[6]])->row();
+				if ($existing) {
+					$category_id = $existing->id;
+				} else {
+					$data_cat = [
+						'category' => $row[6],
+						'created_at' => $this->M_app->datetime()
+					];
+
+					$this->db->insert('product_category', $data_cat);
+					$category_id = $this->db->insert_id();
+				}
+
+				if ($row[0] == '') {
+					continue; // Skip if name is empty
+				}
 
 				$_POST['name'] = $row[0];
-				$_POST['sku'] = $row[1];
-				$_POST['price'] = $row[2];
-				$_POST['discount'] = $row[3];
-				$_POST['description'] = $row[5];
-				$_POST['category'] = explode(',',$row[6]);
+				$_POST['sku'] = $this->M_app->generateSkuByNameAndCat($row[0], $category_id, $key);
+				$_POST['price'] = floatval(str_replace(',', '', $row[2]));
+				$_POST['discount'] = ($row[3] ?? 0);
+				$_POST['image'] = ($row[4] ?? 'default_image.png');
+				$_POST['description'] = ($row[5] ?? '-');
+				$_POST['category'] = $category_id;
 				$_POST['stock'] = $row[7];
 
 				$this->M_product->save_product('admin', 'products', 'import');
 			}
 
 			echo json_encode(['status' => 'done']);
-			// Optional: Insert data into your MySQL database using CodeIgniter's query builder
-			// $this->db->insert_batch('your_table_name', $data_to_insert);
-
-			// echo "<pre>";
-			// print_r($data_to_insert); // Display imported data
-			// echo "</pre>";
-			// echo "Import successful!";
 		} else {
 			echo "Error: No file selected.";
 		}

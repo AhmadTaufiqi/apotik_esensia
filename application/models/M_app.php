@@ -336,6 +336,24 @@ class M_app extends CI_Model
             return false;
         }
     }
+    
+    function generateSkuByNameAndCat($name, $prefix = 'PROD', $id = 0) {
+        // 1. Convert to uppercase and remove non-alphanumeric characters
+        $cleanName = strtoupper(preg_replace('/[^a-zA-Z0-9\s]/', '', $name));
+        
+        // 2. Extract first 2 letters of each word (e.g., "Blue Shirt" -> "BLSH")
+        $words = explode(' ', $cleanName);
+        $initials = '';
+        foreach ($words as $word) {
+            $initials .= substr($word, 0, 2);
+        }
+        
+        // 3. Limit the initials length and pad the ID for uniqueness
+        $initials = substr($initials, 0, 6);
+        $paddedId = str_pad($id, 4, '0', STR_PAD_LEFT);
+        
+        return "{$prefix}-{$initials}-{$paddedId}";
+    }
 
     public function rollback($table, $where, $activity)
     {

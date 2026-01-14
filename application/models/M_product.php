@@ -51,7 +51,7 @@ class M_product extends CI_Model
       // 'image' => $this->M_app->uploadFile('products', 'jpg|jpeg|png', 'file', 'default_image.png'),
       'image' => $this->M_app->uploadBase64('products', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
       'description' => $this->input->post('description'),
-      'category' => implode(',', $this->input->post('category')),
+      'category' => $this->input->post('category'),
       'created_at' => $this->M_app->datetime(),
     ];
 
