@@ -1,3 +1,19 @@
+*::-webkit-scrollbar {
+  background-color: transparent;
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 4px solid transparent;
+  background-color: rgba(185, 185, 185, 0.338);
+  background-clip: content-box;
+}
+
 .mobile-container {
   /* max-width: 500px; */
   margin-left: auto;
@@ -6,14 +22,49 @@
   /* height: 100vh; */
 }
 
-@media only screen and (min-width : 800px) {
+.detail-image-product {
+  height: 35vh;
+  object-fit: contain;
+}
+
+@media only screen and (max-width : 800px) {
   .mobile-container {
-    max-width: 500px;
+    /* max-width: 500px; */
+  }
+
+  .carousel-inner {
+    height: 240px !important;
+  }
+
+  .card-product .product-image {
+    height: 140px !important;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+
+  .detail-image-product {
+    height: clamp(200px, 35vh, 450px);
+    object-fit: cover;
+  }
+
+  .offcanvas-sm-bottom {
+    right: 0;
+    left: 0;
+    height: 30vh;
+    max-height: 100%;
+    border-top: 1px solid rgba(0, 0, 0, .2);
+    transform: translateY(100%);
+    animation: 1s;
   }
 }
 
+.carousel-inner {
+  background-color: aliceblue;
+  height: 440px;
+}
+
 .mobile-container .offcanvas {
-  max-width: 500px;
+  /* max-width: 500px; */
   width: 100%;
   left: auto;
   right: auto;
@@ -63,7 +114,7 @@ main {
 }
 
 .btn-sm {
-  font-size: .8rem;
+  font-size: .9rem;
 }
 
 a.btn {
@@ -103,6 +154,7 @@ a:hover {
 
 .carousel-item {
   height: 100%;
+  place-items: center;
 }
 
 .carousel-item img {
@@ -159,8 +211,6 @@ a:hover {
   font-weight: 500;
 }
 
-.slide-products .product-items {}
-
 .slide-products .product-items {
   display: flex;
   column-gap: 4px;
@@ -201,7 +251,7 @@ a:hover {
 }
 
 .card-product .product-image {
-  height: 140px;
+  height: 240px;
   overflow: hidden;
   margin-bottom: 5px;
 }
@@ -247,6 +297,7 @@ div:has(> button.btn-add-to-cart) {
   position: absolute;
   right: 10px;
   bottom: 10px;
+  z-index: 99;
 }
 
 #footer,
@@ -392,6 +443,7 @@ div:has(> button.btn-add-to-cart) {
 .order-status-shipped {
   color: #07eba7;
 }
+
 .order-status-completed {
   color: #00a659;
 }
@@ -422,6 +474,10 @@ div:has(> button.btn-add-to-cart) {
 }
 
 #file {
+  display: none;
+}
+
+#file_profile {
   display: none;
 }
 
@@ -612,6 +668,6 @@ a {
 .select2-container--default .select2-selection--multiple {
   border: 1px solid #dee2e6 !important;
   padding-top: 0.3rem;
-  padding-bottom: 0.55rem!important;
-  padding-left: 0.55rem!important;
+  padding-bottom: 0.55rem !important;
+  padding-left: 0.55rem !important;
 }

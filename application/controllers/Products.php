@@ -9,6 +9,7 @@ class Products extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_app');
 		$this->load->model('M_product');
+		$this->load->model('M_category');
 		$this->load->model('M_cart');
 
 		$is_nologin = false;
@@ -33,15 +34,20 @@ class Products extends CI_Controller
 
 		// Fetch product by ID
 		$product = $this->M_product->get_all_products($id, false, false);
-		
+
 		if (empty($product)) {
 			show_404();
+		} else {
+			$product = $product[0];
 		}
+
+		$category = $this->M_category->get_category_by_id($product->category);
 
 		$data = [
 			'title' => 'Detail Produk',
 			'total_my_cart' => $this->M_cart->get_total_user_cart($user_id),
-			'product' => $product[0] // get first result
+			'product' => $product, // get first result
+			'category' => $category
 		];
 
 		$this->M_app->template($data, 'products/detail');
@@ -63,10 +69,10 @@ class Products extends CI_Controller
 		// fetch all products
 		$products = $this->M_product->get_all_products(null, null, false);
 
-		// fetch categories for filter list (if table exists)
+		// fetch product_category for filter list (if table exists)
 		$categories = [];
-		if ($this->db->table_exists('categories')) {
-			$categories = $this->db->select('id, category')->from('categories')->order_by('category', 'ASC')->get()->result();
+		if ($this->db->table_exists('product_category')) {
+			$categories = $this->db->select('id, category')->from('product_category')->order_by('category', 'ASC')->get()->result();
 		}
 
 		// apply category filter (accept id or category name)

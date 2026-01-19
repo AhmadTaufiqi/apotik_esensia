@@ -36,19 +36,6 @@
           $icon = $order_status['icon'];
           $status = $order_status['label'];
         }
-        // if ($order['status'] == 'unpaid') {
-        //   $icon = 'fas fa-money-bill';
-        //   $status = 'Belum Dibayar';
-        // } elseif ($order['status'] == 'processing') {
-        //   $icon = 'fas fa-box';
-        //   $status = 'Dikemas';
-        // } elseif ($order['status'] == 'sending') {
-        //   $icon = 'fas fa-motorcycle';
-        //   $status = 'Dikirim';
-        // } elseif ($order['status'] == 'shipped') {
-        //   $icon = 'fas fa-box-open';
-        //   $status = 'Pesanan Tiba';
-        // }
         ?>
         <div class="card card-product-cart mb-2 flex-col p-2">
           <div class="d-flex mb-3">
@@ -113,7 +100,6 @@
       <?php endforeach; ?>
     </div>
   </form>
-
 </div>
 
 <script>

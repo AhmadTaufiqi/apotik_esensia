@@ -2,15 +2,17 @@
     <div class="mobile-container">
       <div class="carousel">
         <div class="navbar px-2 bg-dark">
-          <a href="<?= base_url('home')?>" class="card align-items-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
-            <img class="rounded-circle" width="80%" src="<?= base_url() ?>dist/img/logo.png" alt="">
-          </a>
-          <div class="col pe-2">
-            <h6 class="color-esensia text-center mb-0 fw-bold"><?= $title ?></h6>
+          <div class="container">
+            <a href="<?= base_url('home') ?>" class="card align-items-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+              <img class="rounded-circle" width="80%" src="<?= base_url() ?>dist/img/logo.png" alt="">
+            </a>
+            <div class="col pe-2">
+              <h6 class="color-esensia text-center mb-0 fw-bold"><?= $title ?></h6>
+            </div>
+            <a href="#" class="btn bg-white rounded-circle px-1" style="height: 40px; width:40px;">
+              <i class="fas fa-info fa-xl color-esensia"></i>
+            </a>
           </div>
-          <a href="#" class="btn bg-white rounded-circle px-1" style="height: 40px; width:40px;">
-            <i class="fas fa-info fa-xl color-esensia"></i>
-          </a>
         </div>
       </div>
 
@@ -18,7 +20,7 @@
         <form method="POST" action="">
 
           <div class="content p-2 d-flex align-items-center">
-            <div class="col-9 text-center mx-auto mb-5">
+            <div class="col-9 col-lg-4 col-xl-3 text-center mx-auto mb-5">
               <a href="<?= base_url('auth/login_google') ?>" class="rounded-15 btn btn-success px-3 mb-3 text-light">
                 <img width="22" style="padding: 2px;" class="rounded-circle bg-white me-1" src="<?= base_url() ?>dist/img/google-logo.png" alt="">
                 Masuk Dengan Google

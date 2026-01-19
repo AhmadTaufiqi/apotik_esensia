@@ -33,6 +33,10 @@ class Home extends CI_Controller
 			->get()
 			->result_object();
 		$products = $this->M_product->get_all_products(false, false, 1);
+		
+		if (count($products) <= 5) {
+			$products = $this->M_product->get_all_products(false, false, 0);
+		}
 
 		$data = [
 			'categories' => $categories,

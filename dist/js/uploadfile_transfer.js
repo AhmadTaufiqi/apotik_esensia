@@ -1,4 +1,4 @@
-const container = document.querySelector(".upload-container");
+const container = document.querySelector(".upload-tf-container");
 const form_ktp = container.closest('form');
 const fileInput = document.querySelector(".file-input");
 const progressArea = document.querySelector(".progress-area");

@@ -27,18 +27,19 @@ class M_category extends CI_Model
     return 0;
   }
 
-  public function data_prod($role)
+  public function get_all_categories(){
+
+  }
+
+  public function get_category_by_id($product_id)
   {
-    $data = [
-      // 'id' => $this->uuid->v4(),
-      'category' => ucwords($this->input->post('name')),
-      'icon' => $this->M_app->uploadBase64('categories', 'jpg|jpeg|png', 'base64_input', 'default_image.png'),
+    $category = $this->db->select('*')
+      ->get_where('product_category', ['id' => $product_id])->row_array();
+    if ($category) {
+      return $category;
+    }
 
-      'created_at' => $this->M_app->datetime(),
-      // 'updated_at' => $this->M_app->datetime(),
-    ];
-
-    return $data;
+    return '';
   }
 
   public function update_cat($foto, $foto_default)
@@ -50,26 +51,6 @@ class M_category extends CI_Model
     ];
 
     return $prod;
-  }
-
-  public function save_product($role, $table, $activity)
-  {
-    $data = $this->data_prod($role);
-
-    $this->db->trans_start();
-    // $this->db->insert('product', $user);
-    $this->db->insert($table, $data);
-
-    $this->db->trans_complete();
-
-    if ($this->db->trans_status()) {
-
-      //belum dibuat tabel nya
-      // $this->M_app->log_activity(' menambahkan data baru ' . $activity . ' [' . $prod['id'] . ']');
-      return true;
-    } else {
-      return false;
-    }
   }
 
   public function update_category($foto_default, $table, $activity)

@@ -69,8 +69,12 @@
     <?php
     $metode = 'qris';
     if ($metode == 'qris' && $order['status'] == 'unpaid') : ?>
-      <div class="method-qris py-2 px-5">
-        <img src="<?= base_url() ?>dist/img/qr_pay_example.png" alt="" style="width:100%;">
+      <div class="d-flex justify-content-center">
+        <div class="col-lg-5 col-12">
+          <div class="method-qris py-2 px-5">
+            <img src="<?= base_url() ?>dist/img/qr_pay_example.png" alt="" style="width:100%;">
+          </div>
+        </div>
       </div>
     <?php endif; ?>
 
@@ -143,7 +147,7 @@
     <input type="hidden" name="order_id" value="<?= $invoice['order_id'] ?? '' ?>">
 
     <div class="d-flex justify-content-center">
-      <div class="uploadcms mb-3 upload-container" style="min-height: 290px;width:95%; position: relative;">
+      <div class="uploadcms mb-3 upload-tf-container" style="min-height: 290px;width:95%; position: relative;">
         <div class="mb-2" style="display: contents;">
           <img class="rounded-15 mb-4" src="<?= $foto_bukti_transfer ?>" alt="" id="photo_product" style="position:absolute;width:276px;height:200px;">
           <div class="border-upload text-center">
@@ -161,8 +165,8 @@
 
     <!-- Tombol Aksi -->
     <?php if ($order['status'] == 'unpaid') : ?>
-      <div class="d-flex">
-        <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col">Saya Sudah Bayar</button>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col col-lg-4">Saya Sudah Bayar</button>
       </div>
     <?php endif; ?>
   </form>

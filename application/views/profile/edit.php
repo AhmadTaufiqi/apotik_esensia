@@ -1,99 +1,100 @@
-<div class="d-flex flex-column">
-  <form method="POST" id="form_address" action="<?= base_url() ?>profile/save" enctype="multipart/form-data">
+<div class="container px-0">
+  <div class="d-flex flex-column">
+    <form method="POST" id="form_address" action="<?= base_url() ?>profile/save" enctype="multipart/form-data">
 
-    <?php if (key_exists('id', $address)) : ?>
-      <input type="hidden" name="address[id]" value="<?= $address['id'] ?>">
-    <?php endif; ?>
-    <input type="hidden" name="address[user_id]" value="<?= $user_id ?>">
-    <div class="content p-2">
+      <?php if (key_exists('id', $address)) : ?>
+        <input type="hidden" name="address[id]" value="<?= $address['id'] ?>">
+      <?php endif; ?>
+      <input type="hidden" name="address[user_id]" value="<?= $user_id ?>">
+      <div class="content p-2">
 
-      <div class="card card-product-cart mb-2 p-2">
-        <div class="d-flex">
-          <div class="avatar d-flex align-items-center px-2 p-4">
-            <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
-              <img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto_akun != '' ? $foto_akun : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
-              <input type="file" id="file" name="foto" max="2000" accept=".jpg,.jpeg,.png">
-              <label for="file" id="uploadBtn" style="height:40px">Pilih Foto</label>
-            </div>
-            <input type="hidden" id="foto_base64" name="foto_base64" max="2000">
-          </div>
-          <div class="col py-4">
-            <div class="mb-2">
-              <span class="fw-bold"><?= $email ?></span>
-            </div>
-            <div class="form-group mb-2">
-              <input type="text" class="form-control form-control-sm" name="name" value="<?= $name ?? $name ?>" required>
-            </div>
-            <div class="form-group mb-2">
-              <input type="tel" pattern="^(\\+62|62|0)8[1-9][0-9]{6,10}$" title="Nomor telepon Indonesia, contoh: 08123456789 atau +628123456789" maxlength="15" class="form-control form-control-sm" name="telp" value="<?= $hp_akun ?? $hp_akun ?>" required>
-            </div>
-          </div>
-        </div>
-        <div class="p-2">
-          <h5></h5>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Negara</label>
-            <input type="text" class="form-control form-control-sm" name="address[negara]" value="Indonesia" readonly>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Provinsi</label>
-            <input type="text" class="form-control form-control-sm" name="address[provinsi]" value="Jawa Tengah" readonly>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Kota</label>
-            <input type="text" class="form-control form-control-sm" name="address[kota]" value="Semarang" readonly>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Kecamatan</label>
-            <input type="text" class="form-control form-control-sm" name="address[kecamatan]" value="<?= $address['kecamatan'] ?? $address['kecamatan'] ?>" required>
-            <small class="text-danger warning ms-1" hidden>Kecamatan tidak ditemukan</small>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Kelurahan</label>
-            <input type="text" class="form-control form-control-sm" name="address[kelurahan]" value="<?= $address['kelurahan'] ?? $address['kelurahan'] ?>" required>
-            <small class="text-danger warning ms-1" hidden>Kelurahan tidak ditemukan</small>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Kode Pos</label>
-            <input type="text" class="form-control form-control-sm" name="address[kode_pos]" value="<?= $address['kode_pos'] ?? $address['kode_pos'] ?>" required>
-            <small class="text-danger warning ms-1" hidden>Kode pos tidak ditemukan</small>
-          </div>
-          <div class="form-group mb-2">
-            <label class="form-label" for="">Catatan</label>
-            <textarea class="form-control form-control-sm" name="address[catatan]" placeholder="tuliskan nama jalan, nomor rumah, atau patokan" required><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
-          </div>
-          <input type="hidden" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
-          <input type="hidden" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
-          <input type="hidden" id="address_jarak" name="address[jarak]" value="<?= $address['jarak'] ?? $address['jarak'] ?>">
-
-          <div id="map" style="height: 150px;">
-          </div>
-          <div class="card mb-2 flex-row py-2 px-3 mt-1" style="user-select: none;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetLocation" aria-controls="offcanvasBottom">
-            <!-- <div class="d-flex"> -->
-            <div class="col d-flex flex-column">
-              <div class="d-flex align-items-center">
-                <i class="fas fa-location-dot color-esensia"></i>
-                <h6 class="mb-0 ms-1" id="address_name"><?= $name ?></h6>
-                <span class="ms-2 small" id="address_phone_number"><?= $hp_akun ?></span>
+        <div class="card card-product-cart mb-2 p-2">
+          <div class="d-flex">
+            <div class="avatar d-flex align-items-center px-2 p-4">
+              <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
+                <img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto_akun != '' ? $foto_akun : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
+                <input type="file" id="file_profile" name="foto" max="2000" accept=".jpg,.jpeg,.png">
+                <label for="file_profile" id="uploadBtn" style="height:40px">Pilih Foto</label>
               </div>
-              <span>
-                <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
-              </span>
+              <input type="hidden" id="foto_base64" name="foto_base64" max="2000">
             </div>
-            <div class="text-end align-self-center">
-              <i class="fas fa-pencil fa-lg text-muted"></i>
+            <div class="col col-lg-6 py-4 px-1">
+              <div class="mb-2">
+                <span class="fw-bold"><?= $email ?></span>
+              </div>
+              <div class="form-group mb-2">
+                <input type="text" class="form-control form-control-sm" name="name" value="<?= $name ?? $name ?>" required>
+              </div>
+              <div class="form-group mb-2">
+                <input type="tel" pattern="^(\\+62|62|0)8[1-9][0-9]{6,10}$" title="Nomor telepon Indonesia, contoh: 08123456789 atau +628123456789" maxlength="15" class="form-control form-control-sm" name="telp" value="<?= $hp_akun ?? $hp_akun ?>" required>
+              </div>
             </div>
-            <!-- </div> -->
           </div>
-        </div>
-        <div class="col text-end">
-          <button class="btn rounded-4 btn-sm bg-esensia text-light ms-1">Simpan</button>
-        </div>
+          <div class="p-2">
+            <h5></h5>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Negara</label>
+              <input type="text" class="form-control form-control-sm" name="address[negara]" value="Indonesia" readonly>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Provinsi</label>
+              <input type="text" class="form-control form-control-sm" name="address[provinsi]" value="Jawa Tengah" readonly>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Kota</label>
+              <input type="text" class="form-control form-control-sm" name="address[kota]" value="Semarang" readonly>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Kecamatan</label>
+              <input type="text" class="form-control form-control-sm" name="address[kecamatan]" value="<?= $address['kecamatan'] ?? $address['kecamatan'] ?>" required>
+              <small class="text-danger warning ms-1" hidden>Kecamatan tidak ditemukan</small>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Kelurahan</label>
+              <input type="text" class="form-control form-control-sm" name="address[kelurahan]" value="<?= $address['kelurahan'] ?? $address['kelurahan'] ?>" required>
+              <small class="text-danger warning ms-1" hidden>Kelurahan tidak ditemukan</small>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Kode Pos</label>
+              <input type="text" class="form-control form-control-sm" name="address[kode_pos]" value="<?= $address['kode_pos'] ?? $address['kode_pos'] ?>" required>
+              <small class="text-danger warning ms-1" hidden>Kode pos tidak ditemukan</small>
+            </div>
+            <div class="form-group mb-2">
+              <label class="form-label" for="">Catatan</label>
+              <textarea class="form-control form-control-sm" name="address[catatan]" placeholder="tuliskan nama jalan, nomor rumah, atau patokan" required><?= $address['catatan'] ?? $address['catatan'] ?></textarea>
+            </div>
+            <input type="hidden" id="address_long" name="address[long]" value="<?= $address['long'] ?? $address['long'] ?>">
+            <input type="hidden" id="address_lat" name="address[lat]" value="<?= $address['lat'] ?? $address['lat'] ?>">
+            <input type="hidden" id="address_jarak" name="address[jarak]" value="<?= $address['jarak'] ?? $address['jarak'] ?>">
 
+            <div id="map" style="height: 150px;">
+            </div>
+            <div class="card mb-2 flex-row py-2 px-3 mt-1" style="user-select: none;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSetLocation" aria-controls="offcanvasBottom">
+              <!-- <div class="d-flex"> -->
+              <div class="col d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-location-dot color-esensia"></i>
+                  <h6 class="mb-0 ms-1" id="address_name"><?= $name ?></h6>
+                  <span class="ms-2 small" id="address_phone_number"><?= $hp_akun ?></span>
+                </div>
+                <span id="btn_address_text">
+                  <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
+                </span>
+              </div>
+              <div class="text-end align-self-center">
+                <i class="fas fa-pencil fa-lg text-muted"></i>
+              </div>
+              <!-- </div> -->
+            </div>
+          </div>
+          <div class="col text-end">
+            <button class="btn rounded-4 btn-sm bg-esensia text-light ms-1">Simpan</button>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </form>
-
+    </form>
+  </div>
 </div>
 
 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasSetLocation" aria-labelledby="offcanvasBottomLabel" style="height: 58vh;">
@@ -220,6 +221,10 @@
       var input_kecamatan = $('#form_address input[name="address[kecamatan]"]')
       var input_kelurahan = $('#form_address input[name="address[kelurahan]"]')
       var input_kodepos = $('#form_address input[name="address[kode_pos]"]')
+      var input_catatan = $('#form_address input[name="address[catatan]"]')
+      var btn_address_text = $('#btn_address_text')
+
+      console.log(addresses);
 
       if (addresses.hasOwnProperty('city_district')) {
         input_kecamatan.val(addresses.city_district);
@@ -240,6 +245,13 @@
       } else {
         input_kodepos.siblings('.warning').attr('hidden', false);
       }
+
+      if (addresses.hasOwnProperty('road')) {
+        input_catatan.html(addresses.road);
+      }
+
+      var address_string = input_kodepos.val() + ', ' + input_kelurahan.val() + ', ' + input_kecamatan.val() + ', Semarang, Jawa Tengah';
+      btn_address_text.html(address_string);
 
       map1_marker.setLatLng({
         lng,

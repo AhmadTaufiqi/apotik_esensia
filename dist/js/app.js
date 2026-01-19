@@ -2,7 +2,7 @@
 
 const imgDiv = document.querySelector('.profile-pic-div');
 const img = document.querySelector('#photo');
-const file = document.querySelector('#file');
+const file_profile = document.querySelector('#file_profile');
 const uploadBtn = document.querySelector('#uploadBtn');
 localStorage.setItem("old_photo_profile",img.getAttribute('src'));
 
@@ -31,7 +31,7 @@ imgDiv.addEventListener('mouseleave', function () {
 
 //when we choose a foto to upload
 
-file.addEventListener('change', function () {
+file_profile.addEventListener('change', function () {
     //this refers to file
     const choosedFile = this.files[0];
 
@@ -57,7 +57,7 @@ file.addEventListener('change', function () {
                     const cropped_img2 = cropper.getCroppedCanvas().toDataURL('image/png')
 
                     $('#foto_base64').val(cropped_img2)
-                    checkImageResolution()
+                    checkImageResolutionProfile()
 
                     // file.val(dataURLtoFile(cropped_img2,choosedFile.name))
                     img.setAttribute('src', cropped_img2);
@@ -87,8 +87,8 @@ file.addEventListener('change', function () {
 
 // membatasi resolusi gambar
 
-function checkImageResolution() {
-    var fileInput = document.getElementById('file');
+function checkImageResolutionProfile() {
+    var fileInput = document.getElementById('file_profile');
     console.log(fileInput);
     var file = fileInput.files[0];
     var filename = file.name;

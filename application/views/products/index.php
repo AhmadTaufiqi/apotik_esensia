@@ -1,4 +1,4 @@
-<div class="container-fluid p-2">
+<div class="container p-2">
   <div class="d-flex align-items-center mb-3">
     <h4 class="mb-0 me-3">Produk</h4>
     <form id="filter-form" class="d-flex gap-2" method="get" action="<?= base_url('products') ?>">
@@ -6,7 +6,9 @@
         <option value="">Semua Kategori</option>
         <?php if (!empty($categories)) : ?>
           <?php foreach ($categories as $cat) : ?>
-            <option value="<?= htmlspecialchars($cat->category) ?>" <?= ($this->input->get('category') == $cat->category) ? 'selected' : '' ?>><?= htmlspecialchars($cat->category) ?></option>
+            <option value="<?= $cat->id ?>" <?= ($this->input->get('category') == $cat->id) ? 'selected' : '' ?>>
+              <?= !empty($cat->category) ? htmlspecialchars($cat->category) : '' ?>
+            </option>
           <?php endforeach; ?>
         <?php endif; ?>
       </select>
@@ -26,13 +28,13 @@
   <div class="row g-2">
     <?php if (!empty($products)) : ?>
       <?php foreach ($products as $pd) : ?>
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-4 col-lg-3">
           <a href="<?= base_url('products/detail/' . $pd->id) ?>" style="text-decoration: none; color: inherit;">
             <div class="card card-product">
               <div>
                 <div class="product-image">
                   <button class="btn-add-to-cart btn btn-sm btn-success" data-product-id="<?= $pd->id ?>" onclick="event.stopPropagation(); event.preventDefault(); return false;"><i class="fas fa-plus"></i></button>
-                  <img src="<?= base_url() ?>dist/img/uploads/products/<?= $pd->image ?>" alt="<?= htmlspecialchars($pd->name) ?>" class="w-100">
+                  <img src="<?= base_url() ?>dist/img/uploads/products/<?= $pd->image ?>" alt="<?= htmlspecialchars($pd->name) ?>" class="w-100" style="position:absolute; align-self:anchor-center;">
                 </div>
                 <p class="product-name"><?= htmlspecialchars($pd->name) ?></p>
               </div>
@@ -51,19 +53,23 @@
       </div>
     <?php endif; ?>
   </div>
-
+</div>
   <script>
-    (function(){
+    (function() {
       var cat = document.getElementById('filter-category');
       var sort = document.getElementById('filter-sort');
       var form = document.getElementById('filter-form');
 
-      if (cat) cat.addEventListener('change', function(){ form.submit(); });
-      if (sort) sort.addEventListener('change', function(){ form.submit(); });
+      if (cat) cat.addEventListener('change', function() {
+        form.submit();
+      });
+      if (sort) sort.addEventListener('change', function() {
+        form.submit();
+      });
 
       // Attach add-to-cart handlers (placeholder)
-      document.querySelectorAll('.btn-add-to-cart').forEach(function(btn){
-        btn.addEventListener('click', function(e){
+      document.querySelectorAll('.btn-add-to-cart').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
           // event already stopped by inline handler, but keep safe
           e.stopPropagation();
           e.preventDefault();
@@ -75,4 +81,3 @@
       });
     })();
   </script>
-</div>

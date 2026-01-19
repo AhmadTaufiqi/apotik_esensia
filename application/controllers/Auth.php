@@ -222,6 +222,7 @@ class Auth extends CI_Controller
 						'user_akun' => $user['email'],
 						'nama_akun' => $user['name'],
 						'foto_akun' => $user_foto,
+						'hp_akun' => $user['telp'],
 						'role' => $user['role']
 					];
 

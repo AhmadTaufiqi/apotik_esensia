@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PHPUnit\Framework\MockObject\DuplicateMethodException;
+use Symfony\Component\DomCrawler\Crawler;
 
 class Product extends CI_Controller
 {
@@ -199,6 +200,121 @@ class Product extends CI_Controller
 		redirect('admin/product');
 	}
 
+	public function importHtml()
+	{
+		$file_uri = base_url() . 'html_data_products2/Sheet1.html';
+		// var_dump($file_uri);
+		$html = file_get_contents('html_data_products2/Sheet1.html'); // Or use Guzzle for URLs
+		$crawler = new Crawler($html); // Or $crawler->addHtmlContent($html);
+
+		// Ensure upload directory exists
+		$upload_dir = FCPATH . 'dist/img/uploads/products/';
+		if (!is_dir($upload_dir)) {
+			mkdir($upload_dir, 0755, true);
+		}
+
+		// $tes = $crawler->filter('table'); // Selects <h1 class="title"> elements;
+
+		$rows = $crawler->filter('table tbody tr');
+		$rows->each(function (Crawler $row, $i) use ($upload_dir) {
+			if ($i == 0) return; // Skip header row
+			$cells = $row->filter('td');
+			if ($cells->count() < 8) return; // Ensure enough columns
+
+			$name = trim($cells->eq(0)->text());
+			$sku_raw = trim($cells->eq(1)->text());
+			$price_raw = trim($cells->eq(2)->text());
+			
+			$price_generated = floatval(str_replace(',','',$price_raw));
+			$price = is_numeric($price_generated) ? $price_generated : '0';
+			$discount = trim($cells->eq(3)->text());
+			$imageCell = $cells->eq(4);
+			$image_src = '';
+			if ($imageCell->filter('img')->count() > 0) {
+				$image_src = $imageCell->filter('img')->attr('src');
+			}
+			$description = trim($cells->eq(5)->text());
+			$category_name = trim($cells->eq(6)->text());
+			$stock = trim($cells->eq(7)->text());
+
+			if (!empty($name)) {
+
+				// Handle category
+				$existing_cat = $this->db->get_where('product_category', ['category' => $category_name])->row();
+				if ($existing_cat) {
+					$category_id = $existing_cat->id;
+				} else {
+					$data_cat = [
+						'category' => $category_name,
+						'created_at' => $this->M_app->datetime()
+					];
+					$this->db->insert('product_category', $data_cat);
+					$category_id = $this->db->insert_id();
+				}
+
+				// Generate SKU if empty
+				// $sku = empty($sku) ? $this->M_app->generateSkuByNameAndCat($name, $category_id, $i) : $sku;
+
+				$sku = $sku_raw;
+
+				$product_code = $this->M_app->generateSkuByNameAndCat($name, $category_id, $i);
+				if (empty($sku_raw) || !is_numeric($sku_raw)) {
+					$sku = $product_code;
+				}
+
+				// Handle image upload
+				$image = 'default_image.png';
+				if (!empty($image_src)) {
+					$src_path = FCPATH . 'html_data_products2/' . $image_src;
+
+					$dest_path = $upload_dir . $sku . '.jpg';
+					if (file_exists($src_path)) {
+						copy($src_path, $dest_path);
+						$image = $sku . '.jpg';
+					}
+				}
+
+				// Check if product exists by name
+				$existing_product = $this->db->get_where('products', ['name' => $name])->row();
+				if ($existing_product) {
+					// Update
+					$update_data = [
+						'sku' => $sku,
+						'product_code' => $product_code,
+						'price' => $price,
+						'discount' => $discount,
+						'image' => $image,
+						'description' => $description ?: '-',
+						'category' => $category_id,
+						'stock' => $stock,
+						'updated_at' => $this->M_app->datetime()
+					];
+
+					$this->db->where('id', $existing_product->id);
+					$this->db->update('products', $update_data);
+				} else {
+					// Insert
+					$insert_data = [
+						'name' => $name,
+						'sku' => $sku,
+						'product_code' => $product_code,
+						'price' => $price,
+						'discount' => $discount,
+						'image' => $image,
+						'description' => $description ?: '-',
+						'category' => $category_id,
+						'stock' => $stock,
+						'created_at' => $this->M_app->datetime()
+					];
+
+					$this->db->insert('products', $insert_data);
+				}
+			}
+		});
+
+		echo json_encode(['status' => 'done']);
+	}
+
 	public function importExcel()
 	{
 		$data = [];
@@ -245,7 +361,7 @@ class Product extends CI_Controller
 
 				$_POST['name'] = $row[0];
 				$_POST['sku'] = $this->M_app->generateSkuByNameAndCat($row[0], $category_id, $key);
-				$_POST['price'] = floatval(str_replace(',', '', $row[2]));
+				$_POST['price'] = floatval(str_replace('.', '', $row[2]));
 				$_POST['discount'] = ($row[3] ?? 0);
 				$_POST['image'] = ($row[4] ?? 'default_image.png');
 				$_POST['description'] = ($row[5] ?? '-');
