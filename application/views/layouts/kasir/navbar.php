@@ -37,7 +37,7 @@
 </nav>
 <script>
   (function(){
-    const url = '<?= base_url('admin/orders/latestNotifications') ?>';
+    const url = '<?= base_url('admin/notifications/latestNotifications') ?>';
     fetch(url)
       .then(r => r.json())
       .then(function(res){
@@ -50,7 +50,7 @@
             const li = document.createElement('li');
             li.className = 'dropdown-item d-flex align-items-start';
             const a = document.createElement('a');
-            a.href = n.link || '<?= base_url('admin/orders') ?>';
+            a.href = n.link || '<?= base_url('kasir_orders/detail/') ?>' + n.order_id;
             a.className = 'd-flex align-items-start w-100 text-decoration-none text-reset';
             a.innerHTML = '<div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>' +
                           '<div><div class="small fw-bold">'+(n.title || '')+'</div>' +

@@ -16,57 +16,46 @@
       </a>
       <ul class="dropdown-menu dropdown-menu-end p-0 shadow-sm" aria-labelledby="notifDropdown" style="width:320px;">
         <li class="dropdown-header small text-muted px-3 py-2">Notifikasi</li>
-        <li>
-          <hr class="dropdown-divider my-0">
-        </li>
+        <li><hr class="dropdown-divider my-0"></li>
         <div id="notif-list">
           <li class="text-center small text-muted py-2">Memuat notifikasi...</li>
         </div>
-        <li>
-          <hr class="dropdown-divider my-0">
-        </li>
+        <li><hr class="dropdown-divider my-0"></li>
         <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin/orders') ?>">Lihat semua notifikasi</a></li>
       </ul>
     </li>
     <li class="nav-item">
-      <a class="btn bg-light text-muted my-2 p-2" href="<?= base_url('admin/profile') ?>">
-        <span class="fa fa-gear d-block"></span>
-      </a>
-    </li>
-    <li class="nav-item">
       <div class="nav-link text-muted pr-2">
-        <div class="d-flex align-items-center">
-          <!-- <span class="avatar avatar-sm"> -->
-          <div class="avatar rounded me-2" style="width: 32px;height:32px; overflow:hidden;">
-            <img src="<?= base_url('dist/img/uploads/users/' . $this->session->userdata('foto_akun')) ?>" alt="..." class="avatar-img" width="115%" style="text-align:center;margin-left:-3px;">
-          </div>
-          <!-- </span> -->
-          <span>test</span>
+        <!-- <span class="avatar avatar-sm"> -->
+        <div class="avatar rounded" style="width: 32px;height:32px; overflow:hidden;">
+          <img src="<?= base_url('dist/img/uploads/users/' . $this->session->userdata('foto_akun')) ?>" alt="..." class="avatar-img" width="115%" style="text-align:center;margin-left:-3px;">
         </div>
+        <!-- </span> -->
       </div>
     </li>
   </ul>
 </nav>
 <script>
-  (function() {
+  (function(){
     const url = '<?= base_url('admin/notifications/latestNotifications') ?>';
     fetch(url)
       .then(r => r.json())
-      .then(function(res) {
+      .then(function(res){
         const list = document.getElementById('notif-list');
         const countEl = document.getElementById('notif-count');
         if (!list) return;
         list.innerHTML = '';
         if (res.data && res.data.length) {
-          res.data.forEach(function(n) {
+          res.data.forEach(function(n){
+            console.log(n);
             const li = document.createElement('li');
             li.className = 'dropdown-item d-flex align-items-start';
             const a = document.createElement('a');
-            a.href = n.link || '<?= base_url('admin/orders') ?>';
+            a.href = n.link || '<?= base_url('kurir_orders/detail/') ?>' + n.order_id;
             a.className = 'd-flex align-items-start w-100 text-decoration-none text-reset';
             a.innerHTML = '<div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>' +
-              '<div><div class="small fw-bold">' + (n.title || '') + '</div>' +
-              '<div class="small text-muted">' + (n.message || '') + '</div></div>';
+                          '<div><div class="small fw-bold">'+(n.title || '')+'</div>' +
+                          '<div class="small text-muted">'+(n.message || '')+'</div></div>';
             li.appendChild(a);
             list.appendChild(li);
           });
@@ -83,7 +72,7 @@
         } else {
           countEl.style.display = 'none';
         }
-      }).catch(function(err) {
+      }).catch(function(err){
         console.error('Error loading notifications', err);
       });
   })();

@@ -23,9 +23,9 @@
 									<div class="avatar d-flex align-items-center mb-3">
 										<div class="profile-pic-div">
 											<img src="<?= base_url() ?>dist/img/uploads/users/<?= $foto != '' ? $foto : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
-											<input type="file" id="file" name="foto" max="2000" accept=".jpg,.jpeg,.png">
+											<input type="file" id="file_profile" name="foto" max="2000" accept=".jpg,.jpeg,.png">
 
-											<label for="file" id="uploadBtn">Pilih Foto</label>
+											<label for="file_profile" id="uploadBtn">Pilih Foto</label>
 										</div>
 										<input type="hidden" id="foto_base64" name="foto_base64" max="2000">
 									</div>

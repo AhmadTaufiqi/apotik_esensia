@@ -36,6 +36,7 @@ class Invoice extends CI_Controller
     if ($invoice) {
       $payment_method = $this->M_payment_method->get_payment_method($invoice['payment_id']);
     }
+
     $data = [
       'title' => 'Bayar Pesanan',
       'method' => $payment_method,
@@ -43,6 +44,11 @@ class Invoice extends CI_Controller
       'invoice' => $invoice,
       'back_url' => base_url('orders/detail/' . $order_id)
     ];
+
+    $data['back_url'] = false;
+    if ($this->input->get('from') == 'orders') {
+      $data['back_url'] = false;
+    }
 
     $this->M_app->templateCart($data, 'invoice/index');
   }
@@ -64,13 +70,13 @@ class Invoice extends CI_Controller
   {
     $order = $this->M_orders->get_order_by_id($order_id);
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
-    
+
     $payment_method = [];
-    
+
     if ($invoice) {
       $payment_method = $this->M_payment_method->get_payment_method($invoice['payment_id']);
     }
-    
+
     $data = [
       'title' => 'Detail Invoice',
       'method' => $payment_method,
@@ -78,7 +84,7 @@ class Invoice extends CI_Controller
       'invoice' => $invoice,
       'back_url' => base_url('orders/detail/' . $order_id)
     ];
-    
+
     $this->M_app->templateCart($data, 'invoice/index');
   }
 
@@ -87,7 +93,7 @@ class Invoice extends CI_Controller
     $id = $this->input->post('id');
     $order_id = $this->input->post('order_id');
     $this->M_invoice->upload_bukti_transfer($id, $order_id);
-    redirect(base_url('/invoice/index/' . $order_id));
+    redirect(base_url('/invoice/' . $order_id));
   }
 
   public function payment()

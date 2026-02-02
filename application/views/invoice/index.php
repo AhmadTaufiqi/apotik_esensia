@@ -30,7 +30,7 @@
 
   <?php
   $payment_image = 'default.png';
-  $payment_method = strtolower($invoice['payment_method']);
+  $payment_method = strtolower($method['method_name']);
 
   if (strpos($payment_method, 'bri') !== false) {
     $payment_image = 'bri.png';
@@ -45,19 +45,122 @@
   } elseif (strpos($payment_method, 'gopay') !== false) {
     $payment_image = 'gopay.png';
   }
+
+  $image = $method['image'];
+  $payment_method_img = $image ?? base_url() . 'dist/img/uploads/bukti_transfer/default_image.png';
   ?>
 
   <?php if ($method['method_name'] != 'Qris') : ?>
     <!-- Metode Pembayaran -->
     <div class="card p-3 mb-2">
-      <div class="fw-bold mb-2">Metode Pembayaran</div>
-      <div class="d-flex align-items-center mb-2">
-        <img src="<?= base_url('dist/img/') . $method['image'] ?>" width="45" class="me-2 rounded-1" alt="<?= $invoice['payment_method'] ?>">
-        <div>
-          <div class="fw-semibold"><?= $invoice['payment_method'] ?></div>
-          <div class="d-flex align-items-center mt-1">
-            <span class="va-number me-2" style="font-weight: 500;"><?= $invoice['payment_id'] ?></span>
-            <button class="btn btn-sm btn-success py-0" onclick="copyVA()">Salin</button>
+      <div class="row">
+        <div class="col mb-2">
+          <div class="fw-bold mb-2">Metode Pembayaran</div>
+          <div class="d-flex align-items-center mb-2">
+            <img src="<?= base_url('dist/img/payment_methods/') . strtolower($method['bank_name']) ?>.png" width="45" class="me-2 rounded-1" alt="<?= $invoice['payment_method'] ?>">
+            <div>
+              <div class="fw-semibold"><?= $invoice['payment_method'] ?></div>
+              <div class="d-flex align-items-center mt-1">
+                <span class="va-number me-2" style="font-weight: 500;"><?= $method['payment_id'] ?></span>
+                <button class="btn btn-sm btn-success py-0" onclick="copyVA()">Salin</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="col-md-6 col-12">
+            <!-- Petunjuk Pembayaran -->
+            <div class="card p-3 mb-2">
+              <div class="fw-bold mb-3">Petunjuk Pembayaran</div>
+
+              <ul class="nav nav-tabs nav-fill small" id="paymentTab" role="tablist">
+                <?php if (strpos($payment_method, 'qris') === false) : ?>
+                  <li class="nav-item">
+                    <button class="nav-link active" id="m-banking-tab" data-bs-toggle="tab" data-bs-target="#m-banking" type="button">M-Banking</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" id="atm-tab" data-bs-toggle="tab" data-bs-target="#atm" type="button">ATM</button>
+                  </li>
+                <?php endif; ?>
+              </ul>
+
+              <div class="tab-content mt-3 small" id="paymentTabContent">
+                <div class="tab-pane fade show active" id="m-banking">
+                  <ol>
+                    <?php if (strpos($payment_method, 'bca') !== false) : ?>
+                      <li>Buka aplikasi <strong>BCA Mobile</strong>.</li>
+                      <li>Pilih menu <strong>m-BCA</strong>, masukkan PIN m-BCA.</li>
+                      <li>Pilih <strong>m-Transfer</strong> > <strong>BCA Virtual Account</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong> dan tekan <strong>OK</strong>.</li>
+                      <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'bri') !== false) : ?>
+                      <li>Buka aplikasi <strong>BRImo</strong>.</li>
+                      <li>Pilih menu <strong>Transfer</strong>.</li>
+                      <li>Pilih <strong>BRIVA</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong> dan tekan <strong>OK</strong>.</li>
+                      <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'bni') !== false) : ?>
+                      <li>Buka aplikasi <strong>BNI Mobile Banking</strong>.</li>
+                      <li>Pilih menu <strong>Transfer</strong>.</li>
+                      <li>Pilih <strong>Virtual Account Billing</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong> dan tekan <strong>OK</strong>.</li>
+                      <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'mandiri') !== false) : ?>
+                      <li>Buka aplikasi <strong>M-banking</strong>.</li>
+                      <li>Pilih menu <strong>Transfer</strong>.</li>
+                      <li>Pilih <strong>Multipayment</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Masukkan jumlah nominal : <?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></li>
+                      <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'qris') !== false) : ?>
+                      <li>Login ke aplikasi mobile banking (BCA, BRImo, Livin') atau dompet digital Anda (GoPay, OVO, DANA, dll.) yang mendukung QRIS.</li>
+                      <li>Cari dan ketuk menu <strong>Bayar/Scan QRIS</strong> atau ikon QR.</li>
+                      <li>Arahkan kamera ke kode QR yang disediakan penerima (di layar HP, struk, atau kode statis).</li>
+                      <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
+                      <li>Masukkan jumlah uang yang akan dikirim <?= 'Rp ' . number_format($invoice['order_price'], 0, ',', '.') ?></li>
+                      <li>Periksa detail transaksi (nama penerima, nominal). Klik <strong>Lanjut</strong> atau <strong>Konfirmasi</strong>.</li>
+                      <li>Masukkan PIN transaksi Anda untuk menyelesaikan.</li>
+                      <li>Tunggu notifikasi transaksi berhasil dan simpan bukti transaksi.</li>
+                    <?php else : ?>
+                      <li>Buka aplikasi mobile banking bank Anda.</li>
+                      <li>Pilih menu transfer ke rekening virtual account.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran lalu konfirmasi.</li>
+                    <?php endif; ?>
+                  </ol>
+                </div>
+                <div class="tab-pane fade" id="atm">
+                  <ol>
+                    <?php if (strpos($payment_method, 'bca') !== false) : ?>
+                      <li>Masukkan kartu ATM BCA dan PIN Anda.</li>
+                      <li>Pilih <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rekening BCA Virtual Account</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'bri') !== false) : ?>
+                      <li>Masukkan kartu ATM BRI dan PIN Anda.</li>
+                      <li>Pilih menu <strong>Transaksi Lainnya</strong> > <strong>Pembayaran</strong> > <strong>BRIVA</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'bni') !== false) : ?>
+                      <li>Masukkan kartu ATM BNI dan PIN Anda.</li>
+                      <li>Pilih menu <strong>Transfer</strong> > <strong>Virtual Account Billing</strong>.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
+                    <?php elseif (strpos($payment_method, 'mandiri') !== false) : ?>
+                      <li>Masukkan kartu ATM Mandiri dan PIN Anda.</li>
+                      <li>Pilih menu <strong>Transfer </strong></li>
+                      <li>Masukkan kode perusahaan <strong>008</strong> dan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
+                    <?php else : ?>
+                      <li>Masukkan kartu ATM bank Anda dan PIN.</li>
+                      <li>Pilih menu transfer ke virtual account.</li>
+                      <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong>.</li>
+                      <li>Periksa detail pembayaran dan konfirmasi.</li>
+                    <?php endif; ?>
+                  </ol>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -67,13 +170,20 @@
   <!-- Total Pembayaran -->
   <div class="card p-3 text-center mb-2">
     <?php
-    $metode = 'qris';
-    if ($metode == 'qris' && $order['status'] == 'unpaid') : ?>
+    $metode = strtolower($method['method_name']);
+    if (str_contains($metode, 'qris') && $order['status'] == 'unpaid') : ?>
       <div class="d-flex justify-content-center">
         <div class="col-lg-5 col-12">
           <div class="method-qris py-2 px-5">
-            <img src="<?= base_url() ?>dist/img/qr_pay_example.png" alt="" style="width:100%;">
+            <img src="<?= base_url() ?>dist/img/<?= $payment_method_img ?>" alt="" style="width:100%;">
           </div>
+        </div>
+      </div>
+    <?php elseif (str_contains($metode, 'transfer')) : ?>
+      <div class="d-flex justify-content-center">
+        <div class="col text-center mb-4 p-2">
+          <h4 class="mb-1"><?= $method['payment_id'] ?></h4>
+          <span>A.N. Muhana Sano Esensi</span>
         </div>
       </div>
     <?php endif; ?>
@@ -85,58 +195,11 @@
     <?php endif; ?>
   </div>
 
-  <!-- Petunjuk Pembayaran -->
-  <div class="card p-3 mb-2" hidden>
-    <div class="fw-bold mb-3">Petunjuk Pembayaran</div>
-
-    <ul class="nav nav-tabs nav-fill small" id="paymentTab" role="tablist">
-      <li class="nav-item">
-        <button class="nav-link active" id="m-banking-tab" data-bs-toggle="tab" data-bs-target="#m-banking" type="button">M-Banking</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" id="i-banking-tab" data-bs-toggle="tab" data-bs-target="#i-banking" type="button">iBanking</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" id="atm-tab" data-bs-toggle="tab" data-bs-target="#atm" type="button">ATM</button>
-      </li>
-    </ul>
-
-    <div class="tab-content mt-3 small" id="paymentTabContent">
-      <div class="tab-pane fade show active" id="m-banking">
-        <ol>
-          <li>Buka aplikasi BANK Mobile dan pilih menu <strong>m-BANK</strong>.</li>
-          <li>Pilih <strong>m-Transfer</strong> &gt; <strong><?= $method['method_name'] ?></strong>.</li>
-          <li>Masukkan nomor <strong><?= $method['payment_id'] ?></strong> dan tekan <strong>OK</strong>.</li>
-          <li>Periksa detail pembayaran lalu tekan <strong>Ya</strong>.</li>
-        </ol>
-      </div>
-
-      <div class="tab-pane fade" id="i-banking">
-        <ol>
-          <li>Login ke <strong>klikBCA.com</strong>.</li>
-          <li>Pilih menu <strong>Transfer Dana</strong> &gt; <strong>Ke BCA Virtual Account</strong>.</li>
-          <li>Masukkan nomor <strong>123456789012345</strong>.</li>
-          <li>Konfirmasi dan selesaikan transaksi.</li>
-        </ol>
-      </div>
-
-      <div class="tab-pane fade" id="atm">
-        <ol>
-          <li>Masukkan kartu ATM BCA dan PIN Anda.</li>
-          <li>Pilih <strong>Transaksi Lainnya</strong> &gt; <strong>Transfer</strong> &gt; <strong>Ke Rekening BCA Virtual Account</strong>.</li>
-          <li>Masukkan nomor <strong>123456789012345</strong>.</li>
-          <li>Periksa detail pembayaran dan tekan <strong>Ya</strong>.</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-
-  <form action="<?= base_url() ?>/invoice/uploadBuktiTf" method="POST">
+  <form action="<?= base_url() ?>/invoice/uploadBuktiTf" method="POST" onsubmit="return validateUpload()">
     <?php
     $image = $invoice['bukti_transfer'];
-    $foto_bukti_transfer = $image ?? base_url() . 'dist/img/uploads/bukti_transfer/default_image.png
-    ';
+    // var_dump(empty($image));
+    $foto_bukti_transfer = empty($image) ? base_url() . 'dist/img/uploads/bukti_transfer/default_image.png' : $image;
     if ($invoice['status'] == 'paid') {
     ?>
       <input type="hidden" name="foto_product" value="<?= $foto_bukti_transfer ?>">
@@ -167,6 +230,10 @@
     <?php if ($order['status'] == 'unpaid') : ?>
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-success rounded-15 btn-sm p-2 col col-lg-4">Saya Sudah Bayar</button>
+      </div>
+    <?php else: ?>
+      <div class="d-flex justify-content-center">
+        <a href="<?= base_url() ?>" class="btn btn-primary rounded-15 btn-sm p-2 col col-lg-4 text-light">Back to Home</a>
       </div>
     <?php endif; ?>
   </form>
@@ -229,4 +296,15 @@
     update();
     const timer = setInterval(update, 1000);
   })();
+</script>
+
+<script>
+  function validateUpload() {
+    const fileInput = document.querySelector('.file-input');
+    if (fileInput.files.length === 0) {
+      alert('Silakan upload foto bukti pembayaran terlebih dahulu.');
+      return false;
+    }
+    return true;
+  }
 </script>

@@ -105,7 +105,7 @@ class Cart extends CI_Controller
 			'user' => $user,
 			'address' => $address,
 			'payment_method' => $payment_method,
-			'back_url' => base_url('cart/index')
+			'back_url' => base_url('cart')
 		];
 
 		$this->M_app->templateCart($data, 'cart/checkout');

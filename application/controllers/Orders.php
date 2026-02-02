@@ -52,8 +52,9 @@ class Orders extends CI_Controller
   {
     $address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
     $cost_price = $this->input->post('total_cost_price');
-    $ongkir = $address['jarak'] * 2000; // 2k per km
-
+    // $ongkir = $address['jarak'] * 2000; // 2k per km
+    $ongkir = 0; // 2k per km
+    
     $cart_product_id = $this->input->post('cart_product_id');
 
     $save = $this->M_orders->save_order('orders', 'create order form cart');
@@ -77,7 +78,7 @@ class Orders extends CI_Controller
       $this->session->set_flashdata('msg', '<small class="text-danger ps-2">failed save order</small>');
     }
 
-    redirect('invoice/index/' . $save['order_id']);
+    redirect('invoice/' . $save['order_id']);
   }
 
   public function payment()

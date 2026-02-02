@@ -72,7 +72,7 @@
         </div>
         <!-- End Card Custom bg -->
 
-        <div class="footer"><strong><?php echo (int)date('Y'); ?> </strong><span>© All Right reserved. CV Fun Teknologi</span></div>
+        <div class="footer"><strong><?php echo (int)date('Y'); ?> </strong><span>© All Right reserved. Klinik Esensia</span></div>
       </div>
       <div class="col-lg-7 d-none d-lg-flex" style="background-image: url(<?= base_url() ?>dist/img/background_login.jpg);height: 100vh; background-size: cover; background-position: center;">
       </div>

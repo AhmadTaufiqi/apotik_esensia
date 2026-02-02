@@ -6,7 +6,7 @@
   <!-- Filter Form -->
   <div class="card mb-3">
     <div class="card-body">
-      <form method="get" action="<?= base_url('admin/orders') ?>" class="row mx-0 g-3">
+      <form method="get" action="<?= base_url('kasir_orders') ?>" class="row mx-0 g-3">
         <!-- Search by name or order ID -->
         <div class="col-md-3 px-1">
           <label for="search" class="form-label">Cari Nama / Order ID</label>
@@ -51,7 +51,7 @@
         <!-- Buttons -->
         <div class="col-12 d-flex gap-2 px-1">
           <button type="submit" class="btn btn-primary">Filter</button>
-          <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">Reset</a>
+          <a href="<?= base_url('kasir_orders') ?>" class="btn btn-secondary text-light">Reset</a>
         </div>
       </form>
     </div>
@@ -87,7 +87,7 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu" style="width:240px">
-                    <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
+                    <a href="<?= base_url('/kasir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
 
                     <?php if ($order['status'] == 'paid') : ?>
@@ -102,8 +102,8 @@
                     <?php endif; ?>
 
                     <?php if ($order['status'] == 'payment accepted') : ?>
-                      <a href="<?= base_url('kasir/orders/manageShipping/') . $order['order_id'] ?>" class="dropdown-item">
-                        <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a>
+                      <!-- <a href="<?= base_url('kasir/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
+                        <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a> -->
                     <?php endif; ?>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="fas fa-trash me-2"></span>Hapus</button>

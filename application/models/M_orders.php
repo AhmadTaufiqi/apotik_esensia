@@ -128,7 +128,7 @@ class M_orders extends CI_Model
   public function get_all_orders()
   {
     $this->db->trans_start();
-    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
+    $query = 'SELECT o.*, o.id order_id , u.id as user_id, u.name user_name FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $order = $this->db->query($query)->result_array();
@@ -158,7 +158,7 @@ class M_orders extends CI_Model
   // order statuses shows unpaid, paid, payment accepted
   public function get_kurir_orders()
   {
-    $status = ['processing','sending'];
+    $status = ['processing', 'sending', 'shipped'];
     // var_dump((implode(',', $status)));exit;
     $this->db->trans_start();
     $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
@@ -210,7 +210,7 @@ class M_orders extends CI_Model
   {
     $this->db->trans_start();
 
-    $query = 'SELECT o.*, o.id order_id , u.user_id FROM orders o ';
+    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o ';
     $query .= 'INNER JOIN users u ON u.id=o.customer_id ';
     $query .= 'WHERE 1=1 ';
 
@@ -256,7 +256,7 @@ class M_orders extends CI_Model
    * - order.status = 'unpaid'
    * - OR invoice.is_paid = 1 AND order.status NOT IN ('shipped','sending')
    */
-  public function get_recent_notifications($limit = 5)
+  public function get_recent_notifications($limit = 5, $role = '')
   {
     $this->db->trans_start();
 
@@ -264,11 +264,22 @@ class M_orders extends CI_Model
             FROM orders o
             LEFT JOIN users u ON u.id = o.customer_id
             LEFT JOIN invoices i ON i.order_id = o.id
-            WHERE (o.status = 'paid')
-               OR (i.is_paid = 1 AND (o.status IS NULL OR o.status NOT IN ('shipped','sending','completed')))
-            ORDER BY o.created_at DESC
+            WHERE 1 = 1 ";
+
+    if ($role == 1) {
+      $sql .= "AND o.status IN ('paid','payment accepted','processing','sending','shipped','sending','completed', 'expired') ";
+    } else if ($role == 3) {
+      $sql .= "AND o.status IN ('paid', 'payment accepted') ";
+      $sql .= "AND i.is_paid = 1 ";
+    } else if ($role == 4) {
+      $sql .= "AND o.status IN ('processing', 'sending', 'shipped') ";
+      // } else if($status == '') {
+    }
+
+    $sql .= "ORDER BY o.created_at DESC
             LIMIT ?";
 
+    // var_dump($sql);
     $query = $this->db->query($sql, [$limit]);
     $res = $query->result_array();
 
@@ -419,7 +430,7 @@ class M_orders extends CI_Model
     $this->db->trans_start();
     $this->db->where('id', $order_id);
     $this->db->update('orders', [
-      'shipping_status' => $shipping_status,
+      'status' => $shipping_status,
       'updated_at' => $this->M_app->datetime()
     ]);
     $this->db->trans_complete();

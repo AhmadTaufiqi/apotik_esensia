@@ -2,10 +2,10 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><?= $title ?></h4>
     <div class="btn-action">
-      <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
+      <a href="<?= base_url('kurir_orders') ?>" class="btn btn-secondary text-light">
         <i class="fas fa-arrow-left me-2"></i>Kembali
       </a>
-      <a href="<?= base_url('kasir/orders/sendOrder') ?>" class="btn btn-primary text-light">
+      <a href="<?= base_url('kurir_orders/sendOrder/'.$order['id']) ?>" class="btn btn-primary text-light">
         <i class="fas fa-motorcycle me-2"></i>Kirim Pesanan
       </a>
     </div>

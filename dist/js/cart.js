@@ -1,6 +1,5 @@
 $(document).ready(function() {
   $('.btn-add-to-cart').on('click', function() {
-    console.log('clicked');
     if (!is_login) {
       window.location = "auth/logout";
     }
@@ -52,6 +51,7 @@ $(document).ready(function() {
     }
 
     setFinalPrices();
+    toggleBtnOrder();
   })
 
   $('.card-product-cart').on('click', function(e){
@@ -62,7 +62,10 @@ $(document).ready(function() {
       var single_raw_price = (prod_div.data('singleRawPrice') * qty).toLocaleString('id');
       
       prod_div.find('.total_price').html('Rp. ' + single_price);
-      prod_div.find('.raw_total_price').html('Rp. ' + single_raw_price);
+      
+      if (single_price !== single_raw_price) {
+        prod_div.find('.raw_total_price').html('Rp. ' + single_raw_price);
+      }
 
       setFinalPrices();
   })
@@ -83,6 +86,7 @@ $(document).ready(function() {
     $('#select_all_product_cart').prop('checked', check);
 
     setFinalPrices();
+    toggleBtnOrder();
   })
 
   function setFinalPrices(){
@@ -103,8 +107,21 @@ $(document).ready(function() {
     $('#total_price_cart').html('Rp. ' + total_price.toLocaleString('id'))
   }
 
+  function toggleBtnOrder(){
+    var btn = $('#btn_create_order');
+    var checkedCount = $('.cb_product_cart:checked').length;
+
+    if(checkedCount > 0){
+      btn.prop('disabled', false);
+    } else {
+      btn.prop('disabled', true);
+    }
+  }
+
   // $('.cb_product_cart').is(':checked', function(e){
   // })
+
+  toggleBtnOrder();
 })
 
 // function addtoCart($id){

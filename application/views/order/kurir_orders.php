@@ -6,7 +6,7 @@
   <!-- Filter Form -->
   <div class="card mb-3">
     <div class="card-body">
-      <form method="get" action="<?= base_url('admin/orders') ?>" class="row mx-0 g-3">
+      <form method="get" action="<?= base_url('kurir_orders') ?>" class="row mx-0 g-3">
         <!-- Search by name or order ID -->
         <div class="col-md-3 px-1">
           <label for="search" class="form-label">Cari Nama / Order ID</label>
@@ -51,7 +51,7 @@
         <!-- Buttons -->
         <div class="col-12 d-flex gap-2 px-1">
           <button type="submit" class="btn btn-primary">Filter</button>
-          <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">Reset</a>
+          <a href="<?= base_url('kurir_orders') ?>" class="btn btn-secondary text-light">Reset</a>
         </div>
       </form>
     </div>

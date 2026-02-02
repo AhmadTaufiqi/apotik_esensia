@@ -8,7 +8,7 @@ class Profile extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('M_app');
-		$this->load->model('M_Orders');
+		$this->load->model('M_orders');
 
 		$is_nologin = false;
 
@@ -27,11 +27,11 @@ class Profile extends CI_Controller
 	{
 		$user_id = $this->session->userdata('id_akun');
 		$address = $this->db->get_where('address', ['user_id' => $user_id])->row_array();
-		$orders = $this->M_Orders->get_order($user_id);
+		$orders = $this->M_orders->get_order($user_id);
 
 		$arr_orders = [];
 		foreach ($orders as $o) {
-			$orders_products = $this->M_Orders->get_order_product_by_orderid($o['id']);
+			$orders_products = $this->M_orders->get_order_product_by_orderid($o['id']);
 			$arr = [
 				'order' => $o,
 				'order_products' => $orders_products
@@ -167,6 +167,6 @@ class Profile extends CI_Controller
 			$this->db->insert('address', $data_addres);
 		}
 
-		redirect('Profile/edit');
+		redirect('edit_profile');
 	}
 }

@@ -123,38 +123,6 @@ class Orders extends CI_Controller
     return;
   }
 
-  public function latestNotifications()
-  {
-    // return latest orders that need admin attention as JSON
-    $limit = intval($this->input->get('limit') ?? 5);
-    $this->load->model('M_orders');
-    $list = $this->M_orders->get_recent_notifications($limit);
-
-    // map to a friendly structure
-    $data = array_map(function ($r) {
-      $title = 'Order Baru #' . ($r['order_id'] ?? '');
-      if (($r['order_status'] ?? '') === 'unpaid') {
-        $subtitle = 'Status: unpaid';
-      } else if (isset($r['is_paid']) && $r['is_paid']) {
-        $subtitle = 'Pembayaran diterima — perlu dikirim';
-      } else {
-        $subtitle = 'Perlu ditindaklanjuti';
-      }
-
-      return [
-        'order_id' => $r['order_id'],
-        'title' => $title,
-        'message' => $subtitle,
-        'created_at' => $r['order_created'] ?? null,
-        'link' => base_url('admin/orders'),
-      ];
-    }, $list);
-
-    $count = count($data);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['count' => $count, 'data' => $data]);
-  }
-
   public function payment()
   {
     $this->load->view('order/index');
@@ -191,17 +159,19 @@ class Orders extends CI_Controller
       show_404();
     }
 
-    // Handle POST request to update shipping status
+    // Handle POST request to update status
     if ($this->input->post()) {
-      $shipping_status = $this->input->post('shipping_status');
+      $status = $this->input->post('status');
 
-      if (!empty($shipping_status)) {
-        $update_result = $this->M_orders->update_shipping_status($order_id, $shipping_status);
+      if (!empty($status)) {
+        $this->db->where('id', $order_id);
+        $this->db->update('orders', ['status' => $status, 'updated_at' => $this->M_app->datetime()]);
+        $update_result = $this->db->affected_rows() > 0;
 
         if ($update_result) {
-          $this->session->set_flashdata('success', 'Status pengiriman berhasil diperbarui.');
+          $this->session->set_flashdata('success', 'Status pesanan berhasil diperbarui.');
         } else {
-          $this->session->set_flashdata('error', 'Gagal memperbarui status pengiriman.');
+          $this->session->set_flashdata('error', 'Gagal memperbarui status pesanan.');
         }
       }
 

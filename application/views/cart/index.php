@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <form id="form_cart_products" method="POST" action="<?= base_url() ?>cart/checkout">
+  <form id="form_cart_products" method="POST" action="<?= base_url() ?>checkout">
     <div class="container">
       <div class="content p-2">
         <?php foreach ($product_cart as $idx => $cart) : ?>
@@ -11,7 +11,7 @@
           <input type="hidden" value="<?= $cart->product_id ?>" name="product_id[<?= $idx ?>]">
           <input type="hidden" value="<?= $cart->cart_id ?>" name="product_cart_id[<?= $idx ?>]">
 
-          <div class="card card-product-cart mb-2 flex-row" data-single-raw-price="<?= $cart->price ?>" data-single-price="<?= $price ?>">
+          <div class="card card-product-cart mb-2 flex-row" data-single-raw-price="<?= number_format($cart->price, 0, '', '') ?>" data-single-price="<?= number_format($price, 0, '', '') ?>">
             <div class="p-2">
               <div class="product-images">
                 <img src="<?= base_url() ?>dist/img/uploads/products/<?= $cart->image ?>" alt="" class="h-100">
@@ -30,7 +30,7 @@
                   <div class="minus-btn input-group-prepend">
                     <button type="button" class="btn btn-light btn-outline btn-sm"><i class="fa fa-minus text-danger"></i></button>
                   </div>
-                  <input type="number" class="form-control qty_input form-control-sm text-center" value="<?= $cart->qty ?>" min="1" data-cart-id="<?= $cart->cart_id ?>" name="product_qty[<?= $idx ?>]">
+                  <input type="number" class="form-control qty_input form-control-sm text-center" value="<?= $cart->qty ?>" min="1" data-cart-id="<?= $cart->cart_id ?>" name="product_qty[<?= $idx ?>]" style="max-width:120px">
                   <div class="plus-btn input-group-prepend">
                     <button type="button" class="btn btn-light btn-outline btn-sm"><i class="fa fa-plus color-esensia"></i></button>
                   </div>
@@ -57,7 +57,7 @@
             <small class="text-muted">Semua</small>
           </div>
           <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. 0</h5>
-          <button type="submit" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1">Buat Pesanan</button>
+          <button type="submit" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" id="btn_create_order">Buat Pesanan</button>
         </div>
       </div>
     </div>

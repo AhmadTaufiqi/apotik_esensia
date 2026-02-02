@@ -53,13 +53,13 @@ class Auth extends CI_Controller
 
 					if ($user['role'] == 1) {
 						// redirect(base_url('admin/dashboard'));
-						redirect(base_url('admin/product'));
+						redirect(base_url('dashboard'));
 					} elseif ($user['role'] == 3) {
 						// menampilan orders status 
-						redirect(base_url('kasir/Orders'));
+						redirect(base_url('kasir_orders'));
 					} elseif ($user['role'] == 4) {
 						// hanya order yang sudah terbayar dan perlu di kirim
-						redirect(base_url('kurir/Orders'));
+						redirect(base_url('kurir_orders'));
 					}
 				} else {
 					// var_dump("password salah");

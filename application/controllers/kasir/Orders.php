@@ -161,7 +161,7 @@ class Orders extends CI_Controller
       'order_products' => $order_products,
     ];
 
-    $this->M_app->admin_template($data, 'order/admin_view_order');
+    $this->M_app->admin_template($data, 'order/kasir_view_order');
   }
 
   public function populateOrderStatus()
@@ -232,5 +232,81 @@ class Orders extends CI_Controller
     $count = count($data);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['count' => $count, 'data' => $data]);
+  }
+
+  public function manageShipping($order_id)
+  {
+    // Review the order and address
+    $order = $this->M_orders->get_order_by_id($order_id);
+    if (!$order) {
+      show_404();
+    }
+
+    $address = $this->M_user->get_user_address_by_id($order['customer_id']);
+
+    // Change status to processing and sending
+    $this->db->trans_start();
+    $this->db->where('id', $order_id);
+    $this->db->update('orders', [
+      'status' => 'processing',
+      'shipping_status' => 'sending',
+      'updated_at' => $this->M_app->datetime()
+    ]);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status()) {
+      $alert = '<div class="alert alert-success" role="alert">Status pesanan berhasil diubah ke processing dan sending</div>';
+      $this->session->set_flashdata('message', $alert);
+      redirect(base_url('kasir/Orders'));
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">Gagal mengubah status pesanan</div>';
+      $this->session->set_flashdata('message', $alert);
+      redirect(base_url('kasir/Orders'));
+    }
+  }
+
+  // update status shipping and others
+  public function manage_shipping($order_id)
+  {
+    if (empty($order_id)) {
+      show_404();
+    }
+
+    // Get order with customer information
+    $order = $this->db->query(
+      "
+      SELECT o.*, o.id order_id, u.name as customer_name, u.email as customer_email
+      FROM orders o
+      INNER JOIN users u ON o.customer_id = u.id
+      WHERE o.id = " . $this->db->escape($order_id)
+    )->row_array();
+
+    if (empty($order)) {
+      show_404();
+    }
+
+    // Handle POST request to update shipping status
+    if ($this->input->post()) {
+      $shipping_status = $this->input->post('shipping_status');
+
+      if (!empty($shipping_status)) {
+        $update_result = $this->M_orders->update_shipping_status($order_id, $shipping_status);
+
+        if ($update_result) {
+          $this->session->set_flashdata('success', 'Status pengiriman berhasil diperbarui.');
+        } else {
+          $this->session->set_flashdata('error', 'Gagal memperbarui status pengiriman.');
+        }
+      }
+
+      redirect('admin/orders/manage_shipping/' . $order_id);
+    }
+
+    $data = [
+      'title' => 'Kelola Pengiriman - Order #' . $order_id,
+      'order' => $order,
+    ];
+
+    $this->M_app->admin_template($data, 'order/admin_manage_shipping');
   }
 }

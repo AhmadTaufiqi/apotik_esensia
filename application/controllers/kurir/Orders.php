@@ -58,7 +58,27 @@ class Orders extends CI_Controller
       'filters' => $filters,
     ];
 
-    $this->M_app->kasir_template($data, 'order/kurir_orders');
+    // $this->M_app->kasir_template($data, 'order/kurir_orders');
+    $this->M_app->kurir_template($data, 'order/kurir_orders');
+  }
+
+  public function sendOrder($id)
+  {
+    if (empty($id)) {
+      show_404();
+    }
+
+    $result = $this->M_orders->update_shipping_status($id, 'sending');
+
+    if ($result) {
+      $alert = '<div class="alert alert-success" role="alert">Status order berhasil diubah ke sending</div>';
+      $this->session->set_flashdata('message', $alert);
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">Gagal mengubah status order</div>';
+      $this->session->set_flashdata('message', $alert);
+    }
+
+    redirect(base_url('kurir/orders/detail/' . $id));
   }
 
   public function reviewPayment($order_id)

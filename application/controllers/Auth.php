@@ -94,7 +94,6 @@ class Auth extends CI_Controller
 						redirect(base_url('home'));
 					}
 				} else {
-					var_dump("password salah");
 					$this->session->set_flashdata('msg_pass', '<small class="text-danger pl-2">password salah</small>');
 					redirect(base_url('auth'));
 				}
@@ -160,12 +159,32 @@ class Auth extends CI_Controller
 			'updated_at' => date('Y-m-d H:i:s')
 		];
 
+		$address = [
+			// 'kecamatan' => '',
+			'long' => '',
+			'lat' => '',
+			'kota' => '',
+			'kelurahan' => '',
+			'kecamatan' => '',
+			'provinsi' => '',
+			'kode_pos' => '',
+			'created_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s')
+		];
+
+		$this->db->trans_start();
 		$this->db->insert('users', $data);
+
+		$user_id = $this->db->insert_id();
+		$address['user_id'] = $user_id;
+		$this->db->insert('address', $address);
+
+		$this->db->trans_complete();
 
 		// Set session
 		$user_foto = 'default.png';
 		$data_session = [
-			'id_akun' => $data['id'],
+			'id_akun' => $this->db->insert_id(),
 			'user_akun' => $data['email'],
 			'nama_akun' => $data['name'],
 			'foto_akun' => $user_foto,

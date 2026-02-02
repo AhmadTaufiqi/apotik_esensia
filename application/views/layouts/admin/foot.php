@@ -62,16 +62,16 @@
           <div class="modal-body">
             <div class="row text-center">
               <div class="col">
-                <img src="" alt="" id="img_tf_cropper" height="250px">
+                <img src="" alt="" id="img_cropper" height="250px">
               </div>
               <div class="col">
-                <img src="" alt="" id="output_tf_resizer" height="250px">
+                <img src="" alt="" id="output_resizer" height="250px">
               </div>
             </div>
           </div>
           <div class="modal-footer py-1">
-            <button id="btn_cropper" class="btn btn-success rounded-2 text-light">preview</button>
-            <button id="submit_cropper" class="btn btn-primary rounded-2">Submit</button>
+            <button id="btn_profile_cropper" class="btn btn-success rounded-2 text-light">preview</button>
+            <button id="submit_profile_cropper" class="btn btn-primary rounded-2">Submit</button>
           </div>
         </div>
       </div>

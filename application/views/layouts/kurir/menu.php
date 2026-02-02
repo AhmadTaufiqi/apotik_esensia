@@ -16,8 +16,8 @@
                 </a>
               </div>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= strtolower($this->uri->segment(1)) == 'kasir_orders' ? 'active' : ''?>">
-                  <a href="<?= base_url()?>kasir_orders" class="nav-link">
+                <li class="nav-item w-100 <?= strtolower($this->uri->segment(1)) == 'kurir_orders' ? 'active' : ''?>">
+                  <a href="<?= base_url()?>kurir_orders" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
                     <span class="ml-2 item-text">Pesanan</span>
                   </a>

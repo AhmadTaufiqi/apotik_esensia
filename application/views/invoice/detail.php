@@ -71,7 +71,7 @@
   </div>
 
   <!-- Petunjuk Pembayaran -->
-  <div class="card p-3 mb-2" hidden>
+  <div class="card p-3 mb-2">
     <div class="fw-bold mb-3">Petunjuk Pembayaran</div>
 
     <ul class="nav nav-tabs nav-fill small" id="paymentTab" role="tablist">

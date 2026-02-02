@@ -6,7 +6,7 @@
   <!-- Filter Form -->
   <div class="card mb-3">
     <div class="card-body">
-      <form method="get" action="<?= base_url('admin/orders') ?>" class="row mx-0 g-3">
+      <form method="get" action="<?= base_url('admin_orders') ?>" class="row mx-0 g-3">
         <!-- Search by name or order ID -->
         <div class="col-md-3 px-1">
           <label for="search" class="form-label">Cari Nama / Order ID</label>
@@ -54,7 +54,7 @@
         <!-- Buttons -->
         <div class="col-12 d-flex gap-2 px-1">
           <button type="submit" class="btn btn-primary">Filter</button>
-          <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">Reset</a>
+          <a href="<?= base_url('admin_orders') ?>" class="btn btn-secondary text-light">Reset</a>
         </div>
       </form>
     </div>
@@ -67,7 +67,7 @@
           <thead>
             <tr>
               <th>Customer</th>
-              <th colspan="2">Status pesanan</th>
+              <th>Status pesanan</th>
               <th>Tanggal</th>
               <th>Nominal</th>
               <th width="10%">Action</th>
@@ -76,14 +76,8 @@
           <tbody>
             <?php foreach ($data as $order) : ?>
               <tr>
-                <td><?= $order['name'] ?></td>
+                <td><?= $order['user_name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
-                <td>
-                  <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' :
-                                           (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
-                    <?= isset($order['shipping_status']) ? ucfirst(str_replace('_', ' ', $order['shipping_status'])) : 'Not shipped' ?>
-                  </span>
-                </td>
                 <td><?= $order['created_at'] ?></td>
                 <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
                 <td>
@@ -152,23 +146,25 @@
     });
   });
 
-  (function(){
+  (function() {
     const populateUrl = '<?= base_url("admin/orders/populateOrderStatus") ?>';
 
     // For each status cell, request the formatted HTML and replace the cell content
-    document.querySelectorAll('td.order_status').forEach(function(td){
+    document.querySelectorAll('td.order_status').forEach(function(td) {
       const raw = td.textContent || td.innerText || '';
       const status = raw.trim();
       if (!status) return;
 
       // AJAX GET request
       fetch(populateUrl + '?status=' + encodeURIComponent(status))
-        .then(function(res){ return res.text(); })
-        .then(function(html){
+        .then(function(res) {
+          return res.text();
+        })
+        .then(function(html) {
           // replace the cell innerHTML with returned HTML
           td.innerHTML = html;
         })
-        .catch(function(err){
+        .catch(function(err) {
           console.error('Error fetching status HTML', err);
         });
     });

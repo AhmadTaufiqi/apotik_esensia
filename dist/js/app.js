@@ -18,7 +18,6 @@ var cropper = new Cropper(img_cropper,{
 
 imgDiv.addEventListener('mouseenter', function () {
     uploadBtn.style.display = "block";
-    console.log()
 });
 
 //if we hover out from img div
@@ -48,12 +47,13 @@ file_profile.addEventListener('change', function () {
                 cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
                 $('#output_resizer').attr('src',cropped_img)
 
-                $('#btn_cropper').on('click',function(){
+                $('#btn_profile_cropper').on('click',function(){
                     cropped_img = cropper.getCroppedCanvas().toDataURL('image/png')
                     $('#output_resizer').attr('src',cropped_img)
                 })
-                $('#submit_cropper').on('click',function(){
+                $('#submit_profile_cropper').on('click',function(){
                     is_submit = 1;
+                    console.log(is_submit);
                     const cropped_img2 = cropper.getCroppedCanvas().toDataURL('image/png')
 
                     $('#foto_base64').val(cropped_img2)

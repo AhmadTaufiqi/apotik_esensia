@@ -19,7 +19,7 @@
                   <?php endif; ?>
                 </span>
               </div>
-              <a href="<?= base_url() ?>profile/edit" class="col-1 text-end align-self-center">
+              <a href="<?= base_url() ?>edit_profile" class="col-1 text-end align-self-center">
                 <i class="fas fa-angle-right fa-xl text-muted"></i>
               </a>
             </div>

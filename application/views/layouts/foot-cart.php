@@ -41,14 +41,14 @@
             </div>
           </div>
           <div class="modal-footer py-1">
-            <button id="submit_cropper" class="btn btn-primary rounded-2">Submit</button>
+            <button id="submit_profile_cropper" class="btn btn-primary rounded-2">Submit</button>
           </div>
         </div>
       </div>
     </div>
     <!-- end modal resizer image -->
 
-    <!-- modal resizer profile image -->
+    <!-- modal resizer transfer image -->
     <div class="modal fade" id="modal_resizer_transfer" tabindex="-1" role="dialog" aria-labelledby="verticalModalTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:350px">
         <div class="modal-content">
@@ -136,7 +136,7 @@
       function updateQty(qty, cart_id) {
 
         $.post({
-          url: 'updateProdQty',
+          url: 'Cart/updateProdQty',
           data: {
             cart_id,
             qty

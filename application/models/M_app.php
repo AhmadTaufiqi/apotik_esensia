@@ -28,6 +28,16 @@ class M_app extends CI_Model
         $this->load->view('layouts/admin/foot');
     }
 
+    public function kurir_template($data, $content)
+    {
+        $this->load->view('layouts/admin/head', $data);
+        // $this->load->view('layouts/topbar-search', $data);
+        $this->load->view("layouts/kurir/navbar");
+        $this->load->view('layouts/kurir/menu');
+        $this->load->view($content);
+        $this->load->view('layouts/admin/foot');
+    }
+
     public function template($data, $content)
     {
         $this->load->view('layouts/head', $data);

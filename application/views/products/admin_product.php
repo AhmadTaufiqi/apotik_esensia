@@ -1,7 +1,7 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex mb-3">
-    <h4 class="mb-0"><?= $title ?></h4>
-    <button class="btn btn-success text-light ms-auto me-2 py-2" data-bs-toggle="modal" data-bs-target="#importExcelModal"><i class="fas fa-download text-green me-1"></i>Import</button>
+    <h4 class="mb-0 me-auto"><?= $title ?></h4>
+    <!-- <button class="btn btn-success text-light ms-auto me-2 py-2" data-bs-toggle="modal" data-bs-target="#importExcelModal"><i class="fas fa-download text-green me-1"></i>Import</button> -->
     <a href="<?= base_url() ?>admin/product/create" class="btn btn-primary text-light" style="align-content:center;">
       <i class="fas fa-plus me-1"></i>
       Tambah Produk

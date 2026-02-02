@@ -3,9 +3,15 @@
     <div class="carousel">
       <div class="navbar px-2 bg-dark">
         <div class="container">
-          <a href="<?= isset($back_url) ? $back_url : base_url('home') ?>" class="card text-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
-            <i class="fas fa-angle-left fa-xl color-esensia fw-bold"></i>
-          </a>
+          <?php if (isset($back_url) && !empty($back_url)) : ?>
+            <a href="<?= isset($back_url) ? $back_url : base_url('home') ?>" class="card text-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+              <i class="fas fa-angle-left fa-xl color-esensia fw-bold"></i>
+            </a>
+          <?php else: ?>
+            <a href="<?= base_url()?>home" class="card text-center justify-content-center rounded-circle border-0 me-2" style="height: 40px; width:40px;">
+              <i class="fas fa-angle-left fa-xl color-esensia fw-bold"></i>
+            </a>
+          <?php endif; ?>
           <div class="col pe-2">
             <h5 class="color-esensia text-center mb-0 fw-bold"><?= $title ?></h5>
           </div>

@@ -52,3 +52,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'Home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// customer pages
+$route['login'] = 'auth';
+$route['dashboard'] = 'home';
+$route['edit_profile'] = 'profile/edit';
+$route['view_order/(:num)'] = 'orders/detail/$1';
+$route['cart'] = 'cart/index';
+$route['checkout'] = 'cart/checkout';
+$route['invoice/(:num)'] = 'invoice/index/$1';
+$route['index'] = 'auth';
+
+// admin pages
+$route['admin_login'] = 'admin/auth';
+$route['admin_orders'] = 'admin/orders';
+$route['admin_products'] = 'admin/product';
+$route['admin_cat'] = 'admin/categories';
+$route['admin_user'] = 'admin/user';
+$route['dashboard'] = 'admin/dashboard';
+
+// kasir pages
+$route['kasir_orders'] = 'kasir/orders';
+$route['kasir_orders/detail/(:num)'] = 'kasir/orders/detail/$1';
+
+// kurir pages
+$route['kurir_orders'] = 'kurir/orders';
+$route['kurir_orders/detail/(:num)'] = 'kurir/orders/detail/$1';

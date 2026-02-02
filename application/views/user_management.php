@@ -24,11 +24,12 @@
                 <td><?= htmlspecialchars($user['email'] ?? '') ?></td>
                 <td>
                   <?php
-                    $role = isset($user['role']) ? $user['role'] : (isset($user['role_id']) ? $user['role_id'] : null);
-                    if ($role == 1) echo '<span class="badge bg-primary">Admin</span>';
-                    elseif ($role == 3) echo '<span class="badge bg-warning text-dark">Juru Pungut</span>';
-                    elseif ($role == 2) echo '<span class="badge bg-secondary">User</span>';
-                    else echo '<span class="badge bg-light text-dark">-</span>';
+                  $role = $user['role'];
+                  if ($role == 1) echo '<span class="badge bg-primary">Admin</span>';
+                  elseif ($role == 3) echo '<span class="badge bg-warning text-light">Kasir</span>';
+                  elseif ($role == 4) echo '<span class="badge bg-info text-light">Kurir</span>';
+                  elseif ($role == 2) echo '<span class="badge bg-secondary">User</span>';
+                  else echo '<span class="badge bg-light text-light">-</span>';
                   ?>
                 </td>
                 <td><?= htmlspecialchars($user['telp'] ?? $user['phone'] ?? '-') ?></td>
@@ -40,8 +41,10 @@
                   <div class="dropdown-menu">
                     <a href="<?= base_url('admin/user/view/' . ($user['id'] ?? '')) ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <a class="dropdown-item" href="<?= base_url('admin/user/edit/' . ($user['id'] ?? '')) ?>">
-                      <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
+                    <?php if ($user['role'] != 2) : ?>
+                      <a class="dropdown-item" href="<?= base_url('admin/user/edit/' . ($user['id'] ?? '')) ?>">
+                        <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
+                    <?php endif; ?>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= htmlspecialchars($user['id'] ?? 0) ?>)">
                       <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
                   </div>
