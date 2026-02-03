@@ -158,8 +158,8 @@ class M_orders extends CI_Model
   // order statuses shows unpaid, paid, payment accepted
   public function get_kurir_orders()
   {
-    $status = ['processing', 'sending', 'shipped'];
-    // var_dump((implode(',', $status)));exit;
+    $status = ['processing', 'need to send', 'sending', 'shipped'];
+
     $this->db->trans_start();
     $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
@@ -269,10 +269,10 @@ class M_orders extends CI_Model
     if ($role == 1) {
       $sql .= "AND o.status IN ('paid','payment accepted','processing','sending','shipped','sending','completed', 'expired') ";
     } else if ($role == 3) {
-      $sql .= "AND o.status IN ('paid', 'payment accepted') ";
+      $sql .= "AND o.status = 'paid' ";
       $sql .= "AND i.is_paid = 1 ";
     } else if ($role == 4) {
-      $sql .= "AND o.status IN ('processing', 'sending', 'shipped') ";
+      $sql .= "AND o.status IN ('need to send') ";
       // } else if($status == '') {
     }
 

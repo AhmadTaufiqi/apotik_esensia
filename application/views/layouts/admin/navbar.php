@@ -41,7 +41,7 @@
             <img src="<?= base_url('dist/img/uploads/users/' . $this->session->userdata('foto_akun')) ?>" alt="..." class="avatar-img" width="115%" style="text-align:center;margin-left:-3px;">
           </div>
           <!-- </span> -->
-          <span>test</span>
+          <span><?= $this->session->userdata('nama_akun');?></span>
         </div>
       </div>
     </li>

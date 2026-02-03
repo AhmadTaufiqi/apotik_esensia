@@ -45,6 +45,7 @@
             <option value="paid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Sudah Dibayar</option>
             <option value="payment accepted" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Pembayaran Diterima</option>
             <option value="processing" <?= (isset($filters['status']) && $filters['status'] === 'processing') ? 'selected' : '' ?>>Dikemas</option>
+            <option value="need to send" <?= (isset($filters['status']) && $filters['status'] === 'need to send') ? 'selected' : '' ?>>Perlu Dikirim</option>
             <option value="sending" <?= (isset($filters['status']) && $filters['status'] === 'sending') ? 'selected' : '' ?>>Dalam Pengiriman</option>
             <option value="shipped" <?= (isset($filters['status']) && $filters['status'] === 'shipped') ? 'selected' : '' ?>>Diterima</option>
             <option value="completed" <?= (isset($filters['status']) && $filters['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>

@@ -112,6 +112,9 @@
                   <option value="processing" <?= (isset($order['status']) && $order['status'] == 'processing') ? 'selected' : '' ?>>
                     Sedang Dikemas
                   </option>
+                  <option value="need to send" <?= (isset($order['status']) && $order['status'] == 'need to send') ? 'selected' : '' ?>>
+                    Perlu dikirim
+                  </option>
                   <option value="sending" <?= (isset($order['status']) && $order['status'] == 'sending') ? 'selected' : '' ?>>
                     Sedang dikirim
                   </option>
@@ -150,6 +153,10 @@
             <div class="mb-2">
               <span class="badge bg-warning me-2">Sedang Dikemas</span>
               <small class="text-muted">Pesanan sedang diproses dan dikemas</small>
+            </div>
+            <div class="mb-2">
+              <span class="badge bg-danger me-2">Perlu dikirim</span>
+              <small class="text-muted">Pesanan perlu di ambil kurir</small>
             </div>
             <div class="mb-2">
               <span class="badge bg-info me-2">Sedang dikirim</span>

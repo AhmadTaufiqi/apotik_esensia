@@ -77,4 +77,5 @@ $route['kasir_orders/detail/(:num)'] = 'kasir/orders/detail/$1';
 
 // kurir pages
 $route['kurir_orders'] = 'kurir/orders';
+$route['kurir_orders/sendOrder/(:num)'] = 'kurir/orders/sendOrder/$1';
 $route['kurir_orders/detail/(:num)'] = 'kurir/orders/detail/$1';

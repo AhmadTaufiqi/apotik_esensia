@@ -47,6 +47,41 @@ class Notifications extends CI_Controller
       $title = 'Order Baru #' . ($r['order_id'] ?? '');
       if (($r['order_status'] ?? '') === 'unpaid') {
         $subtitle = 'Status: unpaid';
+      } else if (isset($r['is_paid']) && $r['is_paid'] && $r['order_status'] == 'paid') {
+        $subtitle = 'Pembayaran diterima — perlu diperiksa';
+      } else if ($r['order_status'] == 'need to send' && isset($r['is_paid']) && $r['is_paid']) {
+        $subtitle = 'Pesanan Perlu Dikirim';
+      } else {
+        $subtitle = 'Perlu ditindaklanjuti';
+      }
+
+      return [
+        'order_id' => $r['order_id'],
+        'title' => $title,
+        'message' => $subtitle,
+        'created_at' => $r['order_created'] ?? null,
+        // 'link' => base_url("$this->uri_segement/orders"),
+      ];
+    }, $list);
+
+    $count = count($data);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['count' => $count, 'data' => $data]);
+  }
+
+  public function latestNotificationsKurir()
+  {
+    $user_role = $this->session->userdata('role');
+    // return latest orders that need admin attention as JSON
+    $limit = intval($this->input->get('limit') ?? 5);
+    $this->load->model('M_orders');
+    $list = $this->M_orders->get_recent_notifications($limit, $user_role);
+
+    // map to a friendly structure
+    $data = array_map(function ($r) {
+      $title = 'Order Baru #' . ($r['order_id'] ?? '');
+      if (($r['order_status'] ?? '') === 'unpaid') {
+        $subtitle = 'Status: unpaid';
       } else if (isset($r['is_paid']) && $r['is_paid']) {
         $subtitle = 'Pembayaran diterima — perlu diperiksa';
       } else if ($r['order_status'] == 'paid' && isset($r['is_paid']) && $r['is_paid']) {

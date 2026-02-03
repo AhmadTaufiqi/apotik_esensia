@@ -88,6 +88,11 @@ class M_app extends CI_Model
                 'label' => 'Dikemas',
                 'class' => 'order-status-processing'
             ],
+            'need to send' => [
+                'icon' => 'fas fa-box',
+                'label' => 'Perlu Dikirim',
+                'class' => 'order-status-shipped'
+            ],
             'sending' => [
                 'icon' => 'fas fa-motorcycle',
                 'label' => 'Dikirim',
