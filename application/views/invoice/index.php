@@ -198,7 +198,7 @@
   <form action="<?= base_url() ?>/invoice/uploadBuktiTf" method="POST" onsubmit="return validateUpload()">
     <?php
     $image = $invoice['bukti_transfer'];
-    // var_dump(empty($image));
+
     $foto_bukti_transfer = empty($image) ? base_url() . 'dist/img/uploads/bukti_transfer/default_image.png' : $image;
     if ($invoice['status'] == 'paid') {
     ?>

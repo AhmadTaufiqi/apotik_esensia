@@ -62,7 +62,6 @@ class Auth extends CI_Controller
 						redirect(base_url('kurir_orders'));
 					}
 				} else {
-					// var_dump("password salah");
 					$this->session->set_flashdata('msg_pass', '<small class="text-danger pl-2">password salah</small>');
 					redirect(base_url('admin/auth'));
 				}

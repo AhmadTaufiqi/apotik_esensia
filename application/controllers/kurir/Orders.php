@@ -78,61 +78,26 @@ class Orders extends CI_Controller
       $this->session->set_flashdata('message', $alert);
     }
 
-    redirect(base_url('kurir/orders/detail/' . $id));
+    redirect(base_url('kurir_orders/sending/' . $id));
   }
 
-  public function reviewPayment($order_id)
+  public function setShippedOrder($id)
   {
-    // Get order with customer information
-    $order = $this->db->query(
-      "
-      SELECT o.*, u.name as customer_name, u.email as customer_email, u.telp as customer_phone
-      FROM orders o
-      INNER JOIN users u ON o.customer_id = u.id
-      WHERE o.id = " . $this->db->escape($order_id)
-    )->row_array();
-
-    if (empty($order)) {
+    if (empty($id)) {
       show_404();
     }
 
-    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+    $result = $this->M_orders->update_shipping_status($id, 'shipped');
 
-    $address = $this->M_user->get_user_address_by_id($order['customer_id']);
-
-    $order_products = $this->M_orders->get_order_product_by_orderid($order_id);
-
-    $data = [
-      'title' => 'Review Pembayaran Order #' . $order_id,
-      'address' => $address,
-      'order' => $order,
-      'invoice' => $invoice,
-      'order_products' => $order_products,
-    ];
-    $this->M_app->kasir_template($data, 'order/kasir_payment_review');
-  }
-
-  public function confirmPayment($order_id)
-  {
-    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
-
-    $confirm = $this->M_invoice->confirm_payment($order_id);
-
-    if (!$confirm) {
+    if ($result) {
+      $alert = '<div class="alert alert-success" role="alert">Pesanan berhasil diselesaikan dan status diubah ke shipped</div>';
+      $this->session->set_flashdata('message', $alert);
     } else {
-
-      if ($confirm) {
-        $alert = '<div class="alert alert-success" role="alert">Berhasil menyimpan data produk</div>';
-        $this->session->set_flashdata('message', $alert);
-        
-        redirect(base_url('kasir/Orders'));
-      } else {
-        $alert = '<div class="alert alert-danger" role="alert">Gagal menyimpan data produk</div>';
-        $this->session->set_flashdata('message', $alert);
-
-        redirect(base_url('kasir/Orders/reviewPayment/' . $order_id));
-      }
+      $alert = '<div class="alert alert-danger" role="alert">Gagal menyelesaikan pesanan</div>';
+      $this->session->set_flashdata('message', $alert);
     }
+
+    redirect(base_url('kurir_orders'));
   }
 
   public function detail($id)
@@ -177,7 +142,52 @@ class Orders extends CI_Controller
       'order_products' => $order_products,
     ];
 
-    $this->M_app->admin_template($data, 'order/kurir_orders_detail');
+    $this->M_app->kurir_template($data, 'order/kurir_orders_detail');
+  }
+
+  public function sending($id)
+  {
+    if (empty($id)) {
+      show_404();
+    }
+
+    // Get order with customer information and address details
+    $order = $this->db->query(
+      "
+      SELECT o.*, 
+             u.name as customer_name, 
+             u.email as customer_email, 
+             u.telp as customer_phone, 
+             a.negara as address_negara,
+             a.provinsi as address_provinsi,
+             a.kota as address_kota,
+             a.kecamatan as address_kecamatan,
+             a.kelurahan as address_kelurahan,
+             a.kode_pos as address_kode_pos,
+             a.catatan as address_catatan,
+             a.long as address_long,
+             a.lat as address_lat,
+             a.jarak as address_jarak
+      FROM orders o
+      INNER JOIN users u ON o.customer_id = u.id
+      LEFT JOIN address a ON u.id = a.user_id
+      WHERE o.id = " . $this->db->escape($id)
+    )->row_array();
+
+    if (empty($order)) {
+      show_404();
+    }
+
+    // Get order products with product details
+    $order_products = $this->M_orders->get_order_product_by_orderid($id);
+
+    $data = [
+      'title' => 'Detail Order #' . $id,
+      'order' => $order,
+      'order_products' => $order_products,
+    ];
+
+    $this->M_app->kurir_template($data, 'order/kurir_orders_sending');
   }
 
   public function populateOrderStatus()

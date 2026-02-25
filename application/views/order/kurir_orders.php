@@ -87,7 +87,7 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu" style="width:240px">
-                    <a href="<?= base_url('kurir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
+                    <a href="<?= (isset($order['status']) && $order['status'] == 'sending') ? base_url('kurir_orders/sending/') . $order['order_id'] : base_url('kurir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="fas fa-trash me-2"></span>Hapus</button>

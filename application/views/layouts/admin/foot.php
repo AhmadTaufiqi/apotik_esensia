@@ -156,7 +156,7 @@
         }
       })
 
-      $('.alert').delay(4000).slideUp(400, function() {
+      $('.alert').delay(8000).slideUp(500, function() {
         $(this).alert('close');
       });
     </script>

@@ -4,7 +4,7 @@
     <div class="row mb-2">
       <div class="col-12">
         <h4 class="mb-0">Dashboard</h4>
-        <small class="text-muted">Ringkasan cepat performa toko (data dummy)</small>
+        <small class="text-muted">Ringkasan cepat performa toko (data testing)</small>
       </div>
     </div>
 

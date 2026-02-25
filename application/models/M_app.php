@@ -195,7 +195,7 @@ class M_app extends CI_Model
     public function datetime()
     {
         date_default_timezone_set('Asia/Jakarta');
-        return date('Y-m-d H:m:s');
+        return date('Y-m-d H:i:s');
     }
 
     public function formatTanggalIndonesia()
@@ -309,7 +309,7 @@ class M_app extends CI_Model
     {
         $data['id'] = $this->uuid->v4();
         $data['user_id'] = $this->session->userdata('id_akun');
-        $data['activity'] = $this->session->userdata('nama_akun') . $activity;
+        $data['activity'] = $this->session->userdata('nama_akun') . '-' . $activity;
         $this->db->insert('log_activity', $data);
     }
 

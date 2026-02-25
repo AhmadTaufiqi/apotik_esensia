@@ -10,6 +10,7 @@ class Cart extends CI_Controller
 		$this->load->model('M_app');
 		$this->load->model('M_cart');
 		$this->load->model('M_user');
+		$this->load->model('M_ongkir');
 
 		$is_nologin = false;
 
@@ -97,6 +98,9 @@ class Cart extends CI_Controller
 
 		$user = $this->M_user->get_user_by_id($this->session->userdata('id_akun'));
 		$address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
+
+		$ongkir = $this->M_ongkir->get_ongkir_by_jarak($address['jarak']);
+
 		$payment_method = $this->db->get('payment_method')->result_array();
 
 		$data = [
@@ -104,6 +108,7 @@ class Cart extends CI_Controller
 			'cart_products' => $products,
 			'user' => $user,
 			'address' => $address,
+			'ongkir' => $ongkir ? $ongkir['nominal'] : 0,
 			'payment_method' => $payment_method,
 			'back_url' => base_url('cart')
 		];
@@ -119,7 +124,6 @@ class Cart extends CI_Controller
 
 		if ($delete) {
 		}
-		var_dump($cart_id);
 	}
 
 	public function getDataProduct($product_id)

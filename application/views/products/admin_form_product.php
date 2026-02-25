@@ -45,18 +45,19 @@
               <label class="form-label required">Stok</label>
               <input type="number" name="stock" class="form-control" value="<?= $stock ?? '' ?>" required>
             </div>
+            <?php
+            $selected_categories = [];
+            if ($multiple_cat != ['']) {
+              $selected_categories = $multiple_cat;
+            } elseif (!empty($category)) {
+              $selected_categories = [$category];
+            }
+            ?>
             <div class="form-group">
               <label class="form-label">Category</label>
-              <select name="category[]" id="category_select" class="form-control select2" multiple="multiple" data-placeholder="Pilih kategori">
+              <select name="category[]" id="category_select" class="form-control select2" multiple="multiple" data-placeholder="Pilih kategori" data-maximum-selection-length="1" required>
                 <?php foreach ($categories as $cat) : ?>
-                  <?php
-                    $selected = '';
-                    if (isset($category)) {
-                      if (is_array($category) && in_array($cat->id, $category)) $selected = 'selected';
-                      elseif (!is_array($category) && $category == $cat->id) $selected = 'selected';
-                    }
-                  ?>
-                  <option value="<?= $cat->id ?>" <?= $selected ?>><?= $cat->category ?></option>
+                  <option value="<?= $cat->id ?>" <?= in_array($cat->id, $selected_categories) ? 'selected' : '' ?>><?= $cat->category ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -82,7 +83,7 @@
 <script>
   // Initialize Select2 for category selection (multiple)
   document.addEventListener("DOMContentLoaded", function() {
-  
+
     console.log(typeof $)
     if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
       // select2 not loaded; nothing to do

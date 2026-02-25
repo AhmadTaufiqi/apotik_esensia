@@ -47,44 +47,12 @@
     </li>
   </ul>
 </nav>
-<script>
-  (function() {
-    const url = '<?= base_url('admin/notifications/latestNotifications') ?>';
-    fetch(url)
-      .then(r => r.json())
-      .then(function(res) {
-        const list = document.getElementById('notif-list');
-        const countEl = document.getElementById('notif-count');
-        if (!list) return;
-        list.innerHTML = '';
-        if (res.data && res.data.length) {
-          res.data.forEach(function(n) {
-            const li = document.createElement('li');
-            li.className = 'dropdown-item d-flex align-items-start';
-            const a = document.createElement('a');
-            a.href = n.link || '<?= base_url('admin/orders') ?>';
-            a.className = 'd-flex align-items-start w-100 text-decoration-none text-reset';
-            a.innerHTML = '<div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>' +
-              '<div><div class="small fw-bold">' + (n.title || '') + '</div>' +
-              '<div class="small text-muted">' + (n.message || '') + '</div></div>';
-            li.appendChild(a);
-            list.appendChild(li);
-          });
-        } else {
-          const li = document.createElement('li');
-          li.className = 'text-center small text-muted py-2';
-          li.textContent = 'Belum ada notifikasi';
-          list.appendChild(li);
-        }
 
-        if (res.count && parseInt(res.count) > 0) {
-          countEl.style.display = 'inline-block';
-          countEl.textContent = res.count;
-        } else {
-          countEl.style.display = 'none';
-        }
-      }).catch(function(err) {
-        console.error('Error loading notifications', err);
-      });
-  })();
+
+<!-- Define base URL for JavaScript -->
+<script>
+  window.baseURL = '<?= base_url() ?>';
 </script>
+
+<!-- Load Notification Checker -->
+<script src="<?= base_url() ?>dist/js/check-notifications.js"></script>

@@ -19,7 +19,7 @@
                   <?php endif; ?>
                 </span>
               </div>
-              <a href="<?= base_url() ?>edit_profile" class="col-1 text-end align-self-center">
+              <a href="<?= base_url() ?>edit_profile" class=" text-end align-self-center ms-2">
                 <i class="fas fa-angle-right fa-xl text-muted"></i>
               </a>
             </div>
@@ -72,15 +72,23 @@
             </div>
           </a>
         </div>
+        <div class="col card p-3 m-2">
+          <div class="d-flex">
+            <span class="text-muted">Ongkir</span>
+            <h6 class="ms-auto color-esensia mb-0">Rp. <?= number_format($ongkir, 0, '', '.'); ?></h6>
+          </div>
+        </div>
       </div>
 
-      <input type="hidden" name="total_cost_price" value="<?= $total_price ?>">
+
+      <input type="hidden" name="total_cost_price" value="<?= ($total_price) ?>">
       <input type="hidden" name="total_raw_cost_price" value="<?= $raw_total_price ?>">
+      <input type="hidden" name="ongkir" value="<?= $ongkir ?>">
       <input type="hidden" name="payment_method_name" id="payment_method_name">
       <input type="hidden" name="payment_method_id" id="payment_method_id">
       <div class="container-button mt-auto">
         <div class="d-flex align-items-center container">
-          <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price, 0, '', '.'); ?></h5>
+          <h5 id="total_price_cart" class="color-esensia ms-auto mb-0">Rp. <?= number_format($total_price + $ongkir, 0, '', '.'); ?></h5>
           <button id="btn_create_order" class="btn rounded-4 btn-sm p-2 px-4 bg-esensia text-light ms-1" <?= empty($cart_products) ? 'disabled' : '' ?>>Buat Pesanan</button>
         </div>
       </div>

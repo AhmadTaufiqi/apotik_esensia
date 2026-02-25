@@ -48,6 +48,14 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
+                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_ongkir' ? 'active' : ''?>">
+                  <a href="<?= base_url()?>admin_ongkir" class="nav-link">
+                    <i class="fas fa-motorcycle fa-lg"></i>
+                    <span class="ml-2 item-text">Manajemen Ongkir</span>
+                  </a>
+                </li>
+              </ul>
+              <ul class="navbar-nav flex-fill w-100 mb-2">
                 <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_user' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_user" class="nav-link">
                     <i class="fas fa-users fa-lg"></i>

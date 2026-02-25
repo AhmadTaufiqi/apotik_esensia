@@ -49,6 +49,7 @@
             <tr>
               <th>Sku</th>
               <th>Nama</th>
+              <th>Gambar</th>
               <th>Harga Rp.</th>
               <th>Stok</th>
               <th>Kategori</th>
@@ -61,6 +62,9 @@
               <tr>
                 <td><?= $prod->sku ?></td>
                 <td><?= $prod->name ?></td>
+                <td>
+                  <img src="<?= base_url() ?>dist/img/uploads/products/<?= $prod->image ?>" alt="" style="align-self:anchor-center;width:100px">
+                </td>
                 <td><?= number_format(empty($prod->price) ? 0 : $prod->price, 0, ',', '.') ?></td>
                 <td><?= $prod->stock ?></td>
                 <td><?= $prod->t_category ?></td>

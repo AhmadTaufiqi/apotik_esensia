@@ -141,14 +141,13 @@ class M_orders extends CI_Model
   public function get_kasir_orders()
   {
     $status = ['unpaid', 'paid', 'payment accepted'];
-    // var_dump((implode(',', $status)));exit;
+
     $this->db->trans_start();
     $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
-    // var_dump($query);
-    // exit;
+
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
@@ -165,8 +164,7 @@ class M_orders extends CI_Model
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
-    // var_dump($query);
-    // exit;
+
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
@@ -279,7 +277,6 @@ class M_orders extends CI_Model
     $sql .= "ORDER BY o.created_at DESC
             LIMIT ?";
 
-    // var_dump($sql);
     $query = $this->db->query($sql, [$limit]);
     $res = $query->result_array();
 
@@ -294,7 +291,7 @@ class M_orders extends CI_Model
       // 'product_id' => $this->input->post('product_id'),
       // 'qty' => $this->input->post('qty'),
       'status' => 'unpaid', // default status 'unpaid'
-      // 'sku' => $this->input->post('sku'),
+      'ongkir' => $this->input->post('ongkir'),
       'customer_id' => $this->session->userdata('id_akun'),
       'created_at' => $this->M_app->datetime(),
       'updated_at' => $this->M_app->datetime(),

@@ -285,7 +285,6 @@ class Auth extends CI_Controller
 
 				$google_oauth = new \Google\Service\Oauth2($client);
 				$google_account_info = $google_oauth->userinfo->get();
-				var_dump($google_account_info);
 
 				$g_email = $google_account_info->email;
 				$g_name = $google_account_info->name;

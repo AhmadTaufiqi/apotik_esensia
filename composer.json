@@ -15,7 +15,8 @@
 			"phpoffice/phpspreadsheet": "^5.3",
 		"google/apiclient": "*",
 		"symfony/dom-crawler": "^6.4",
-		"symfony/css-selector": "^6.4"
+		"symfony/css-selector": "^6.4",
+		"minishlink/web-push": "^9.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

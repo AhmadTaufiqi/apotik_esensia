@@ -69,7 +69,9 @@ $route['admin_orders'] = 'admin/orders';
 $route['admin_products'] = 'admin/product';
 $route['admin_cat'] = 'admin/categories';
 $route['admin_user'] = 'admin/user';
+$route['admin_ongkir'] = 'admin/ongkir';
 $route['dashboard'] = 'admin/dashboard';
+$route['admin'] = 'admin/dashboard';
 
 // kasir pages
 $route['kasir_orders'] = 'kasir/orders';
@@ -79,3 +81,5 @@ $route['kasir_orders/detail/(:num)'] = 'kasir/orders/detail/$1';
 $route['kurir_orders'] = 'kurir/orders';
 $route['kurir_orders/sendOrder/(:num)'] = 'kurir/orders/sendOrder/$1';
 $route['kurir_orders/detail/(:num)'] = 'kurir/orders/detail/$1';
+$route['kurir_orders/sending/(:num)'] = 'kurir/orders/sending/$1';
+$route['kurir_orders/setShippedOrder/(:num)'] = 'kurir/orders/setShippedOrder/$1';

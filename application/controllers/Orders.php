@@ -12,6 +12,7 @@ class Orders extends CI_Controller
     $this->load->model('M_cart');
     $this->load->model('M_user');
     $this->load->model('M_invoice');
+    $this->load->model('M_ongkir');
 
     $is_nologin = false;
 
@@ -53,7 +54,13 @@ class Orders extends CI_Controller
     $address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
     $cost_price = $this->input->post('total_cost_price');
     // $ongkir = $address['jarak'] * 2000; // 2k per km
-    $ongkir = 0; // 2k per km
+    $ongkir = $this->input->post('ongkir'); // 2k per km
+
+    //recheck if ongkir was 0 from checkout form
+    if($ongkir != 0) {
+	  	$ongkir = $this->M_ongkir->get_ongkir_by_jarak($address['jarak']);
+      $ongkir = $ongkir['nominal'];
+    }
     
     $cart_product_id = $this->input->post('cart_product_id');
 

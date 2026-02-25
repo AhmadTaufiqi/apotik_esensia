@@ -136,7 +136,9 @@ class Product extends CI_Controller
 			'stock' => $product->stock,
 			'discount' => $product->discount,
 			'description' => $product->description,
-			'category' => explode(',', $product->categories == '' ? '' : $product->categories),
+			// 'category' => explode(',', $product->categories == '' ? '' : $product->categories),
+			'category' => $product->category,
+			'multiple_cat' => explode(',', $product->categories == '' ? '' : $product->categories)
 		];
 		$this->M_app->admin_template($data, 'products/admin_form_product');
 	}
@@ -203,7 +205,7 @@ class Product extends CI_Controller
 	public function importHtml()
 	{
 		$file_uri = base_url() . 'html_data_products2/Sheet1.html';
-		// var_dump($file_uri);
+
 		$html = file_get_contents('html_data_products2/Sheet1.html'); // Or use Guzzle for URLs
 		$crawler = new Crawler($html); // Or $crawler->addHtmlContent($html);
 

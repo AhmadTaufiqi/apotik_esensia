@@ -72,9 +72,6 @@ class Profile extends CI_Controller
 			];
 		}
 
-		// var_dump($address->kota);
-		// exit;
-
 		$data = [
 			'title' => 'Edit Profile',
 			'user_id' => $user_id,
@@ -104,9 +101,6 @@ class Profile extends CI_Controller
 				'catatan' => '',
 			];
 		}
-
-		// var_dump($address->kota);
-		// exit;
 
 		$data = [
 			'title' => 'Edit Profile',

@@ -5,9 +5,11 @@
       <a href="<?= base_url('kurir_orders') ?>" class="btn btn-secondary text-light">
         <i class="fas fa-arrow-left me-2"></i>Kembali
       </a>
-      <a href="<?= base_url('kurir_orders/sendOrder/'.$order['id']) ?>" class="btn btn-primary text-light">
-        <i class="fas fa-motorcycle me-2"></i>Kirim Pesanan
-      </a>
+      <?php if ($order['status'] != 'shipped') : ?>
+        <a href="<?= base_url('kurir_orders/sendOrder/'.$order['id']) ?>" class="btn btn-primary text-light">
+          <i class="fas fa-motorcycle me-2"></i>Kirim Pesanan
+        </a>
+      <?php endif; ?>
     </div>
   </div>
 

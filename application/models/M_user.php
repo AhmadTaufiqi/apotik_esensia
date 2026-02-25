@@ -184,7 +184,38 @@ class M_user extends CI_Model
         } else {
             return false;
         }
-    }    
+    }
+
+    
+    /**
+     * Ambil daftar nomor telepon (`telp`) dari table `users` berdasarkan role.
+     * Parameter $role bisa berupa integer (mis. 1) atau array (mis. [1,3]).
+     * Mengabaikan entri kosong atau NULL pada kolom `telp`.
+     * Mengembalikan array string nomor telepon.
+     *
+     * @param int|array $role
+     * @return array
+     */
+    public function getPhoneNumbersByRole($role)
+    {
+        $this->db->select('telp')
+            ->from('users');
+
+        if (is_array($role)) {
+            $this->db->where_in('role', $role);
+        } else {
+            $this->db->where('role', $role);
+        }
+
+        // Exclude empty or NULL phone values
+        $this->db->where('telp IS NOT NULL', null, false);
+        $this->db->where('telp <>', '');
+
+        $query = $this->db->get();
+        $rows = $query->result_array();
+
+        return $rows[0]['telp'];
+    }
 
     public function update_identitas($table, $activity, $role = null) {
         $id = $this->input->post('id');

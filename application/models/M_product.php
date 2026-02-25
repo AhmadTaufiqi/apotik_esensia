@@ -68,9 +68,16 @@ class M_product extends CI_Model
       'discount' => $this->input->post('discount'),
       'image' => $this->M_app->updateBase64('products', $foto, 'jpg|jpeg|png', 'base64_input', $foto_default),
       'description' => $this->input->post('description'),
-      'categories' => implode(',', $this->input->post('category')),
       // 'created_at' => $this->M_app->datetime(),
     ];
+
+    $categories = $this->input->post('category');
+
+    $prod['categories'] = implode(',', $categories);
+
+    if (count($categories) == 1) {
+      $prod['category'] = $categories[0];
+    }
 
     return $prod;
   }
