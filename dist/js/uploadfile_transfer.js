@@ -8,7 +8,7 @@ const img_ktp = $("#photo_product");
 const img_cropper_tf = document.querySelector('#img_tf_cropper');
 
 var cropper = new Cropper(img_cropper_tf,{
-    aspectRatio:8/6,
+    aspectRatio:6/7,
     zoomable:false,
     minContainerHeight:250,
     minContainerWidth:300,
@@ -126,9 +126,10 @@ function checkImageResolution() {
   
   img2.onload = function () {
     
-      if ((file_product.size/1024/1024) > 4){ //if file size is greater than 4MB
-        reduceImageSize(base64_string, 800, 0.7).then((reducedBase64) => {
+      // if ((file_product.size/1024/1024) > 4){ //if file size is greater than 4MB
+        reduceImageSize(base64_string).then((reducedBase64) => {
             var reduced_size = getFileSizeFromBase64(reducedBase64);
+            console.log(Math.round(reduced_size/1024/1024));
             // console.log('reduced size ' + reduced_size/1024/1024 + ' MB');
             if(reduced_size/1024/1024 > 4){
                 alert("Maksimum resolusi gambar harus 4 MB setelah dikompresi");
@@ -145,14 +146,16 @@ function checkImageResolution() {
               fileInput2.val(reducedBase64);
             }
         });
-      }else{
-        // proceed with upload
-        if(fileName.length >= 12){ //if file name length is greater than 12 then split it and add ...
-          let splitName = fileName.split('.');
-          fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
-        }
-        uploadFile(fileName); //calling uploadFile with passing file name as an argument
-      }
+      // }else{
+      //       console.log(file_product.size);
+
+      //   // proceed with upload
+      //   if(fileName.length >= 12){ //if file name length is greater than 12 then split it and add ...
+      //     let splitName = fileName.split('.');
+      //     fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+      //   }
+      //   uploadFile(fileName); //calling uploadFile with passing file name as an argument
+      // }
     };
 
   // img.src = window.URL.createObjectURL(file);
@@ -177,7 +180,7 @@ function getFileSizeFromBase64(base64String) {
   return fileSizeInBytes;
 }
 
-function reduceImageSize(base64ImageData, maxWidth = 800, quality = 0.3) {
+function reduceImageSize(base64ImageData, maxWidth = 300, quality = 0.3) {
     return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {

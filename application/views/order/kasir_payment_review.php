@@ -9,7 +9,7 @@
               <h5 class="card-title mb-0">Bukti Pembayaran</h5>
             </div>
             <?php if (!empty($invoice['bukti_transfer'])) : ?>
-              <img src="<?= $invoice['bukti_transfer'] ?>" alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 300px;">
+              <img id="img_bukti_transfer" src="<?= $invoice['bukti_transfer'] ?>" alt="Bukti Pembayaran" class="img-fluid rounded" style="max-height: 300px; cursor: pointer;" onclick="openImageModal()">
             <?php else : ?>
               <div class="text-muted">
                 <i class="fas fa-image fa-3x mb-3"></i>
@@ -159,7 +159,29 @@
   </div>
 </main>
 
+<!-- Modal untuk Gambar Bukti Transfer -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Bukti Pembayaran</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" width="450" alt="Bukti Pembayaran" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+  function openImageModal() {
+    const imgSrc = document.getElementById('img_bukti_transfer').src;
+    document.getElementById('modalImage').src = imgSrc;
+    const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+    modal.show();
+  }
+
   function confirmPayment(orderId) {
     if (confirm('Apakah Anda yakin ingin mengkonfirmasi pembayaran ini?')) {
       // Implement confirmation logic here

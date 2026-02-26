@@ -88,9 +88,25 @@
               }
               ?>
             <?php endforeach; ?>
+            <?php
+            // Calculate total with shipping cost
+            $total_with_shipping = $total_price_order;
+            if (isset($order['ongkir'])) {
+              $total_with_shipping = $total_price_order + $order['ongkir'];
+            }
+            ?>
+            <!-- Shipping Cost Display -->
+            <?php if (isset($order['ongkir']) && $order['ongkir'] > 0) : ?>
+            <div class="d-flex mt-2 align-items-center">
+              <div class="col text-end">
+                <p class="mb-0">Biaya Ongkir: <span>Rp. <?= number_format($order['ongkir'], 0, '', '.') ?></span></p>
+              </div>
+            </div>
+            <?php endif; ?>
+            <!-- Total Price with Shipping -->
             <div class="d-flex mt-2 align-items-center">
               <div class="col text-end me-2">
-                <h5 class="color-esensia mb-0">Rp. <?= number_format($total_price_order, 0, '', '.') ?></h5>
+                <h5 class="color-esensia mb-0">Rp. <?= number_format($total_with_shipping, 0, '', '.') ?></h5>
               </div>
               <div class="text-end">
                 <a href="<?= base_url() ?>view_order/<?= $order['id'] ?>" class="btn btn-sm btn-secondary text-light"><i class="fas fa-eye me-1"></i>detail</a>

@@ -104,7 +104,7 @@ class Product extends CI_Controller
 
 	public function create()
 	{
-		$categories = $this->db->query('SELECT * FROM product_category')->result();
+	$categories = $this->db->query('SELECT * FROM product_category')->result();
 
 		$data = [
 			'title' => 'Tambah Produk',

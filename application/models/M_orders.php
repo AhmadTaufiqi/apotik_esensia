@@ -105,6 +105,7 @@ class M_orders extends CI_Model
     $order = $this->db->select('*')
       ->from('orders o')
       ->where('o.customer_id', $user_id)
+      ->order_by('o.created_at', 'desc')
       ->get()
       ->result_array();
     $this->db->trans_complete();
@@ -131,6 +132,7 @@ class M_orders extends CI_Model
     $query = 'SELECT o.*, o.id order_id , u.id as user_id, u.name user_name FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
+    $query .= ' ORDER BY o.created_at DESC';
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
 
@@ -143,10 +145,11 @@ class M_orders extends CI_Model
     $status = ['unpaid', 'paid', 'payment accepted'];
 
     $this->db->trans_start();
-    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
+    $query = 'SELECT o.*, o.id order_id, u.name FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
+    $query .= ' ORDER BY o.created_at DESC';
 
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();
@@ -160,10 +163,11 @@ class M_orders extends CI_Model
     $status = ['processing', 'need to send', 'sending', 'shipped'];
 
     $this->db->trans_start();
-    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o';
+    $query = 'SELECT o.*, o.id order_id , u.name FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
+    $query .= ' ORDER BY o.created_at DESC';
 
     $order = $this->db->query($query)->result_array();
     $this->db->trans_complete();

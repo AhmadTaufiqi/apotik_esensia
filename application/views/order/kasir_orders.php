@@ -81,7 +81,7 @@
                   </span>
                 </td>
                 <td><?= $order['created_at'] ?></td>
-                <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+                <td>Rp. <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
                 <td>
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>

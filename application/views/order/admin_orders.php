@@ -80,7 +80,7 @@
                 <td><?= $order['user_name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
                 <td><?= $order['created_at'] ?></td>
-                <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+                <td>Rp. <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
                 <td>
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>
@@ -88,8 +88,8 @@
                   <div class="dropdown-menu">
                     <a href="<?= base_url('admin/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
-                      <span class="iconify mr-2" data-icon="fas:shipping-fast"></span>Kelola Pengiriman</a>
+                    <a href="<?= base_url('admin/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdopwn-item">
+                      <i class="fas fa-motorcycle me-2"></i></span>Kelola Pengiriman</a>
                     <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
                       <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
                   </div>

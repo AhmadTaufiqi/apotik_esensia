@@ -161,7 +161,7 @@ class Orders extends CI_Controller
       'order_products' => $order_products,
     ];
 
-    $this->M_app->admin_template($data, 'order/kasir_view_order');
+    $this->M_app->kasir_template($data, 'order/kasir_view_order');
   }
 
   public function populateOrderStatus()

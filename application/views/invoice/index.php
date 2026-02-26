@@ -212,7 +212,7 @@
     <div class="d-flex justify-content-center">
       <div class="uploadcms mb-3 upload-tf-container" style="min-height: 290px;width:95%; position: relative;">
         <div class="mb-2" style="display: contents;">
-          <img class="rounded-15 mb-4" src="<?= $foto_bukti_transfer ?>" alt="" id="photo_product" style="position:absolute;width:276px;height:200px;">
+          <img class="rounded-15 mb-4" src="<?= $foto_bukti_transfer ?>" alt="" id="photo_product" style="position:absolute;width:200px;height:210px;">
           <div class="border-upload text-center">
             <input type="hidden" name="base64_input" id="base64_input">
             <input class="file-input" type="file" name="foto" accept="image/*" hidden>
