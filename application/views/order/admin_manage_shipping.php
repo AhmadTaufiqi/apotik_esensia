@@ -1,12 +1,12 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
-  <div class="container-fluid px-4">
+  <div class="">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h4 class="mb-0 fw-bold">Kelola Pengiriman</h4>
         <p class="text-muted mb-0">Order #<?= $order['order_id'] ?></p>
       </div>
-      <a href="<?= base_url('admin/orders') ?>" class="btn btn-outline-secondary">
+      <a href="<?= base_url('admin_orders') ?>" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Pesanan
       </a>
     </div>
@@ -28,9 +28,9 @@
       </div>
     <?php endif; ?>
 
-    <div class="row">
+    <div class="d-flex">
       <!-- Order Information -->
-      <div class="col-lg-8 mb-4">
+      <div class="col-lg-8 mb-4 ps-0 pe-2">
         <div class="card shadow-sm">
           <div class="card-header bg-primary text-white">
             <h5 class="card-title mb-0 text-light">
@@ -39,7 +39,7 @@
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 px-2">
                 <table class="table table-borderless">
                   <tr>
                     <td class="fw-bold text-muted" width="40%">Order ID</td>
@@ -67,8 +67,8 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-md-6">
-                <table class="table table-borderless">
+              <div class="col-md-6 px-2">
+                <table class="table table-borderless table-paddingless">
                   <tr>
                     <td class="fw-bold text-muted" width="40%">Customer</td>
                     <td width="10%">:</td>
@@ -96,7 +96,7 @@
       </div>
 
       <!-- Shipping Status Update -->
-      <div class="col-lg-4 mb-4">
+      <div class="col-lg-4 mb-4 pe-0 ps-2">
         <div class="card shadow-sm">
           <div class="card-header bg-info text-white">
             <h5 class="card-title mb-0 text-light">
@@ -104,7 +104,7 @@
             </h5>
           </div>
           <div class="card-body">
-            <form method="post" action="<?= base_url('admin/orders/manage_shipping/' . $order['order_id']) ?>">
+            <form method="post" action="<?= base_url('admin_orders/manage_shipping/' . $order['order_id']) ?>">
               <div class="mb-3">
                 <label for="status" class="form-label fw-bold">Status Pengiriman</label>
                 <select class="form-select" id="status" name="status" required>

@@ -1,7 +1,7 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0"><?= $title ?></h4>
-    <a href="<?= base_url('admin/orders') ?>" class="btn btn-secondary text-light">
+    <a href="<?= base_url('admin_orders') ?>" class="btn btn-secondary text-light">
       <i class="fas fa-arrow-left me-2"></i>Kembali
     </a>
   </div>

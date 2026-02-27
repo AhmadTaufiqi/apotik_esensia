@@ -52,6 +52,7 @@ class Orders extends CI_Controller
 
     $data = [
       'title' => 'Pesanan',
+      'active_menu' => 'admin_orders',
       'data' => $orders,
       'customers' => $customers,
       'filters' => $filters,
@@ -98,6 +99,7 @@ class Orders extends CI_Controller
 
     $data = [
       'title' => 'Detail Order #' . $id,
+      'active_menu' => 'admin_orders',
       'order' => $order,
       'order_products' => $order_products,
     ];
@@ -122,22 +124,6 @@ class Orders extends CI_Controller
     echo $html;
     return;
   }
-
-  public function payment()
-  {
-    $this->load->view('order/index');
-  }
-
-  public function shipping()
-  {
-    $this->load->view('order/index');
-  }
-
-  public function ongkir()
-  {
-    $this->load->view('order/ongkir');
-  }
-
 
   // update status shipping and others
   public function manage_shipping($order_id)
@@ -175,11 +161,12 @@ class Orders extends CI_Controller
         }
       }
 
-      redirect('admin/orders/manage_shipping/' . $order_id);
+      redirect('admin_orders/manage_shipping/' . $order_id);
     }
 
     $data = [
       'title' => 'Kelola Pengiriman - Order #' . $order_id,
+      'active_menu' => 'admin_orders',
       'order' => $order,
     ];
 

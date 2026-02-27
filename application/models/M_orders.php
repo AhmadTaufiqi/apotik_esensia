@@ -142,10 +142,10 @@ class M_orders extends CI_Model
   // order statuses shows unpaid, paid, payment accepted
   public function get_kasir_orders()
   {
-    $status = ['unpaid', 'paid', 'payment accepted'];
+    $status = ['unpaid', 'paid', 'payment accepted', 'payment rejected'];
 
     $this->db->trans_start();
-    $query = 'SELECT o.*, o.id order_id, u.name FROM orders o';
+    $query = 'SELECT o.*, o.id order_id, u.name as user_name FROM orders o';
     $query .= ' INNER JOIN users u ON u.id=o.customer_id';
     $query .= ' WHERE 1 = 1';
     $query .= " AND o.status IN ('" . implode("', '", $status) . "')";
@@ -212,7 +212,7 @@ class M_orders extends CI_Model
   {
     $this->db->trans_start();
 
-    $query = 'SELECT o.*, o.id order_id , u.* FROM orders o ';
+    $query = 'SELECT o.*, o.id order_id, u.id as user_id, u.name user_name FROM orders o ';
     $query .= 'INNER JOIN users u ON u.id=o.customer_id ';
     $query .= 'WHERE 1=1 ';
 

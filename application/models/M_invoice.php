@@ -62,6 +62,35 @@ class M_invoice extends CI_Model
     }
   }
 
+  /**
+   * Reject payment for the given order.
+   *
+   * This sets the related invoice to an unpaid/rejected state (is_paid=2)
+   * and updates the order status to "payment rejected". A transaction is
+   * used to ensure both updates succeed or fail together.
+   *
+   * @param int|string $order_id
+   * @return bool true on success, false on failure
+   */
+  public function reject_payment($order_id)
+  {
+    $this->db->trans_start();
+
+    // mark invoice as rejected (is_paid = 2) and optionally update status
+    $this->db->update(
+      'invoices',
+      ['is_paid' => 2, 'status' => 'rejected'],
+      ['order_id' => $order_id]
+    );
+
+    // set order status so front‑end can act accordingly
+    $this->db->update('orders', ['status' => 'payment rejected'], ['id' => $order_id]);
+
+    $this->db->trans_complete();
+
+    return $this->db->trans_status();
+  }
+
   public function data_invoice($data)
   {
     $data = [

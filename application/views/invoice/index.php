@@ -218,7 +218,7 @@
             <input class="file-input" type="file" name="foto" accept="image/*" hidden>
             <!-- <i class="fa-solid fa-image" style="font-size: 40px; color: #989898; margin-left: -7%;"></i> -->
             <p style="color: #989898; margin-left: -7%;">Pilih Foto</p>
-          </div>
+          </div>sss
         </div>
         <div style="position:absolute ; bottom:20px">
           <h5>Upload Bukti Transfer</h5>

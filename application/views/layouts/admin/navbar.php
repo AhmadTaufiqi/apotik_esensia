@@ -25,7 +25,7 @@
         <li>
           <hr class="dropdown-divider my-0">
         </li>
-        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin/orders') ?>">Lihat semua notifikasi</a></li>
+        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin_orders') ?>">Lihat semua notifikasi</a></li>
       </ul>
     </li>
     <li class="nav-item">

@@ -13,7 +13,7 @@ class M_app extends CI_Model
         $this->load->view('layouts/admin/head', $data);
         // $this->load->view('layouts/topbar-search', $data);
         $this->load->view("layouts/admin/navbar");
-        $this->load->view('layouts/admin/menu');
+        $this->load->view('layouts/admin/menu', $data);
         $this->load->view($content);
         $this->load->view('layouts/admin/foot');
     }
@@ -82,6 +82,11 @@ class M_app extends CI_Model
                 'icon' => 'fas fa-money-bill',
                 'label' => 'Pembayaran Diterima',
                 'class' => 'order-status-payment-accepted'
+            ],
+            'payment rejected' => [
+                'icon' => 'fas fa-money-bill',
+                'label' => 'Pembayaran Ditolak',
+                'class' => 'order-status-payment-rejected'
             ],
             'processing' => [
                 'icon' => 'fas fa-box',

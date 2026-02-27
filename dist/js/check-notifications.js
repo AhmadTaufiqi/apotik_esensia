@@ -204,7 +204,7 @@ class NotificationChecker {
 
             const a = document.createElement('a');
             a.className = 'd-flex align-items-start w-100 text-decoration-none text-reset';
-            const href = (n.link) ? n.link : (window.baseURL ? window.baseURL + 'admin/orders' : '/admin/orders');
+            const href = (n.link) ? n.link : (window.baseURL ? window.baseURL + 'admin_orders' : '/admin_orders');
             a.href = href;
             a.innerHTML = '<div class="me-2 mt-1"><i class="fa fa-shopping-cart text-primary"></i></div>' +
                 '<div><div class="small fw-bold">' + (n.title || '') + '</div>' +
@@ -233,7 +233,7 @@ class NotificationChecker {
                             <p class="card-text text-muted small mb-2">${message}</p>
                             ${created_at ? `<small class="text-muted">${this.formatTime(created_at)}</small>` : ''}
                         </div>
-                        <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/admin/orders'">
+                        <button class="btn btn-sm btn-outline-primary" onclick="window.location.href='/admin_orders'">
                             Lihat
                         </button>
                     </div>

@@ -109,13 +109,32 @@ class Orders extends CI_Controller
         $alert = '<div class="alert alert-success" role="alert">Berhasil menyimpan data produk</div>';
         $this->session->set_flashdata('message', $alert);
 
-        redirect(base_url('kasir/Orders'));
+        redirect(base_url('kasir_orders'));
       } else {
         $alert = '<div class="alert alert-danger" role="alert">Gagal menyimpan data produk</div>';
         $this->session->set_flashdata('message', $alert);
 
-        redirect(base_url('kasir/Orders/reviewPayment/' . $order_id));
+        redirect(base_url('kasir_orders/reviewPayment/' . $order_id));
       }
+    }
+  }
+
+  public function rejectPayment($order_id)
+  {
+    // Load invoice record (optional, could be used for validation if needed)
+    $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
+
+    // perform rejection via model method
+    $rejected = $this->M_invoice->reject_payment($order_id);
+
+    if ($rejected) {
+      $alert = '<div class="alert alert-success" role="alert">Pembayaran berhasil ditolak</div>';
+      $this->session->set_flashdata('message', $alert);
+      redirect(base_url('kasir_orders'));
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">Gagal menolak pembayaran</div>';
+      $this->session->set_flashdata('message', $alert);
+      redirect(base_url('kasir_orders/reviewPayment/' . $order_id));
     }
   }
 
@@ -182,26 +201,6 @@ class Orders extends CI_Controller
     return;
   }
 
-  public function updateShipping_status()
-  {
-    $order_id = $this->input->post('order_id');
-    $shipping_status = $this->input->post('shipping_status');
-
-    $update = $this->M_orders->update_shipping_status($order_id, $shipping_status);
-
-    if ($update) {
-      $alert = '<div class="alert alert-success" role="alert">Berhasil memperbarui status pengiriman</div>';
-      $this->session->set_flashdata('message', $alert);
-
-      redirect(base_url('admin/Orders/detail/' . $order_id));
-    } else {
-      $alert = '<div class="alert alert-danger" role="alert">Gagal memperbarui status pengiriman</div>';
-      $this->session->set_flashdata('message', $alert);
-
-      redirect(base_url('admin/Orders/detail/' . $order_id));
-    }
-  }
-
   public function latestNotifications()
   {
     // return latest orders that need admin attention as JSON
@@ -225,7 +224,7 @@ class Orders extends CI_Controller
         'title' => $title,
         'message' => $subtitle,
         'created_at' => $r['order_created'] ?? null,
-        'link' => base_url('admin/orders'),
+        'link' => base_url('kasir_orders'),
       ];
     }, $list);
 
@@ -257,16 +256,16 @@ class Orders extends CI_Controller
     if ($this->db->trans_status()) {
       $alert = '<div class="alert alert-success" role="alert">Status pesanan berhasil diubah ke processing dan sending</div>';
       $this->session->set_flashdata('message', $alert);
-      redirect(base_url('kasir/Orders'));
+      redirect(base_url('kasir_orders'));
     } else {
       $alert = '<div class="alert alert-danger" role="alert">Gagal mengubah status pesanan</div>';
       $this->session->set_flashdata('message', $alert);
-      redirect(base_url('kasir/Orders'));
+      redirect(base_url('kasir_orders'));
     }
   }
 
   // update status shipping and others
-  public function manage_shipping($order_id)
+  private function manage_shipping($order_id)
   {
     if (empty($order_id)) {
       show_404();
@@ -299,7 +298,7 @@ class Orders extends CI_Controller
         }
       }
 
-      redirect('admin/orders/manage_shipping/' . $order_id);
+      redirect('admin_orders/manage_shipping/' . $order_id);
     }
 
     $data = [

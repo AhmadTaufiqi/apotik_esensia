@@ -60,7 +60,7 @@ class Notifications extends CI_Controller
         'title' => $title,
         'message' => $subtitle,
         'created_at' => $r['order_created'] ?? null,
-        'link' => base_url('admin/orders'),
+        'link' => base_url('admin_orders'),
       ];
     }, $list);
 

@@ -6,7 +6,7 @@
         <h4 class="mb-0 fw-bold">Kelola Pengiriman</h4>
         <p class="text-muted mb-0">Order #<?= $order['order_id'] ?></p>
       </div>
-      <a href="<?= base_url('admin/orders') ?>" class="btn btn-outline-secondary">
+      <a href="<?= base_url('admin_orders') ?>" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Pesanan
       </a>
     </div>
@@ -105,7 +105,7 @@
             </h5>
           </div>
           <div class="card-body">
-            <form method="post" action="<?= base_url('admin/orders/manage_shipping/' . $order['order_id']) ?>">
+            <form method="post" action="<?= base_url('admin_orders/manage_shipping/' . $order['order_id']) ?>">
               <div class="mb-3">
                 <label for="shipping_status" class="form-label fw-bold">Status Pengiriman</label>
                 <select class="form-select" id="shipping_status" name="shipping_status" required>

@@ -21,7 +21,7 @@
           <li class="text-center small text-muted py-2">Memuat notifikasi...</li>
         </div>
         <li><hr class="dropdown-divider my-0"></li>
-        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('admin/orders') ?>">Lihat semua notifikasi</a></li>
+        <li><a class="dropdown-item text-center small text-muted" href="<?= base_url('kasir_orders') ?>">Lihat semua notifikasi</a></li>
       </ul>
     </li>
     <li class="nav-item">

@@ -40,7 +40,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_orders' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= ($this->uri->segment(1) == 'admin_orders') || $this->uri->segment(1) == $active_menu ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_orders" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
                     <span class="ml-2 item-text">Pesanan</span>

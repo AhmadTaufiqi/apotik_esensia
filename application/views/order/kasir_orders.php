@@ -44,6 +44,7 @@
             <option value="unpaid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Belum Dibayar</option>
             <option value="paid" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Sudah Dibayar</option>
             <option value="payment accepted" <?= (isset($filters['status']) && $filters['status'] === 'unpaid') ? 'selected' : '' ?>>Pembayaran Diterima</option>
+            <option value="payment rejected" <?= (isset($filters['status']) && $filters['status'] === 'payment rejected') ? 'selected' : '' ?>>Pembayaran Ditolak</option>
             <option value="completed" <?= (isset($filters['status']) && $filters['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
           </select>
         </div>
@@ -73,7 +74,7 @@
           <tbody>
             <?php foreach ($data as $order) : ?>
               <tr>
-                <td><?= $order['name'] ?></td>
+                <td><?= $order['user_name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
                 <td>
                   <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' : (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
@@ -87,11 +88,11 @@
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu" style="width:240px">
-                    <a href="<?= base_url('/kasir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
+                    <a href="<?= base_url('/kasir_orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
 
                     <?php if ($order['status'] == 'paid') : ?>
-                      <a href="<?= base_url('kasir/orders/reviewPayment/') . $order['order_id'] ?>" class="dropdown-item">
+                      <a href="<?= base_url('kasir_orders/reviewPayment/') . $order['order_id'] ?>" class="dropdown-item">
                         <div class="d-flex">
                           <span class="fas fa-check me-2"></span>
                           <span class="text-wrap">
@@ -105,8 +106,8 @@
                       <!-- <a href="<?= base_url('kasir/orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
                         <span class="fas fa-motorcycle me-2"></span>Kelola Pengiriman</a> -->
                     <?php endif; ?>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
-                      <span class="fas fa-trash me-2"></span>Hapus</button>
+                    <!-- <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
+                      <span class="fas fa-trash me-2"></span>Hapus</button> -->
                   </div>
                 </td>
               </tr>
@@ -185,21 +186,4 @@
         });
     });
   })();
-
-  function updateShippingStatus() {
-    $('#').on('click', function() {
-      const orderId = $(this).data('order-id');
-      const shippingStatus = $('#shipping_status').val();
-
-      $.post('<?= base_url("kasir/orders/updateShipping_status") ?>', {
-        order_id: orderId,
-        shipping_status: shippingStatus
-      }).done(function(response) {
-        // On success, reload the page or show a success message
-        location.reload();
-      }).fail(function() {
-        alert('Gagal memperbarui status pengiriman');
-      });
-    });
-  }
 </script>

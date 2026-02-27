@@ -429,7 +429,11 @@ div:has(> button.btn-add-to-cart) {
 }
 
 .order-status-payment-accepted {
-  color: #fe3fc5;
+  color: #f760ca;
+}
+
+.order-status-payment-rejected {
+  color: #f18024;
 }
 
 .order-status-sending {
@@ -670,4 +674,8 @@ a {
   padding-top: 0.3rem;
   padding-bottom: 0.55rem !important;
   padding-left: 0.55rem !important;
+}
+
+.table-paddingless tr td{
+  padding:5px;
 }

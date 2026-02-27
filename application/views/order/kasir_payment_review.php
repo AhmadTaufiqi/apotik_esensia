@@ -147,7 +147,7 @@
 
     <!-- Tombol Aksi -->
     <div class="d-flex justify-content-between mt-4">
-      <a href="<?= base_url('kasir/orders') ?>" class="btn btn-secondary text-light">Kembali ke Daftar Order</a>
+      <a href="<?= base_url('kasir_orders') ?>" class="btn btn-secondary text-light">Kembali ke Daftar Order</a>
       <div>
         <!-- tombol konfirmasi & tolak pembayaran hanya muncul jika status order 'paid' dan is_paid pada invoice 1 -->
         <?php if ($order['status'] == 'paid' && ($invoice['is_paid'] ?? 0) == 1) : ?>
@@ -192,7 +192,7 @@
   function rejectPayment(orderId) {
     if (confirm('Apakah Anda yakin ingin menolak pembayaran ini?')) {
       // Implement rejection logic here
-      window.location.href = '<?= base_url('kasir/orders/reject_payment/') ?>' + orderId;
+      window.location.href = '<?= base_url('kasir/orders/rejectPayment/') ?>' + orderId;
     }
   }
 </script>
