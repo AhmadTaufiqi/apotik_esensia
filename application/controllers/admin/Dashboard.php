@@ -52,6 +52,7 @@ class Dashboard extends CI_Controller
 			'total_income' => $total_income,
 			'orders_today' => $latest_orders,
 			'total_oncart' => $total_oncart,
+			'active_menu' => 'dashboard'
 		];
 
 		$this->M_app->admin_template($data, 'dashboard');

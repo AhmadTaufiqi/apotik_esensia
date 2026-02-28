@@ -46,8 +46,19 @@
               <h5 class="mt-4">Alamat</h5>
               <table class="table">
                 <tr>
+                  <td colspan="2"><?= htmlspecialchars($address['catatan'] ?? '-') ?></td>
+                </tr>
+                <tr>
                   <th>Jalan</th>
-                  <td><?= htmlspecialchars($address['jalan'] ?? '-') ?></td>
+                  <td><?= empty($address['jalan']) || $address['jalan'] == '' ? $address['jalan'] : '-' ?></td>
+                </tr>
+                <tr>
+                  <th>Kelurahan</th>
+                  <td><?= htmlspecialchars($address['kelurahan'] ?? '-') ?></td>
+                </tr>
+                <tr>
+                  <th>Kecamatan</th>
+                  <td><?= htmlspecialchars($address['kecamatan'] ?? '-') ?></td>
                 </tr>
                 <tr>
                   <th>Kota</th>

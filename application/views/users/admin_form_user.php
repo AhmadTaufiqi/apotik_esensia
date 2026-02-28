@@ -9,20 +9,24 @@
         <input type="hidden" name="profile" value="<?= $profile ?? '' ?>">
 
         <div class="row">
-          <div class="col-md-4 text-center">
+          <!-- <div class="col-md-4 text-center">
             <img src="<?= base_url('dist/img/uploads/users/' . ($profile == '' ? 'default.png' : $profile)) ?>" class="img-fluid rounded mb-3" alt="profile" style="max-height:200px;">
             <div class="mb-3">
               <input type="file" name="foto" accept=".jpg,.jpeg,.png">
             </div>
+          </div> -->
+          <div class="avatar d-flex align-items-center px-2 p-4">
+            <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
+              <img src="<?= base_url() ?>dist/img/uploads/users/<?= $profile != '' ? $profile : 'default.png' ?>" id="photo" style="object-fit: cover; object-position: 100% 0;">
+              <input type="file" id="file_profile" name="foto" max="2000" accept=".jpg,.jpeg,.png">
+              <label for="file_profile" id="uploadBtn" style="height:40px">Pilih Foto</label>
+            </div>
+            <input type="hidden" id="foto_base64" name="foto_base64" max="2000">
           </div>
           <div class="col-md-8">
             <div class="mb-3">
               <label class="form-label required">Nama</label>
               <input type="text" name="name" class="form-control" value="<?= $name ?? '' ?>" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label required">Username</label>
-              <input type="text" name="username" class="form-control" value="<?= $username ?? '' ?>" required>
             </div>
             <div class="mb-3">
               <label class="form-label required">Email</label>
@@ -36,46 +40,16 @@
               <label class="form-label">Role</label>
               <select name="role" class="form-control">
                 <option value="1" <?= (isset($role) && $role == 1) ? 'selected' : '' ?>>Admin</option>
-                <option value="2" <?= (isset($role) && $role == 2) ? 'selected' : '' ?>>User</option>
-                <option value="3" <?= (isset($role) && $role == 3) ? 'selected' : '' ?>>Juru Pungut</option>
+                <option value="3" <?= (isset($role) && $role == 3) ? 'selected' : '' ?>>Kasir</option>
+                <option value="4" <?= (isset($role) && $role == 4) ? 'selected' : '' ?>>Kurir</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Password (kosongkan jika tidak diubah)</label>
-              <input type="password" name="password" class="form-control">
+              <input type="password" name="new_password" class="form-control" autocomplete="new-password">
             </div>
           </div>
         </div>
-
-        <?php // address section ?>
-        <div class="mt-4">
-          <h5>Alamat</h5>
-          <div class="mb-3">
-            <label class="form-label">Jalan</label>
-            <input type="text" name="jalan" class="form-control" value="<?= $address['jalan'] ?? '' ?>">
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Kota</label>
-              <input type="text" name="kota" class="form-control" value="<?= $address['kota'] ?? '' ?>">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Provinsi</label>
-              <input type="text" name="provinsi" class="form-control" value="<?= $address['provinsi'] ?? '' ?>">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Kode Pos</label>
-              <input type="text" name="kode_pos" class="form-control" value="<?= $address['kode_pos'] ?? '' ?>">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Negara</label>
-              <input type="text" name="negara" class="form-control" value="<?= $address['negara'] ?? '' ?>">
-            </div>
-          </div>
-        </div>
-
         <div class="d-flex mt-3">
           <div class="col text-end">
             <button class="btn btn-primary">Simpan</button>

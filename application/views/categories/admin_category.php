@@ -1,7 +1,7 @@
 <main role="main" class="main-content" style="margin-top: 64px;">
   <div class="d-flex mb-3">
     <h4 class="mb-0"><?= $title ?></h4>
-    <a href="<?= base_url()?>admin/categories/create" class="btn btn-primary ms-auto text-light" style="align-content:center;">
+    <a href="<?= base_url() ?>admin/categories/create" class="btn btn-primary ms-auto text-light" style="align-content:center;">
       <i class="fas fa-plus me-1"></i>
       Tambah Kategori
     </a>
@@ -23,7 +23,9 @@
               <?php $icon = $cat->icon ?>
               <tr>
                 <td width="15%"><img src="<?= base_url('dist/img/uploads/categories/' . ($icon == '' ? 'default_image.png' : $icon)) ?>" style="width:77px;height:65px;" alt=""></td>
-                <td><h5><?= $cat->category ?></h5></td>
+                <td>
+                  <h5><?= $cat->category ?></h5>
+                </td>
                 <td>
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>
@@ -31,7 +33,7 @@
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="<?= base_url('admin/categories/edit/' . $cat->id) ?>">
                       <span class="iconify mr-2" data-icon="material-symbols:edit-square-outline-rounded"></span>Edit</a>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(1)">
+                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#hapusModal" onclick="$('#hapus_id').val('<?= $cat->id ?>')">
                       <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
                   </div>
                 </td>
@@ -43,3 +45,26 @@
     </div>
   </div>
 </main>
+
+
+<!-- Modal Hapus-->
+<div class="modal fade" id="hapusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="<?= base_url() ?>/admin/categories/delete" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Hapus Produk</h5>
+          <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <input type="hidden" name="id" id="hapus_id">
+        <div class="modal-body">Apakah Anda yakin ingin menghapus produk ini?</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" id="btn-hapus" class="btn btn-primary" href="#">Hapus</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -102,7 +102,7 @@ class M_user extends CI_Model
     {
         $data = [
 			// 'id' => $this->uuid->v4(),
-			'nama' => ucwords($this->input->post('nama')),
+			'nama' => $this->input->post('nama'),
 			'username' => $this->input->post('username'),
 			'password' => md5($this->input->post('password')),
 			'email' => $this->input->post('email'),
@@ -116,22 +116,38 @@ class M_user extends CI_Model
         return $data;
     }
 
-    public function update_user($foto) {
+        public function update_profile($table, $activity, $role = null) {
+        // build data array the same way as before
+        $foto = $this->input->post('foto');
+
         $user = [
-            'nama' => ucwords($this->input->post('nama')),
-			'username' => $this->input->post('username'),
-			'email' => $this->input->post('email'),
-			'telp' => $this->input->post('telp'),
-			'foto' => $this->M_app->updateFile('users', $foto, 'jpg|jpeg|png', 'foto', 'default.png'),
+            'name' => $this->input->post('name'),
+            'email' => $this->input->post('email'),
+            'telp' => $this->input->post('telp'),
+            'foto' => $this->M_app->updateBase64('users', $foto, 'jpg|jpeg|png', 'foto_base64', 'default.png'),
             'updated_at' => $this->M_app->datetime(),
         ];
 
-        $password = $this->input->post('password');
+        $password = $this->input->post('new_password');
         if ($password != '') {
             $user['password'] = md5($password);
         }
 
-        return $user;
+        // perform the update using supplied table name, default to 'users' if incorrect
+        $id = $this->input->post('id');
+        $targetTable = $table ?: 'users';
+
+        $this->db->trans_start();
+        $this->db->where(['id' => $id]);
+        $this->db->update($targetTable, $user);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status()) {
+            $this->M_app->log_activity(' mengubah data ' . $activity . ' [' . $id . ']');
+            return true;
+        }
+
+        return false;
     }
 
     public function save_identitas($role, $table, $activity) {
@@ -215,55 +231,6 @@ class M_user extends CI_Model
         $rows = $query->result_array();
 
         return $rows[0]['telp'];
-    }
-
-    public function update_identitas($table, $activity, $role = null) {
-        $id = $this->input->post('id');
-
-        $foto = $this->input->post('profile');
-        $user = $this->update_user($foto);
-
-        $foto_kartu = $this->input->post('foto_kartu');
-        $identitas = [
-            'jenis_identitas' => $this->input->post('jenis_identitas'),
-            'nomor_identitas' => $this->input->post('nomor_identitas'),
-            'kartu_identitas' => $this->M_app->updateFile('users/identitas', $foto_kartu, 'jpg|jpeg|png', 'file', 'default.png'),
-            'updated_at' => $user['updated_at'],
-        ];
-
-        if ($role == 3) {
-            $pungut = $this->M_app->select_where('id', 'juru_pungut', ['user_id' => $id])->row_array();
-            $jukirs = [];
-            $item = $this->input->post('jukir');
-            foreach($item as $val) {
-                $jukir = [
-                    'id' => $val,
-                    'juru_pungut' => $pungut['id'],
-                ];
-                array_push($jukirs, $jukir);
-            }
-
-            $data['jukir'] = implode(",", $item);
-        }
-
-        $this->db->trans_start();
-        $this->db->where(['id' => $id]);
-        $this->db->update('users', $user);
-
-        $this->db->where(['user_id' => $id]);
-        $this->db->update('user_identitas', $identitas);
-
-        if ($role == 3) {
-            $this->db->update_batch('juru_parkir', $jukirs, 'id');
-        }
-        $this->db->trans_complete();
-
-        if ($this->db->trans_status()) {
-            $this->M_app->log_activity(' mengubah data '.$activity.' ['.$id.']');
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function insert_batch($users, $identities, $datas, $table, $activity) {

@@ -29,15 +29,11 @@ class User extends CI_Controller
 
     $data = [
 			'title' => 'Manajemen User',
+      'active_menu' => 'admin_user',
       'data' => $users
     ];
 
     $this->M_app->admin_template($data, 'user_management');
-  }
-
-  public function ongkir()
-  {
-    $this->load->view('order/ongkir');
   }
 
   public function view($id)
@@ -55,6 +51,7 @@ class User extends CI_Controller
 
     $data = [
       'title' => 'Detail User',
+      'active_menu' => 'admin_user',
       'user' => $user,
       'address' => $address
     ];
@@ -73,6 +70,7 @@ class User extends CI_Controller
 
     $data = [
       'title' => 'Edit User',
+      'active_menu' => 'admin_user',
       'id' => $user['id'],
       'name' => $user['name'],
       'email' => $user['email'],
@@ -92,12 +90,12 @@ class User extends CI_Controller
     $role = $this->input->post('role');
 
     // use update_identitas which handles users and user_identitas updates
-    $updated = $this->M_user->update_identitas('', 'user', $role);
+    $updated = $this->M_user->update_profile('users', 'update_user', $role);
 
     if ($updated) {
-      $alert = '<div class="alert alert-success" role="alert">\n\tBerhasil mengubah data user\n</div>';
+      $alert = '<div class="alert alert-success" role="alert">Berhasil mengubah data user</div>';
     } else {
-      $alert = '<div class="alert alert-danger" role="alert">\n\tGagal mengubah data user\n</div>';
+      $alert = '<div class="alert alert-danger" role="alert">Gagal mengubah data user</div>';
     }
 
     $this->session->set_flashdata('message', $alert);

@@ -90,8 +90,8 @@
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
                     <a href="<?= base_url('admin_orders/manage_shipping/') . $order['order_id'] ?>" class="dropdown-item">
                       <i class="fas fa-motorcycle me-2"></i></span>Kelola Pengiriman</a>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
-                      <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button>
+                   <!--  <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
+                      <span class="iconify mr-2" data-icon="fluent:delete-48-regular"></span>Hapus</button> -->
                   </div>
                 </td>
               </tr>

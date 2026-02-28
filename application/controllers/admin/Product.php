@@ -59,6 +59,7 @@ class Product extends CI_Controller
 
 		$data = [
 			'title' => 'Produk',
+			'active_menu' => 'admin_products',
 			'data' => $prod,
 			'categories' => $categories,
 			'filters' => [
@@ -95,6 +96,7 @@ class Product extends CI_Controller
 
 		$data = [
 			'title' => 'Detail Produk',
+			'active_menu' => 'admin_products',
 			'product' => $product,
 			'categories' => $categories,
 		];
@@ -108,9 +110,11 @@ class Product extends CI_Controller
 
 		$data = [
 			'title' => 'Tambah Produk',
+			'active_menu' => 'admin_products',
 			'foto_product' => '',
 			'submit_url' => 'product/save',
-			'categories' => $categories
+			'categories' => $categories,
+			'multiple_cat' => []
 		];
 		$this->M_app->admin_template($data, 'products/admin_form_product');
 	}
@@ -126,6 +130,7 @@ class Product extends CI_Controller
 
 		$data = [
 			'title' => 'Edit Produk',
+			'active_menu' => 'admin_products',
 			'categories' => $categories,
 			'submit_url' => 'product/update',
 			'id' => $product->id,

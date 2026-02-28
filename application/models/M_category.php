@@ -27,8 +27,8 @@ class M_category extends CI_Model
     return 0;
   }
 
-  public function get_all_categories(){
-
+  public function get_all_categories()
+  {
   }
 
   public function get_category_by_id($product_id)
@@ -51,6 +51,19 @@ class M_category extends CI_Model
     ];
 
     return $prod;
+  }
+
+  /**
+   * prepare data array for inserting a new category
+   * mirrors update_cat but sets created_at instead of updated_at
+   */
+  private function insert_cat($foto, $foto_default)
+  {
+    return [
+      'icon' => $this->M_app->updateBase64('categories', $foto, 'jpg|jpeg|png', 'base64_input', $foto_default),
+      'category' => $this->input->post('name'),
+      'created_at' => $this->M_app->datetime(),
+    ];
   }
 
   public function update_category($foto_default, $table, $activity)
@@ -76,6 +89,27 @@ class M_category extends CI_Model
     }
   }
 
+  /**
+   * insert a new category record
+   * uses reference from update_category logic
+   */
+  public function add_category($foto_default, $table, $activity)
+  {
+    $foto = $this->input->post('foto_category');
+    $data = $this->insert_cat($foto, $foto_default);
+
+    $this->db->trans_start();
+    $this->db->insert($table, $data);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status()) {
+      $this->M_app->log_activity(' menambahkan data ' . $activity);
+      return true;
+    }
+
+    return false;
+  }
+
   public function insert_batch($prod, $identities, $datas, $table, $activity)
   {
     $this->db->trans_start();
@@ -90,23 +124,22 @@ class M_category extends CI_Model
     }
   }
 
-  public function hapus($id, $table, $activity)
+  public function delete($id, $table, $activity)
   {
-    $data = [
-      'deleted_at' => $this->M_app->datetime(),
-    ];
-
+    // remove the row identified by id from the specified table (normally product_category)
     $this->db->trans_start();
+
     $this->db->where(['id' => $id]);
-    $this->db->update('product', $data);
+    $this->db->delete($table);
 
     $this->db->trans_complete();
 
     if ($this->db->trans_status()) {
-      // $this->M_app->log_activity($activity);
+      // log activity with id reference
+      $this->M_app->log_activity(' menghapus data ' . $activity . ' [' . $id . ']');
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 }

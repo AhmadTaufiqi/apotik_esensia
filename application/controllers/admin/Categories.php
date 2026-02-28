@@ -29,6 +29,7 @@ class Categories extends CI_Controller
 		$prod = $this->db->query("SELECT * FROM product_category ORDER BY created_at DESC")->result();
 		$data = [
 			'title' => 'Kategori Produk',
+			'active_menu' => 'admin_cat',
 			'data' => $prod
 		];
 
@@ -57,6 +58,7 @@ class Categories extends CI_Controller
 
 		$data = [
 			'title' => 'Detail Kategori',
+			'active_menu' => 'admin_cat',
 			'category' => $category,
 		];
 
@@ -72,6 +74,7 @@ class Categories extends CI_Controller
 
 		$data = [
 			'title' => 'Edit Kategori',
+			'active_menu' => 'admin_cat',
 			'submit_url' => 'categories/update',
 			'id' => $category->id,
 			'category' => $category->category,
@@ -86,6 +89,7 @@ class Categories extends CI_Controller
 
 		$data = [
 			'title' => 'Tambah Kategori',
+			'active_menu' => 'admin_cat',
 			'foto_product' => '',
 			'submit_url' => 'categories/save',
 			'categories' => $categories,
@@ -116,7 +120,7 @@ class Categories extends CI_Controller
 
 	public function save()
 	{
-		$product = $this->M_category->save_product(1, 'product_category', 'insert');
+		$product = $this->M_category->add_category('default_image.png', 'product_category', 'insert');
 
 		if ($product) {
 			$alert = '<div class="alert alert-success" role="alert">
@@ -129,6 +133,26 @@ class Categories extends CI_Controller
 		}
 		$this->session->set_flashdata('message', $alert);
 
+		redirect('admin/categories');
+	}
+
+	public function delete()
+	{
+		$id = $this->input->post('id');
+		// $this->db->where(['id' => $id]);
+		// $delete = $this->db->delete($id, 'product_category', 'delete');
+		$delete = $this->M_category->delete($id, 'product_category', 'delete');
+		if ($delete) {
+			$alert = '<div class="alert alert-success" role="alert">
+	Berhasil menghapus data produk
+</div>';
+		} else {
+			$alert = '<div class="alert alert-danger" role="alert">
+	Gagal menghapus data produk
+</div>';
+		}
+
+		$this->session->set_flashdata('message', $alert);
 		redirect('admin/categories');
 	}
 

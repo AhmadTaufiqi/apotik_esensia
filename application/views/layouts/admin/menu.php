@@ -16,7 +16,7 @@
                 </a>
               </div>
               <ul class="navbar-nav flex-fill w-100 mb-2" style="border-bottom:solid 1px #e9e9e9">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'dashboard' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= $active_menu == 'dashboard' ? 'active' : ''?>">
                   <a href="<?= base_url()?>dashboard" class="nav-link">
                     <i class="fas fa-th fa-lg"></i>
                     <span class="ml-2 item-text">Dashboard</span>
@@ -24,7 +24,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_products' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= $active_menu == 'admin_products' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_products" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
                     <span class="ml-2 item-text">Produk</span>
@@ -32,7 +32,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_cat' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= $active_menu == 'admin_cat' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_cat" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
                     <span class="ml-2 item-text">Kategori Produk</span>
@@ -40,7 +40,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= ($this->uri->segment(1) == 'admin_orders') || $this->uri->segment(1) == $active_menu ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= ($active_menu == 'admin_orders') ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_orders" class="nav-link">
                     <i class="fas fa-boxes-stacked fa-lg"></i>
                     <span class="ml-2 item-text">Pesanan</span>
@@ -48,7 +48,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_ongkir' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= $active_menu == 'admin_ongkir' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_ongkir" class="nav-link">
                     <i class="fas fa-motorcycle fa-lg"></i>
                     <span class="ml-2 item-text">Manajemen Ongkir</span>
@@ -56,7 +56,7 @@
                 </li>
               </ul>
               <ul class="navbar-nav flex-fill w-100 mb-2">
-                <li class="nav-item w-100 <?= $this->uri->segment(1) == 'admin_user' ? 'active' : ''?>">
+                <li class="nav-item w-100 <?= $active_menu == 'admin_user' ? 'active' : ''?>">
                   <a href="<?= base_url()?>admin_user" class="nav-link">
                     <i class="fas fa-users fa-lg"></i>
                     <span class="ml-2 item-text">Manajemen User</span>

@@ -27,6 +27,7 @@ class Ongkir extends CI_Controller
     $ongkir = $this->M_ongkir->get_all_ongkir();
     $data = [
       'title' => 'Manajemen Ongkir',
+      'active_menu' => 'admin_ongkir',
       'data' => $ongkir
     ];
 
