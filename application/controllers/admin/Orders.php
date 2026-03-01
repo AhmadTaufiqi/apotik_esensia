@@ -125,6 +125,30 @@ class Orders extends CI_Controller
     return;
   }
 
+  public function setExpired($id)
+  {
+    if (empty($id)) {
+      show_404();
+    }
+
+    $this->db->trans_start();
+    $this->db->where('id', $id);
+    $this->db->update('orders', [
+      'status' => 'expired',
+      'updated_at' => $this->M_app->datetime()
+    ]);
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status()) {
+      $this->M_app->log_activity(' mengubah status pesanan menjadi expired [' . $id . ']');
+      $this->session->set_flashdata('success', 'Status pesanan berhasil diubah menjadi expired.');
+    } else {
+      $this->session->set_flashdata('error', 'Gagal mengubah status pesanan.');
+    }
+
+    redirect('admin_orders');
+  }
+
   // update status shipping and others
   public function manage_shipping($order_id)
   {

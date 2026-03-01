@@ -17,6 +17,7 @@ class Products extends CI_Controller
 		if (empty($this->session->userdata('id_akun'))) {
 			$is_nologin = true;
 		} elseif ($this->session->userdata('role') != 2) {
+			// it's optional. could be open for non registered user
 			$is_nologin = true;
 		}
 
@@ -62,12 +63,13 @@ class Products extends CI_Controller
 
 	public function index()
 	{
-		// Read filters from GET
+		// Read filter parameters from GET
 		$filter_category = $this->input->get('category');
 		$sort = $this->input->get('sort');
+		$search = $this->input->get('search');
 
-		// fetch all products
-		$products = $this->M_product->get_all_products(null, null, false);
+		// fetch products using a query builder in the model (applies search/category/sort)
+		$products = $this->M_product->get_products($filter_category, $search, $sort, false);
 
 		// fetch product_category for filter list (if table exists)
 		$categories = [];
@@ -75,56 +77,12 @@ class Products extends CI_Controller
 			$categories = $this->db->select('id, category')->from('product_category')->order_by('category', 'ASC')->get()->result();
 		}
 
-		// apply category filter (accept id or category name)
-		if (!empty($filter_category)) {
-			$filtered = [];
-			foreach ($products as $p) {
-				$cat_field = isset($p->category) ? $p->category : '';
-
-				// if product stores comma separated categories, normalize to array
-				$prodCats = array_map('trim', explode(',', $cat_field));
-
-				if (is_numeric($filter_category)) {
-					// match by id or exact value
-					if (in_array((string)$filter_category, $prodCats, true) || in_array((int)$filter_category, $prodCats, true)) {
-						$filtered[] = $p;
-					}
-				} else {
-					// match by name (case-insensitive)
-					foreach ($prodCats as $pc) {
-						if (strcasecmp($pc, $filter_category) === 0) {
-							$filtered[] = $p;
-							break;
-						}
-					}
-				}
-			}
-			$products = $filtered;
-		}
-
-		// apply simple sorting
-		if (!empty($sort) && is_array($products)) {
-			switch ($sort) {
-				case 'price_asc':
-					usort($products, function($a, $b){ return ($a->price ?? 0) - ($b->price ?? 0); });
-					break;
-				case 'price_desc':
-					usort($products, function($a, $b){ return ($b->price ?? 0) - ($a->price ?? 0); });
-					break;
-				case 'name_asc':
-					usort($products, function($a, $b){ return strcasecmp($a->name ?? '', $b->name ?? ''); });
-					break;
-				case 'name_desc':
-					usort($products, function($a, $b){ return strcasecmp($b->name ?? '', $a->name ?? ''); });
-					break;
-			}
-		}
-
 		$data = [
 			'title' => 'Produk',
 			'products' => $products,
 			'categories' => $categories,
 			'total_my_cart' => $this->M_cart->get_total_user_cart($this->session->userdata('id_akun')),
+			'search' => $search,
 		];
 
 		$this->M_app->template($data, 'products/index');

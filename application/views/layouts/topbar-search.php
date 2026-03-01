@@ -3,9 +3,9 @@
     <div class="carousel">
       <div class="navbar px-2 bg-dark">
         <div class="container">
-          <div class="card p-1 rounded-circle border-0 me-2">
+          <a href="<?= base_url() ?>" class="card p-1 rounded-circle border-0 me-2">
             <img src="<?= base_url() ?>dist/img/logo.png" alt="" height="30" class="rounded-circle">
-          </div>
+          </a>
           <div class="col pe-2">
             <?php if ($this->uri->segment(1) == 'home' || $this->uri->segment(1) == '') : ?>
               <div class="search-container">

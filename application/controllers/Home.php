@@ -10,6 +10,7 @@ class Home extends CI_Controller
 		$this->load->model('M_app');
 		$this->load->model('M_cart');
 		$this->load->model('M_product');
+		$this->load->model('M_orders'); // needed for rating popup lookup
 		$is_nologin = false;
 
 		// if (empty($this->session->userdata('id_akun'))) {
@@ -38,10 +39,17 @@ class Home extends CI_Controller
 			$products = $this->M_product->get_all_products(false, false, 0);
 		}
 
+		// products user can rate (from completed orders)
+		$to_rate = [];
+		if (!empty($user_id)) {
+			$to_rate = $this->M_orders->get_completed_products_for_user($user_id);
+		}
+
 		$data = [
 			'categories' => $categories,
 			'total_my_cart' => $this->M_cart->get_total_user_cart($user_id),
-			'products' => $products
+			'products' => $products,
+			'to_rate' => $to_rate,
 		];
 		$this->M_app->template($data, 'home');
 		// $this->load->view('home');

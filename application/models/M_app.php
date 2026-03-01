@@ -112,7 +112,12 @@ class M_app extends CI_Model
                 'icon' => 'fas fa-box-open',
                 'label' => 'Completed',
                 'class' => 'order-status-completed'
-            ]
+            ],
+            'expired' => [
+                'icon' => 'fas fa-ban',
+                'label' => 'Kedaluwarsa',
+                'class' => 'text-muted'
+            ],
         ];
     }
 

@@ -68,6 +68,7 @@ $route['admin_login'] = 'admin/auth';
 $route['admin_orders'] = 'admin/orders';
 $route['admin_orders/detail/(:num)'] = 'admin/orders/detail/$1';
 $route['admin_orders/manage_shipping/(:num)'] = 'admin/orders/manage_shipping/$1';
+$route['admin_orders/setExpired/(:num)'] = 'admin/orders/setExpired/$1';
 $route['admin_products'] = 'admin/product';
 $route['admin_cat'] = 'admin/categories';
 $route['admin_user'] = 'admin/user';

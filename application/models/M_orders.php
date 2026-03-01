@@ -466,6 +466,37 @@ class M_orders extends CI_Model
     return $this->db->trans_status();
   }
 
+  /**
+   * Get products from completed orders for a specific customer.
+   *
+   * This is used to prompt the user for ratings after an order has been marked
+   * completed. Currently it does not check for an existing rating since the
+   * database schema/logic is not yet implemented; it simply returns all
+   * products belonging to orders with status = 'completed'.
+   *
+   * @param int $user_id
+   * @return array of product objects
+   */
+  public function get_completed_products_for_user($user_id)
+  {
+    if (empty($user_id)) {
+      return [];
+    }
+
+    $this->db->trans_start();
+    $rows = $this->db->select('p.*')
+      ->from('orders o')
+      ->join('order_products op', 'o.id = op.order_id', 'left')
+      ->join('products p', 'op.product_id = p.id', 'left')
+      ->where('o.customer_id', $user_id)
+      ->where('o.status', 'completed')
+      ->get()
+      ->result_object();
+    $this->db->trans_complete();
+
+    return $rows ?: [];
+  }
+
   public function get_orders_by_shipping_status($status = null)
   {
     $this->db->trans_start();

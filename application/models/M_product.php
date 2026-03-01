@@ -25,6 +25,9 @@ class M_product extends CI_Model
   // bool $is_discount
   public function get_all_products($id, $category, $is_discount)
   {
+    // legacy helper used by other controllers (detail, home etc.)
+    // This method was intentionally simple and did not support
+    // search/sorting so it shouldn't be used for filtered listings.
     $where = '';
     if ($id) {
       $where .= " AND id = $id";
@@ -38,6 +41,66 @@ class M_product extends CI_Model
 
     $query = 'SELECT * FROM products WHERE 1=1' . $where;
     return $this->db->query($query)->result_object();
+  }
+
+
+  /**
+   * Retrieve product list with optional filtering, search and sorting.
+   *
+   * @param mixed $category    Category id or name to filter. May be numeric or string.
+   * @param string $search     Substring to match against product name.
+   * @param string $sort       One of price_asc, price_desc, name_asc, name_desc.
+   * @param bool   $is_discount If true only return products with discount > 0.
+   * @return array             Array of result objects.
+   */
+  public function get_products($category = null, $search = null, $sort = null, $is_discount = false)
+  {
+    $this->db->select('*')->from('products');
+
+    if ($is_discount) {
+      $this->db->where('discount >', 0);
+    }
+
+    if (!empty($category)) {
+      // we need to handle comma-separated category field
+      // and allow matching by id or name
+      $this->db->group_start();
+      if (is_numeric($category)) {
+        // match exact or within comma list
+        $this->db->where('category', $category);
+        // FIND_IN_SET returns position (0 if not found)
+        $this->db->or_where("FIND_IN_SET(" . $this->db->escape_str($category) . ", category) > 0");
+      } else {
+        // case insensitive search on category text or within comma list
+        $escaped = $this->db->escape_str(strtolower($category));
+        $this->db->where("LOWER(category) = '$escaped'");
+        $this->db->or_where("LOWER(category) LIKE '%$escaped%'");
+      }
+      $this->db->group_end();
+    }
+
+    if (!empty($search)) {
+      $this->db->like('name', $search);
+    }
+
+    if (!empty($sort)) {
+      switch ($sort) {
+        case 'price_asc':
+          $this->db->order_by('price', 'ASC');
+          break;
+        case 'price_desc':
+          $this->db->order_by('price', 'DESC');
+          break;
+        case 'name_asc':
+          $this->db->order_by('name', 'ASC');
+          break;
+        case 'name_desc':
+          $this->db->order_by('name', 'DESC');
+          break;
+      }
+    }
+
+    return $this->db->get()->result_object();
   }
 
   public function data_prod($role)

@@ -36,7 +36,7 @@
               }
 
               ?>
-              <a href="#" class="item-category">
+              <a href="<?= base_url('products') . '?category=' . $cat->id ?>" class="item-category">
                 <div class="card p-3 mb-2">
                   <img src="<?= base_url() . $icon ?>" alt="" style="width:65px;height:55px;border-radius:5px">
                 </div>
@@ -52,7 +52,7 @@
           <div class="col">
             <span class="fw-bold">Promo</span>
           </div>
-          <a href="<?= base_url('Products') ?>" class="col-4 text-end">Lihat Semua</a>
+          <a href="<?= base_url('products') ?>" class="col-4 text-end">Lihat Semua</a>
         </div>
         <div class="slide-products">
           <div class="product-items">
@@ -83,3 +83,60 @@
         </div>
       </section>
     </div>
+
+    <?php if (!empty($to_rate)) : ?>
+    <!-- rating popup modal -->
+    <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ratingModalLabel">Berikan Penilaian</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Produk berikut sudah selesai dipesan. Mohon berikan rating Anda:</p>
+            <ul class="list-group">
+              <?php foreach ($to_rate as $prod) : ?>
+                <li class="list-group-item"><?= htmlspecialchars($prod->name) ?></li>
+              <?php endforeach; ?>
+            </ul>
+            <!-- TODO: add rating inputs here -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php endif; ?>
+
+    <script>
+      // document.addEventListener("DOMContentLoaded", function() {
+      //   var toRate = <?= json_encode(!empty($to_rate)); ?>;
+      //   console.log(toRate);
+      //   if (toRate) {
+      //     var hasShown = localStorage.getItem('ratingPopupShown');
+      //     if (!hasShown) {
+
+      //       var modalEl = document.getElementById('ratingModal');
+
+      //       if (modalEl) {
+      //         var bsModal = new bootstrap.Modal(modalEl);
+      //         bsModal.show();
+      //         localStorage.setItem('ratingPopupShown', '1');
+      //       }
+      //     }
+      //   }
+
+      //   // existing add-to-cart handlers
+      //   document.querySelectorAll('.btn-add-to-cart').forEach(function(btn) {
+      //     btn.addEventListener('click', function(e) {
+      //       e.stopPropagation();
+      //       e.preventDefault();
+      //       var id = this.getAttribute('data-product-id');
+      //       alert('Tambah ke keranjang - Product ID: ' + id);
+      //       return false;
+      //     });
+      //   });
+      // });
+    </script>
