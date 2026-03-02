@@ -38,6 +38,7 @@
           }
           ?>
           <div class="card card-product-cart mb-2 flex-col p-2 p-lg-3">
+            <h6>Order: #<?= $order['id'] ?></h6>
             <div class="d-flex mb-3">
               <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
               <div class="ms-auto order-status-<?= $order['status'] ?>">
@@ -97,11 +98,11 @@
             ?>
             <!-- Shipping Cost Display -->
             <?php if (isset($order['ongkir']) && $order['ongkir'] > 0) : ?>
-            <div class="d-flex mt-2 align-items-center">
-              <div class="col text-end">
-                <p class="mb-0">Biaya Ongkir: <span>Rp. <?= number_format($order['ongkir'], 0, '', '.') ?></span></p>
+              <div class="d-flex mt-2 align-items-center">
+                <div class="col text-end">
+                  <p class="mb-0">Biaya Ongkir: <span>Rp. <?= number_format($order['ongkir'], 0, '', '.') ?></span></p>
+                </div>
               </div>
-            </div>
             <?php endif; ?>
             <!-- Total Price with Shipping -->
             <div class="d-flex mt-2 align-items-center">

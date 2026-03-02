@@ -81,7 +81,7 @@
             </div>
             <div class="modal-body">
               <h6>Hapus Produk Dari Keranjang?</h6>
-              <input type="text" name="cart_product_id" id="confirm_cart_product_id">
+              <input type="hidden" name="cart_product_id" id="confirm_cart_product_id">
 
             </div>
             <div class="modal-footer text-end p-2">
@@ -146,6 +146,10 @@
           }
         })
       }
+
+      $('.alert').delay(8000).slideUp(500, function() {
+        $(this).alert('close');
+      });
     </script>
     </body>
 

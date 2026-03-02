@@ -5,6 +5,7 @@
       $total_price_order = 0;
       ?>
       <div class="card card-product-cart mb-2 flex-col p-3">
+        <h5>Order: #<?= $order['id'] ?></h5>
         <div class="d-flex mb-3">
           <span>Dipesan Pada: <b class="text-muted"><?= date_format(date_create($order['created_at']), "Y/m/d") ?></b></span>
           <div class="ms-auto">
@@ -49,7 +50,7 @@
           <?php endif; ?>
           <div class="text-end ms-auto d-flex align-items-center">
             <span class="me-1">Total:</span>
-            <h5 class="color-esensia mb-0">Rp. <?= number_format($total_price_order, 0, '', '.') ?></h5>
+            <h5 class="color-esensia mb-0">Rp. <?= number_format($order['cost_price'] + $order['ongkir'], 0, '', '.') ?></h5>
           </div>
           <div class="text-end">
             <!-- <a href="<?= base_url() ?>orders/detail/<?= $order['id'] ?>" class="btn btn-sm btn-secondary text-light"><i class="fas fa-eye me-1"></i>detail</a> -->

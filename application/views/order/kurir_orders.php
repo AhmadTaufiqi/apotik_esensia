@@ -64,7 +64,7 @@
           <thead>
             <tr>
               <th>Customer</th>
-              <th colspan="2">Status pesanan</th>
+              <th colspan="1">Status pesanan</th>
               <th>Tanggal</th>
               <th>Nominal</th>
               <th width="10%">Action</th>
@@ -75,22 +75,22 @@
               <tr>
                 <td><?= $order['name'] ?></td>
                 <td class="order_status"><?= $order['status'] ?></td>
-                <td>
+                <!-- <td hidden>
                   <span class="badge bg-<?= isset($order['shipping_status']) && $order['shipping_status'] == 'arrived' ? 'success' : (isset($order['shipping_status']) && $order['shipping_status'] == 'sending' ? 'info' : 'secondary') ?>">
                     <?= isset($order['shipping_status']) ? ucfirst(str_replace('_', ' ', $order['shipping_status'])) : 'Not shipped' ?>
                   </span>
-                </td>
+                </td> -->
                 <td><?= $order['created_at'] ?></td>
-                <td>Rp. <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+                <td>Rp. <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
                 <td>
                   <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-vertical"></i>
                   </button>
                   <div class="dropdown-menu" style="width:240px">
-                    <a href="<?= (isset($order['status']) && $order['status'] == 'sending') ? base_url('kurir_orders/sending/') . $order['order_id'] : base_url('kurir/orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
+                    <a href="<?= (isset($order['status']) && $order['status'] == 'sending') ? base_url('kurir_orders/sending/') . $order['order_id'] : base_url('kurir_orders/detail/') . $order['order_id'] ?>" class="dropdown-item">
                       <span class="iconify mr-2" data-icon="ci:show"></span>Lihat Detail</a>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
-                      <span class="fas fa-trash me-2"></span>Hapus</button>
+                    <!-- <button class="dropdown-item" data-bs-toggle="modal" data-target="#hapusModal" onclick="hapus(<?= $order['order_id'] ?>)">
+                      <span class="fas fa-trash me-2"></span>Hapus</button> -->
                   </div>
                 </td>
               </tr>

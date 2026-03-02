@@ -6,7 +6,7 @@
         <i class="fas fa-arrow-left me-2"></i>Kembali
       </a>
       <?php if ($order['status'] != 'shipped') : ?>
-        <a href="<?= base_url('kurir_orders/sendOrder/'.$order['id']) ?>" class="btn btn-primary text-light">
+        <a href="<?= base_url('kurir_orders/sendOrder/' . $order['id']) ?>" class="btn btn-primary text-light">
           <i class="fas fa-motorcycle me-2"></i>Kirim Pesanan
         </a>
       <?php endif; ?>
@@ -46,6 +46,19 @@
               <td class="fw-bold">Harga Asli</td>
               <td>:</td>
               <td>Rp <?= number_format($order['raw_cost_price'], 0, ',', '.') ?></td>
+            </tr>
+            <tr>
+              <td>Kirim Pesan</td>
+              <td>:</td>
+              <td>
+                <?php if (!empty($order['customer_phone'])) : ?>
+                  <a href="https://wa.me/62<?= substr($order['customer_phone'], 1) ?>" target="_blank" class="btn btn-success text-white">
+                    <i class="fab fa-whatsapp me-1"></i>Chat via WhatsApp
+                  </a>
+                <?php else : ?>
+                  -
+                <?php endif; ?>
+              </td>
             </tr>
             <?php if ($order['cost_price'] < $order['raw_cost_price']) : ?>
               <tr>
@@ -173,9 +186,15 @@
                   <td class="text-end fw-bold">Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
                 </tr>
               <?php endforeach; ?>
+              <tr>
+                <td colspan="6" class="text-end">ongkir:</td>
+                <td class="text-end">
+                  <?= number_format($order['ongkir'], 0, ',', '.') ?>
+                </td>
+              </tr>
               <tr class="table-active">
                 <td colspan="6" class="text-end fw-bold">Total:</td>
-                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($total, 0, ',', '.') ?></td>
+                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
               </tr>
             <?php else : ?>
               <tr>

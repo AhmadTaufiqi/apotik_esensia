@@ -52,7 +52,7 @@
             <div class="card card-product">
               <div>
                 <div class="product-image">
-                  <button class="btn-add-to-cart btn btn-sm btn-success" data-product-id="<?= $pd->id ?>" onclick="event.stopPropagation(); event.preventDefault(); return false;"><i class="fas fa-plus"></i></button>
+                  <button class="btn-add-to-cart btn btn-sm btn-success" data-product-id="<?= $pd->id ?>" data-product-name="<?= $pd->name ?>" onclick="event.stopPropagation(); event.preventDefault(); return false;"><i class="fas fa-plus"></i></button>
                   <img src="<?= base_url() ?>dist/img/uploads/products/<?= $pd->image ?>" alt="<?= htmlspecialchars($pd->name) ?>" class="w-100" style="position:absolute; align-self:anchor-center;">
                 </div>
                 <p class="product-name"><?= htmlspecialchars($pd->name) ?></p>
@@ -84,19 +84,6 @@
     });
     if (sort) sort.addEventListener('change', function() {
       form.submit();
-    });
-
-    // Attach add-to-cart handlers (placeholder)
-    document.querySelectorAll('.btn-add-to-cart').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        // event already stopped by inline handler, but keep safe
-        e.stopPropagation();
-        e.preventDefault();
-        var id = this.getAttribute('data-product-id');
-        alert('Tambah ke keranjang - Product ID: ' + id);
-        // TODO: implement actual add-to-cart AJAX or form submit
-        return false;
-      });
     });
   })();
 </script>

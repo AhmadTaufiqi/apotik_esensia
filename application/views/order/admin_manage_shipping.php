@@ -63,7 +63,7 @@
                   <tr>
                     <td class="fw-bold text-muted">Total Harga</td>
                     <td>:</td>
-                    <td class="fw-bold text-success fs-5">Rp <?= number_format($order['cost_price'], 0, ',', '.') ?></td>
+                    <td class="fw-bold text-success fs-5">Rp <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
                   </tr>
                 </table>
               </div>

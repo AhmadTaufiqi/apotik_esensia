@@ -41,11 +41,11 @@
               <td>Rp <?= number_format($order['raw_cost_price'], 0, ',', '.') ?></td>
             </tr>
             <?php if ($order['cost_price'] < $order['raw_cost_price']) : ?>
-            <tr>
-              <td class="fw-bold">Diskon</td>
-              <td>:</td>
-              <td class="text-danger">Rp <?= number_format($order['raw_cost_price'] - $order['cost_price'], 0, ',', '.') ?></td>
-            </tr>
+              <tr>
+                <td class="fw-bold">Diskon</td>
+                <td>:</td>
+                <td class="text-danger">Rp <?= number_format($order['raw_cost_price'] - $order['cost_price'], 0, ',', '.') ?></td>
+              </tr>
             <?php endif; ?>
           </table>
         </div>
@@ -71,19 +71,19 @@
               <td>:</td>
               <td>
                 <?php if (!empty($order['address_kota']) || !empty($order['address_kecamatan'])) : ?>
-                  <?php 
-                    $address_parts = [];
-                    if (!empty($order['address_kelurahan'])) $address_parts[] = 'Kel. ' . $order['address_kelurahan'];
-                    if (!empty($order['address_kecamatan'])) $address_parts[] = 'Kec. ' . $order['address_kecamatan'];
-                    if (!empty($order['address_kota'])) $address_parts[] = $order['address_kota'];
-                    if (!empty($order['address_provinsi'])) $address_parts[] = $order['address_provinsi'];
-                    if (!empty($order['address_kode_pos'])) $address_parts[] = $order['address_kode_pos'];
-                    
-                    echo implode(', ', $address_parts);
-                    
-                    if (!empty($order['address_catatan'])) {
-                      echo '<br><small class="text-muted">Catatan: ' . htmlspecialchars($order['address_catatan']) . '</small>';
-                    }
+                  <?php
+                  $address_parts = [];
+                  if (!empty($order['address_kelurahan'])) $address_parts[] = 'Kel. ' . $order['address_kelurahan'];
+                  if (!empty($order['address_kecamatan'])) $address_parts[] = 'Kec. ' . $order['address_kecamatan'];
+                  if (!empty($order['address_kota'])) $address_parts[] = $order['address_kota'];
+                  if (!empty($order['address_provinsi'])) $address_parts[] = $order['address_provinsi'];
+                  if (!empty($order['address_kode_pos'])) $address_parts[] = $order['address_kode_pos'];
+
+                  echo implode(', ', $address_parts);
+
+                  if (!empty($order['address_catatan'])) {
+                    echo '<br><small class="text-muted">Catatan: ' . htmlspecialchars($order['address_catatan']) . '</small>';
+                  }
                   ?>
                 <?php else : ?>
                   <?= $order['customer_address'] ?? '-' ?>
@@ -117,10 +117,10 @@
           </thead>
           <tbody>
             <?php if (!empty($order_products)) : ?>
-              <?php 
+              <?php
               $no = 1;
               $total = 0;
-              foreach ($order_products as $item) : 
+              foreach ($order_products as $item) :
                 $subtotal = $item['price'] * $item['qty'];
                 $total += $subtotal;
               ?>
@@ -128,15 +128,9 @@
                   <td><?= $no++ ?></td>
                   <td>
                     <?php if (!empty($item['image'])) : ?>
-                      <img src="<?= base_url('dist/img/uploads/products/' . $item['image']) ?>" 
-                           alt="<?= $item['name'] ?>" 
-                           class="img-thumbnail" 
-                           style="width: 60px; height: 60px; object-fit: cover;">
+                      <img src="<?= base_url('dist/img/uploads/products/' . $item['image']) ?>" alt="<?= $item['name'] ?>" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                     <?php else : ?>
-                      <img src="<?= base_url('dist/img/uploads/products/default_image.png') ?>" 
-                           alt="No Image" 
-                           class="img-thumbnail" 
-                           style="width: 60px; height: 60px; object-fit: cover;">
+                      <img src="<?= base_url('dist/img/uploads/products/default_image.png') ?>" alt="No Image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                     <?php endif; ?>
                   </td>
                   <td>
@@ -153,9 +147,15 @@
                   <td class="text-end fw-bold">Rp <?= number_format($subtotal, 0, ',', '.') ?></td>
                 </tr>
               <?php endforeach; ?>
+              <tr>
+                <td colspan="6" class="text-end">ongkir:</td>
+                <td class="text-end">
+                  <?= number_format($order['ongkir'], 0, ',', '.') ?>
+                </td>
+              </tr>
               <tr class="table-active">
                 <td colspan="6" class="text-end fw-bold">Total:</td>
-                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($total, 0, ',', '.') ?></td>
+                <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
               </tr>
             <?php else : ?>
               <tr>
@@ -184,7 +184,9 @@
       if (status) {
         // AJAX GET request
         fetch(populateUrl + '?status=' + encodeURIComponent(status))
-          .then(function(res) { return res.text(); })
+          .then(function(res) {
+            return res.text();
+          })
           .then(function(html) {
             // replace the cell innerHTML with returned HTML
             statusCell.innerHTML = html;

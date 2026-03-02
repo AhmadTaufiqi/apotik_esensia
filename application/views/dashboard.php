@@ -224,7 +224,7 @@
         labels: dummy.monthly.labels,
         datasets: [{
           label: 'Produk Batal Dipesan',
-          data: dummy.monthly.data,
+          // data: dummy.monthly.data,
           backgroundColor: 'rgba(13,110,253,0.8)'
         }]
       },

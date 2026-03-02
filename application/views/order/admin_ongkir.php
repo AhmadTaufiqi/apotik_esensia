@@ -44,8 +44,8 @@
             <?php foreach ($data as $ongkir) : ?>
               <tr>
                 <td><?= number_format($ongkir['nominal'], 0, ',', '.') ?></td>
-                <td width="10%"><?= $ongkir['jarak_start'] ?></td>
-                <td width="10%"><?= $ongkir['jarak_end'] ?></td>
+                <td width="10%"><?= $ongkir['jarak_start'] ?> Km</td>
+                <td width="10%"><?= $ongkir['jarak_end'] ?> Km</td>
                 <td width="10%">
                   <button class="btn btn_edit_ongkir" data-bs-toggle="modal" data-bs-target="#editModal" data-ongkir='<?= json_encode($ongkir) ?>'>
                     <i class="fas fa-pencil text-info"></i>

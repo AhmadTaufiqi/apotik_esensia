@@ -80,7 +80,7 @@
 
           <!-- Add to Cart Button -->
           <div class="col-lg-3 col-12">
-            <button class="btn btn-success w-100 py-2 btn-add-to-cart" data-product-id="<?= $product->id ?? '' ?>">
+            <button class="btn btn-success w-100 py-2 btn-add-to-cart" data-product-id="<?= $product->id ?? '' ?>" data-product-name="<?= $product->name ?>">
               <i class="fas fa-shopping-cart me-2"></i>Tambah ke Keranjang
             </button>
           </div>

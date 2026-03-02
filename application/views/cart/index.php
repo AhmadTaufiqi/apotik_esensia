@@ -2,6 +2,8 @@
   <form id="form_cart_products" method="POST" action="<?= base_url() ?>checkout">
     <div class="container">
       <div class="content p-2">
+        <?= $this->session->flashdata('msg') ?>
+
         <?php foreach ($product_cart as $idx => $cart) : ?>
           <?php
           $discount = $cart->discount;

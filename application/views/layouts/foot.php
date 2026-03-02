@@ -74,7 +74,7 @@
       var checkoutButton = document.getElementById('checkout-button');
       // Example: the payment page will show when the button is clicked
       // checkoutButton.addEventListener('click', function() {
-        // loadJokulCheckout('https://jokul.doku.com/checkout/link/SU5WFDferd561dfasfasdfae123c20200510090550775'); // Replace it with the response.payment.url you retrieved from the response
+      // loadJokulCheckout('https://jokul.doku.com/checkout/link/SU5WFDferd561dfasfasdfae123c20200510090550775'); // Replace it with the response.payment.url you retrieved from the response
       // });
     </script>
 
@@ -117,6 +117,10 @@
           $(this).children('i').attr('class', 'fe fe-eye')
         }
       })
+
+      $('.alert').delay(8000).slideUp(500, function() {
+        $(this).alert('close');
+      });
     </script>
     </body>
 

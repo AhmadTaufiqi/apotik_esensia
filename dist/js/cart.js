@@ -18,7 +18,7 @@ $(document).ready(function() {
       },
       success: function(result) {
         var data = JSON.parse(result);
-        if(data.success){
+        if (data.success) {
           var newCartTotal = parseInt(cartTotal) + 1;
 
           button.addClass('sendtocart');
@@ -29,6 +29,15 @@ $(document).ready(function() {
               cart.removeClass('shake');
             }, 500)
           }, 200)
+
+            var name = button.data('productName');
+            console.log(name)
+            alert('Tambah ke keranjang - Product Name: ' + name);
+        } else {
+          // show alert message for restricted product
+          if (data.message) {
+            alert(data.message);
+          }
         }
       }
     })

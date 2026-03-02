@@ -43,8 +43,29 @@ class Cart extends CI_Controller
 		// belum btul karena ditambah status
 		$product_id = $this->input->post('product_id');
 		$user_id = $this->session->userdata('id_akun');
-		$cart = $this->M_cart->get_user_cart_by_prod_id($product_id, $user_id, 1);
 
+		// --- check restricted category (obat keras) ---
+		$product = $this->db->select('p.*, pc.category AS category_name')
+			->from('products p')
+			->join('product_category pc', 'pc.id = p.category', 'left')
+			->where('p.id', $product_id)
+			->get()
+			->row_array();
+
+		if ($product && isset($product['category_name']) && strtolower($product['category_name']) === 'obat keras') {
+			// respond with error message, frontend should display alert
+			$data = [
+				'success' => false,
+				'message' => 'Produk ini tidak bisa ditambahkan karena perlu resep dokter.',
+				'product_id' => $product_id
+			];
+
+			echo json_encode($data);
+			return;
+		}
+		// ------------------------------------------------
+
+		$cart = $this->M_cart->get_user_cart_by_prod_id($product_id, $user_id, 1);
 
 		if (!$cart) {
 			$this->M_cart->save_to_cart('1', 'cart_products', $user_id);
@@ -123,7 +144,17 @@ class Cart extends CI_Controller
 		$delete = $this->M_cart->delete_cart_product($cart_id);
 
 		if ($delete) {
+			$alert = '<div class="alert alert-success" role="alert">
+  Produk telah dihapus dari keranjang
+</div>';
+		} else {
+			$alert = '<div class="alert alert-danger" role="alert">
+  Produk gagal dihapus dari keranjang!
+</div>';
 		}
+		$this->session->set_flashdata('msg', $alert);
+
+		redirect('cart');
 	}
 
 	public function getDataProduct($product_id)

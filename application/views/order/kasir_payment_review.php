@@ -54,10 +54,19 @@
                   </p>
                 </div>
               </div>
+              <?php if (!empty($invoice['expired_at'])) : ?>
+                <div class="row mt-3">
+                  <div class="col">
+                    <p class="mb-2"><strong>Batas Waktu:</strong></p>
+                  </div>
+                  <div class="col">
+                    <p class="mb-2">
+                      <?= date('d-m-Y H:i', strtotime($invoice['expired_at'])) ?>
+                    </p>
+                  </div>
+                </div>
+              <?php endif; ?>
             </div>
-            <?php if (!empty($invoice['expired_at'])) : ?>
-              <span><strong>Batas Waktu:</strong> <?= date('d-m-Y H:i', strtotime($invoice['expired_at'])) ?></span>
-            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -111,7 +120,7 @@
                 <th>Produk</th>
                 <th>Jumlah</th>
                 <th>Harga</th>
-                <th>Total</th>
+                <th width="13%">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -134,6 +143,16 @@
                     <td>Rp <?= number_format(($product['qty'] ?? 0) * ($product['price'] ?? 0), 0, ',', '.') ?></td>
                   </tr>
                 <?php endforeach; ?>
+                <tr>
+                  <td colspan="3" class="text-end">ongkir:</td>
+                  <td class="text-end">
+                    <?= number_format($order['ongkir'], 0, ',', '.') ?>
+                  </td>
+                </tr>
+                <tr class="table-active">
+                  <td colspan="3" class="text-end fw-bold">Total:</td>
+                  <td class="text-end fw-bold text-success fs-5">Rp <?= number_format($order['cost_price'] + $order['ongkir'], 0, ',', '.') ?></td>
+                </tr>
               <?php else : ?>
                 <tr>
                   <td colspan="4" class="text-center text-muted">Tidak ada produk dalam order ini</td>
