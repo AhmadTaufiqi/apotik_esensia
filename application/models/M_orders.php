@@ -391,6 +391,11 @@ class M_orders extends CI_Model
     }
   }
 
+  public function set_to_expired_order($order_id) {
+    $this->db->where(['id' => $order_id]);
+    $this->db->update('orders', ['status' => 'expired']);
+  }
+
   public function insert_batch($prod, $identities, $datas, $table, $activity)
   {
     $this->db->trans_start();

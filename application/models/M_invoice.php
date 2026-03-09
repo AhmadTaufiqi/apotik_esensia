@@ -199,6 +199,35 @@ class M_invoice extends CI_Model
     }
   }
 
+  /**
+   * Scan for invoices that have passed their expired_at timestamp and
+   * haven't been paid yet.  For every qualifying invoice the related order
+   * will be marked "expired" and the invoice status updated as well.  This
+   * method returns true if the operation succeeded (or there was nothing to
+   * do) and false if the transaction failed.
+   *
+   * Typically this is invoked from a cron job or the CLI controller below.
+   *
+   * @return bool
+   */
+  public function expire_overdue_orders()
+  {
+    $now = date('Y-m-d H:i:s');
+
+    $this->db->trans_start();
+
+    // mark orders expired via a single JOIN update, avoids pulling all ids
+    $sql = "UPDATE orders o
+            JOIN invoices i ON o.id = i.order_id
+            SET o.status = 'expired', i.status = 'expired'
+            WHERE i.is_paid = 0 AND i.expired_at < ?";
+    $this->db->query($sql, [$now]);
+
+    $this->db->trans_complete();
+
+    return $this->db->trans_status();
+  }
+
   public function delete_invoice($id, $table, $activity)
   {
     $data = [

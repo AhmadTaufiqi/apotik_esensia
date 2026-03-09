@@ -86,7 +86,7 @@
         <div class="card p-3 h-100">
           <div class="d-flex justify-content-between mb-2">
             <div>
-              <div class="fw-bold">Pesanan Dibatalkan</div>
+              <div class="fw-bold">Pesanan Dibatalkan (pesanan yang tidak dibayar dan melewati waktu jatuh tempo/kedaluwarsa)</div>
               <small class="text-muted">1 Minggu (unpaid/missing)</small>
             </div>
           </div>

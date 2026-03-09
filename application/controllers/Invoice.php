@@ -58,11 +58,35 @@ class Invoice extends CI_Controller
     $invoice = $this->M_invoice->get_invoice_by_orderid($order_id);
 
     if ($invoice['is_paid'] == 0 && strtotime($invoice['expired_at']) < time()) {
-      // delete order
-      $this->M_orders->delete_order_by_id($order_id, 'orders', 'delete');
-      //delete invoice
-      $this->M_invoice->delete_invoice($order_id, 'invoices', 'delete');
+      // neither order nor invoice should be deleted anymore; just mark them expired
+      $this->M_orders->set_to_expired_order($order_id);
+      $this->db->update('invoices', ['status' => 'expired'], ['order_id' => $order_id]);
       redirect(base_url('orders'));
+    }
+  }
+
+  /**
+   * CLI / cron entry point to scan all invoices and expire overdue ones.
+   *
+   * Usage from shell:
+   *   php index.php invoice cron_expire
+   *
+   * or schedule via web request if your hosting doesn't allow CLI:
+   *   wget -qO- "https://example.com/invoice/cron_expire" >/dev/null 2>&1
+   */
+  public function cron_expire()
+  {
+    // allow both web and CLI for flexibility; if you prefer to restrict to CLI
+    // you can uncomment the check below.
+    // if (! $this->input->is_cli_request()) {
+    //     show_error('This method may only be called from CLI');
+    // }
+
+    $success = $this->M_invoice->expire_overdue_orders();
+    if ($success) {
+      echo "expired invoices processed\n";
+    } else {
+      echo "failed to update expired invoices\n";
     }
   }
 

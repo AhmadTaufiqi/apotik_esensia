@@ -120,6 +120,14 @@ class Cart extends CI_Controller
 		$user = $this->M_user->get_user_by_id($this->session->userdata('id_akun'));
 		$address = $this->M_user->get_user_address_by_id($this->session->userdata('id_akun'));
 
+		if (!$address || $user['telp'] == '') {
+			$this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert me-2"><i class
+						="fas fa-info-circle"></i>
+  Lengkapi Profil Anda.
+</div>');
+			redirect('profile/edit');
+		}
+
 		$ongkir = $this->M_ongkir->get_ongkir_by_jarak($address['jarak']);
 
 		$payment_method = $this->db->get('payment_method')->result_array();

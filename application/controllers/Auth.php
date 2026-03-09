@@ -71,6 +71,8 @@ class Auth extends CI_Controller
 		//if usser ada
 		if ($user) {
 
+			$address = $this->db->get_where('address', ['user_id' => $user['id']])->result_array();
+
 			if ($user['role'] == 1 || $user['role'] == 2 || $user['role'] == 6 || $user['role'] == 8) {
 				//cek password
 				if ($password == $user['password']) {
@@ -88,11 +90,15 @@ class Auth extends CI_Controller
 
 					$this->session->set_userdata($data);
 
-					if ($user['role'] == 8) {
-						redirect(base_url('komplain'));
-					} else {
-						redirect(base_url('home'));
+					if (!$address) {
+						$this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert me-2"><i class
+						="fas fa-info-circle"></i>
+  Lengkapi Profil Anda.
+</div>');
+						redirect(base_url('profile/edit'));
 					}
+
+					redirect(base_url('home'));
 				} else {
 					$this->session->set_flashdata('msg_pass', '<small class="text-danger pl-2">password salah</small>');
 					redirect(base_url('auth'));
@@ -232,6 +238,9 @@ class Auth extends CI_Controller
 				$user = $this->db->get_where('users', ['oauth_id' => $g_id, 'deleted_at' => NULL])->row_array();
 
 				if ($user) {
+
+					$address = $this->db->get_where('address', ['user_id' => $user['id']])->result_array();
+
 					$user_foto = 'default.png';
 					if (strlen($user['foto']) > 0 && file_exists(FCPATH . 'dist/img/uploads/users/' . $user['foto'])) {
 						$user_foto = $user['foto'];
@@ -247,6 +256,13 @@ class Auth extends CI_Controller
 
 					$this->session->set_userdata($data);
 
+					if (!$address) {
+						$this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert me-2"><i class
+						="fas fa-info-circle"></i>
+  Lengkapi Profil Anda.
+</div>');
+						redirect(base_url('profile/edit'));
+					}
 					redirect(base_url('home'));
 				} else {
 					// User already exists, redirect to login

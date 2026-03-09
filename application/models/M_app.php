@@ -189,8 +189,6 @@ class M_app extends CI_Model
         if (empty($_FILES[$name]['name'])) {
             return $file;
         } else {
-            var_dump($file);
-            var_dump($default);
             if ($file != $default) {
                 unlink('./dist/img/uploads/' . $dir . '/' . $file);
             }

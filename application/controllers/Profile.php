@@ -61,6 +61,7 @@ class Profile extends CI_Controller
 		$address = $this->db->get_where('address', ['user_id' => $user_id])->row_array();
 		if (empty($address)) {
 			$address = [
+				'provinsi' => '',
 				'kota' => '',
 				'kecamatan' => '',
 				'kelurahan' => '',
@@ -69,6 +70,7 @@ class Profile extends CI_Controller
 				'long' => '',
 				'lat' => '',
 				'catatan' => '',
+				'jarak' => '',
 			];
 		}
 
@@ -80,7 +82,7 @@ class Profile extends CI_Controller
 			'name' => $this->session->userdata('nama_akun'),
 			'foto_akun' => $this->session->userdata('foto_akun'),
 			'hp_akun' => $this->session->userdata('hp_akun'),
-      'back_url' => base_url('profile')
+			'back_url' => base_url('profile')
 		];
 
 		$this->M_app->templateCart($data, 'profile/edit');
@@ -154,12 +156,24 @@ class Profile extends CI_Controller
 		];
 
 		if ($address) {
-			$this->db->update('address', $data_addres, ['id' => $address['id']]);
+			$save = $this->db->update('address', $data_addres, ['id' => $address['id']]);
 		} else {
 			$data_addres['user_id'] = $input_address['user_id'];
 
-			$this->db->insert('address', $data_addres);
+			$save = $this->db->insert('address', $data_addres);
 		}
+
+		if ($save) {
+			$alert = '<div class="alert alert-success" role="alert">
+  Profil anda sudah tersimpan.
+</div>';
+		} else {
+			$alert = '<div class="alert alert-danger" role="alert">
+  Gagal menyimpan profil.
+</div>';
+		}
+
+		$this->session->set_flashdata('message', $alert);
 
 		redirect('edit_profile');
 	}

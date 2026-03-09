@@ -9,6 +9,7 @@
       <div class="content p-2">
 
         <div class="card card-product-cart mb-2 p-2">
+          <?= $this->session->flashdata('message') ?>
           <div class="d-flex">
             <div class="avatar d-flex align-items-center px-2 p-4">
               <div class="profile-pic-div add-shadow" style="width: 120px; height: 120px;">
@@ -78,7 +79,13 @@
                   <span class="ms-2 small" id="address_phone_number"><?= $hp_akun ?></span>
                 </div>
                 <span id="btn_address_text">
-                  <?= $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'] ?>
+                  <?php
+                  if ($address['provinsi'] != '') {
+                    echo $address['jalan'] . ' ' . $address['kode_pos'] . ', ' . $address['kelurahan'] . ', ' . $address['kecamatan'] . ', ' . $address['kota'] . ', ' . $address['provinsi'];
+                  } else {
+                    echo '-';
+                  }
+                  ?>
                 </span>
               </div>
               <div class="text-end align-self-center">
